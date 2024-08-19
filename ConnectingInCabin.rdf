@@ -14,9 +14,9 @@
      xmlns:vehicleOntology1="http://test.org/vehicleOntology#">
     <owl:Ontology rdf:about="http://test.org/vehicleOntology">
         <owl:versionIRI rdf:resource="http://test.org/vehicleOntology_1"/>
+        <rdfs:comment>Not Optimal : Creating direct connections between the &apos;Sensor&apos; and &apos;SC&apos; classes may not be optimal. The &apos;Sensor&apos; &apos;s primary role is to capture the data, which then gets passed along to the SC for processing. Hence, since,  the data flow is already represented through the relationshisp existing between the &apos;Sensor&apos; and &apos;DataCaptured/Input&apos; and SC having an additional direct connection from &apos;Sensor&apos; to &apos;SC&apos; introduces redundancy and unecessary complexity.</rdfs:comment>
         <rdfs:comment>This is a continuation of the previous vehicle ontology that was not saved correctly. 
 introducing the concept of items when the camera is enlisted.</rdfs:comment>
-        <rdfs:comment>Not Optimal : Creating direct connections between the &apos;Sensor&apos; and &apos;SC&apos; classes may not be optimal. The &apos;Sensor&apos; &apos;s primary role is to capture the data, which then gets passed along to the SC for processing. Hence, since,  the data flow is already represented through the relationshisp existing between the &apos;Sensor&apos; and &apos;DataCaptured/Input&apos; and SC having an additional direct connection from &apos;Sensor&apos; to &apos;SC&apos; introduces redundancy and unecessary complexity.</rdfs:comment>
         <rdfs:comment>Use Object Properties when the attribute has a complex structure, relationships or needs to be reused in other contexts. 
 
 Use Data Properties for simple, intrinsic properties of a class, like labels, numbers or other literals.</rdfs:comment>
@@ -110,21 +110,11 @@ Use Data Properties for simple, intrinsic properties of a class, like labels, nu
     
 
 
-    <!-- http://test.org.org/vehicleOntology#AlertITriggeredBySC -->
-
-    <owl:ObjectProperty rdf:about="http://test.org.org/vehicleOntology#AlertITriggeredBySC">
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Alerts"/>
-        <rdfs:range rdf:resource="http://test.org.org/vehicleOntology#SensorController"/>
-    </owl:ObjectProperty>
-    
-
-
     <!-- http://test.org.org/vehicleOntology#AlertisConcerningTarget -->
 
     <owl:ObjectProperty rdf:about="http://test.org.org/vehicleOntology#AlertisConcerningTarget">
         <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Alerts"/>
-        <rdfs:range rdf:resource="http://test.org.org/vehicleOntology#Target"/>
+        <rdfs:range rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
         <rdfs:comment>This property indicates that the alert is meant for a particular target. This show that each alert is directed at one or more specific targes.
 Since the alert is a message it only regards the occupants of the vehicle.</rdfs:comment>
     </owl:ObjectProperty>
@@ -139,15 +129,6 @@ Since the alert is a message it only regards the occupants of the vehicle.</rdfs
         <rdfs:range rdf:resource="http://test.org.org/vehicleOntology#InCabinState"/>
         <dc:creator>jimge</dc:creator>
         <dc:date rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2023-07-28T10:35:35Z</dc:date>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://test.org.org/vehicleOntology#EnvironmentInVehicle -->
-
-    <owl:ObjectProperty rdf:about="http://test.org.org/vehicleOntology#EnvironmentInVehicle">
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Environment"/>
-        <rdfs:range rdf:resource="http://test.org.org/vehicleOntology#Vehicle"/>
     </owl:ObjectProperty>
     
 
@@ -231,15 +212,6 @@ This indicates that each &apos;Sensor&apos; instance is associated with one ro m
         <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#CameraSensor"/>
         <rdfs:range rdf:resource="http://test.org/vehicleOntology#ImageData"/>
         <rdfs:comment>This property indicates that a camera sensor can capture the data in the Image data format. Used to differentiate the camera sensor data to all the other sensor data (which are numerical)</rdfs:comment>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#CompareOxMetricToMetric -->
-
-    <owl:ObjectProperty rdf:about="http://test.org/vehicleOntology#CompareOxMetricToMetric">
-        <rdfs:domain rdf:resource="http://test.org/vehicleOntology#OxygenMetric"/>
-        <rdfs:range rdf:resource="http://test.org.org/vehicleOntology#DataCaptured"/>
     </owl:ObjectProperty>
     
 
@@ -357,7 +329,7 @@ This indicates that each &apos;Sensor&apos; instance is associated with one ro m
     <!-- http://test.org/vehicleOntology#MetaDataisStoredInSC -->
 
     <owl:ObjectProperty rdf:about="http://test.org/vehicleOntology#MetaDataisStoredInSC">
-        <owl:inverseOf rdf:resource="http://test.org/vehicleOntology#SCstoresMetaData"/>
+        <owl:inverseOf rdf:resource="http://test.org/vehicleOntology#SCusesMetaData"/>
         <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#MetaData"/>
         <rdfs:range rdf:resource="http://test.org.org/vehicleOntology#SensorController"/>
     </owl:ObjectProperty>
@@ -444,42 +416,12 @@ This indicates that each &apos;Sensor&apos; instance is associated with one ro m
     
 
 
-    <!-- http://test.org/vehicleOntology#SChasStoredThresholds -->
-
-    <owl:ObjectProperty rdf:about="http://test.org/vehicleOntology#SChasStoredThresholds">
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#SensorController"/>
-        <rdfs:range rdf:resource="http://test.org/vehicleOntology#Thresholds"/>
-        <rdfs:comment>This property indicates that the Sensor Controller has in store the Thresholds.</rdfs:comment>
-    </owl:ObjectProperty>
-    
-
-
     <!-- http://test.org/vehicleOntology#SCprocessesNumericalData -->
 
     <owl:ObjectProperty rdf:about="http://test.org/vehicleOntology#SCprocessesNumericalData">
         <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#SensorController"/>
         <rdfs:range rdf:resource="http://test.org/vehicleOntology#NumericalData"/>
         <rdfs:comment>This property indicates that the sensor controller takes into consideration the numerical data during processing.</rdfs:comment>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#SCprocessesThresholds -->
-
-    <owl:ObjectProperty rdf:about="http://test.org/vehicleOntology#SCprocessesThresholds">
-        <owl:inverseOf rdf:resource="http://test.org/vehicleOntology#ThresholdsareProcessedBySC"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#SensorController"/>
-        <rdfs:range rdf:resource="http://test.org/vehicleOntology#Thresholds"/>
-        <rdfs:comment>This property indicates tha the sensor controller takes into consideration the thresholds (for the numerical data).</rdfs:comment>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#SCstoresMetaData -->
-
-    <owl:ObjectProperty rdf:about="http://test.org/vehicleOntology#SCstoresMetaData">
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#SensorController"/>
-        <rdfs:range rdf:resource="http://test.org.org/vehicleOntology#MetaData"/>
     </owl:ObjectProperty>
     
 
@@ -498,6 +440,26 @@ This indicates that each &apos;Sensor&apos; instance is associated with one ro m
     <owl:ObjectProperty rdf:about="http://test.org/vehicleOntology#SCtriggersNotification">
         <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#SensorController"/>
         <rdfs:range rdf:resource="http://test.org.org/vehicleOntology#Notification"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/vehicleOntology#SCusesMetaData -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/vehicleOntology#SCusesMetaData">
+        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#SensorController"/>
+        <rdfs:range rdf:resource="http://test.org.org/vehicleOntology#MetaData"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/vehicleOntology#SCusesThresholds -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/vehicleOntology#SCusesThresholds">
+        <owl:inverseOf rdf:resource="http://test.org/vehicleOntology#ThresholdsareProcessedBySC"/>
+        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#SensorController"/>
+        <rdfs:range rdf:resource="http://test.org/vehicleOntology#Thresholds"/>
+        <rdfs:comment>This property indicates tha the sensor controller takes into consideration the thresholds (for the numerical data).</rdfs:comment>
     </owl:ObjectProperty>
     
 
@@ -1255,9 +1217,6 @@ Changes for each sensor.</rdfs:comment>
 
     <owl:Class rdf:about="http://test.org.org/vehicleOntology#Alerts">
         <owl:hasKey rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#AlertITriggeredBySC"/>
-        </owl:hasKey>
-        <owl:hasKey rdf:parseType="Collection">
             <rdf:Description rdf:about="http://test.org.org/vehicleOntology#AlertisConcerningTarget"/>
         </owl:hasKey>
         <dc:creator>jimge</dc:creator>
@@ -1972,7 +1931,7 @@ Changes for each sensor.</rdfs:comment>
 
     <owl:NamedIndividual rdf:about="http://test.org/vehicleOntology#emergency_alert_for_environment">
         <rdf:type rdf:resource="http://test.org.org/vehicleOntology#Emergency"/>
-        <vehicleOntology:AlertisConcerningTarget rdf:resource="http://test.org/vehicleOntology#Dimitris_driver"/>
+        <vehicleOntology:AlertisConcerningTarget rdf:resource="http://test.org/vehicleOntology#Maria_occupant"/>
         <vehicleOntology1:EmergencyhasTriggeringData rdf:resource="http://test.org/vehicleOntology#numerical_data_2"/>
     </owl:NamedIndividual>
     
@@ -2329,60 +2288,6 @@ Changes for each sensor.</rdfs:comment>
     </rdf:Description>
     <rdf:Description rdf:about="urn:swrl:var#widecamera">
         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
-    </rdf:Description>
-    <rdf:Description>
-        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
-        <swrl:body>
-            <rdf:Description>
-                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                <rdf:first>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#BuiltinAtom"/>
-                        <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#contains"/>
-                        <swrl:arguments>
-                            <rdf:Description>
-                                <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
-                                <rdf:first rdf:resource="urn:swrl:var#name"/>
-                                <rdf:rest>
-                                    <rdf:Description>
-                                        <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
-                                        <rdf:first>bcg</rdf:first>
-                                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-                                    </rdf:Description>
-                                </rdf:rest>
-                            </rdf:Description>
-                        </swrl:arguments>
-                    </rdf:Description>
-                </rdf:first>
-                <rdf:rest>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                        <rdf:first>
-                            <rdf:Description>
-                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
-                                <swrl:propertyPredicate rdf:resource="http://test.org.org/vehicleOntology#hasSensorName"/>
-                                <swrl:argument1 rdf:resource="urn:swrl:var#sensor"/>
-                                <swrl:argument2 rdf:resource="urn:swrl:var#name"/>
-                            </rdf:Description>
-                        </rdf:first>
-                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-                    </rdf:Description>
-                </rdf:rest>
-            </rdf:Description>
-        </swrl:body>
-        <swrl:head>
-            <rdf:Description>
-                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
-                <rdf:first>
-                    <rdf:Description>
-                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
-                        <swrl:classPredicate rdf:resource="http://test.org.org/vehicleOntology#BCG"/>
-                        <swrl:argument1 rdf:resource="urn:swrl:var#bcgSensor"/>
-                    </rdf:Description>
-                </rdf:first>
-                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-            </rdf:Description>
-        </swrl:head>
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
@@ -4361,6 +4266,60 @@ Changes for each sensor.</rdfs:comment>
                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
                         <swrl:classPredicate rdf:resource="http://test.org.org/vehicleOntology#EMG"/>
                         <swrl:argument1 rdf:resource="urn:swrl:var#emgSensor"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            </rdf:Description>
+        </swrl:head>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#BuiltinAtom"/>
+                        <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#contains"/>
+                        <swrl:arguments>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                                <rdf:first rdf:resource="urn:swrl:var#name"/>
+                                <rdf:rest>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                                        <rdf:first>bcg</rdf:first>
+                                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                    </rdf:Description>
+                                </rdf:rest>
+                            </rdf:Description>
+                        </swrl:arguments>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+                                <swrl:propertyPredicate rdf:resource="http://test.org.org/vehicleOntology#hasSensorName"/>
+                                <swrl:argument1 rdf:resource="urn:swrl:var#sensor"/>
+                                <swrl:argument2 rdf:resource="urn:swrl:var#name"/>
+                            </rdf:Description>
+                        </rdf:first>
+                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                    </rdf:Description>
+                </rdf:rest>
+            </rdf:Description>
+        </swrl:body>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                        <swrl:classPredicate rdf:resource="http://test.org.org/vehicleOntology#BCG"/>
+                        <swrl:argument1 rdf:resource="urn:swrl:var#bcgSensor"/>
                     </rdf:Description>
                 </rdf:first>
                 <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
