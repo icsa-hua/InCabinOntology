@@ -978,6 +978,15 @@ This indicates that each &apos;Sensor&apos; instance is associated with one ro m
     
 
 
+    <!-- http://test.org/vehicleOntology#hasHeartRateThreshold -->
+
+    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasHeartRateThreshold">
+        <rdfs:domain rdf:resource="http://test.org/vehicleOntology#Thresholds"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    </owl:DatatypeProperty>
+    
+
+
     <!-- http://test.org/vehicleOntology#hasHumidityLevels -->
 
     <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasHumidityLevels">
@@ -1031,6 +1040,15 @@ This indicates that each &apos;Sensor&apos; instance is associated with one ro m
     <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasO3">
         <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#DataCaptured"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://test.org/vehicleOntology#hasOxygenLevelThreshold -->
+
+    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasOxygenLevelThreshold">
+        <rdfs:domain rdf:resource="http://test.org/vehicleOntology#Thresholds"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
     </owl:DatatypeProperty>
     
@@ -1093,6 +1111,15 @@ Changes for each sensor.</rdfs:comment>
         <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#DataCaptured"/>
         <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#WeatherData"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://test.org/vehicleOntology#hasTemperatureThreshold -->
+
+    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasTemperatureThreshold">
+        <rdfs:domain rdf:resource="http://test.org/vehicleOntology#Thresholds"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
     </owl:DatatypeProperty>
     
 
