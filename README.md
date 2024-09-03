@@ -8,9 +8,9 @@ This work was implemented and illustrated for the purposes of the AIQ-READY Euro
 
 ## Components
 - **ConnectingInCabin.rdf (`Main Onrology`)**: Represents the main ontology using OWL in XML. 
-- **merged_ontology.rdf (`Merged with CSV Individuals`)**: Represents the main ontology with the csv indiciduals. 
 - **scipts (`Python scripts`)**: Contains conversion.py (convert csv into individuals) and merge.py (merge the two ontologies). 
-- **thresholds.ttl (`OWL from CSV`)**: Turtle representation of the converted ontology.
+- **data (`CSV and TTL data`)**: Contains the available csv files and the conversion results as ttl (Turtle format).
+- **ontologies (`OWL ontologies`)**: Contains the main and merged ontologies in OWL/RDF format. 
 
  
 ## Technologies
