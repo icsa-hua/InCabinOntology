@@ -1,0 +1,33 @@
+@prefix ns1: <http://test.org/vehicleOntology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ns1:Thresholds_0 a ns1:Thresholds ;
+    ns1:hasHeartRateThreshold "60.0"^^xsd:float,
+        "100.0"^^xsd:float ;
+    ns1:hasHeartRateVariabilityThreshold "20.0"^^xsd:float,
+        "200.0"^^xsd:float ;
+    ns1:hasOxygenLevelThreshold "90"^^xsd:int,
+        "100"^^xsd:int ;
+    ns1:hasResponeRateThreshold "30.0"^^xsd:float,
+        "100.0"^^xsd:float .
+
+ns1:hasHeartRateThreshold a owl:DatatypeProperty ;
+    rdfs:domain ns1:Thresholds ;
+    rdfs:range xsd:float .
+
+ns1:hasHeartRateVariabilityThreshold a owl:DatatypeProperty ;
+    rdfs:domain ns1:Thresholds ;
+    rdfs:range xsd:float .
+
+ns1:hasOxygenLevelThreshold a owl:DatatypeProperty ;
+    rdfs:domain ns1:Thresholds ;
+    rdfs:range xsd:int .
+
+ns1:hasResponeRateThreshold a owl:DatatypeProperty ;
+    rdfs:domain ns1:Thresholds ;
+    rdfs:range xsd:float .
+
+ns1:Thresholds a owl:Class .
+
