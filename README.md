@@ -37,5 +37,13 @@ pip install -r requirements.txt
 
 4. Use the ontology with Protege. Open Protege
 5. File->Open->Select the ontology to open
+6. To use the simulated scenarios:
+   ```sh
+   cd scipts
+   python3 main.py
+   ```
+This executes a python script that creates a graph, adds target individuals, 
+executes queries and creates links between individuals. 
+
    
 
