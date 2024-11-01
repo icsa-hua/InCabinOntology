@@ -4,6 +4,8 @@ import pandas as pd
 import matplotlib.pyplot as plt 
 import seaborn as sns 
 import pdb 
+import os
+import uuid
 
 spo2_level = 85 
 
@@ -20,13 +22,13 @@ def load_ontology(ontology_path):
     return ontology 
 
 
-def search_class_ontology(target_classes, target_class_name):
+def search_class_ontology(target_classes,target_class_name ):
 
     # Search if the Target class ("Target" in ths case) exists in the ontology
 
     TargetClass = None 
     for cls in target_classes: 
-        if cls.name == "Target" : 
+        if cls.name == target_class_name : 
             TargetClass = cls 
             break 
 
@@ -44,9 +46,12 @@ def check_property(ontology,target_class, property_name):
 
             Property_Class.domain = [target_class]
             Property_Class.range = [float]
-
+            print(f"Property {property_name} created...")
             ontology.property_name = Property_Class #Add it to the 
         
+        else: 
+            ontology.property_name = getattr(target_class, property_name)
+            print(f"Property {property_name} found...")
     return ontology.property_name
     
 
@@ -88,6 +93,12 @@ def linking_to_HRM(ontology, cls_name="HeartRateMonitor", link_target=None):
     return HeartRateMonitor_ind   
 
 
+def check_individual_property(ontology, target_individual, property_list ):
+    
+    property_values = [getattr(target_individual, prop) for prop in property_list]
+    for prop in property_list: 
+        if prop is None: 
+            prop.append
 
 
 def target_property_checking(ontology, target_name=None, prop_to_check=None,value=None, threshold=90): 
@@ -118,13 +129,13 @@ def add_value_to_property(target_ind, property, value):
     print(property_value)
 
 
-
 def update_property(target, property_name, value): 
     if hasattr(target, property_name): 
         property_value = getattr(target, property_name)
-        property_value.append(value)
+        property_value = [value]
     else: 
-        add_data
+        raise ValueError(f"Property {property_name} not found in target individual")
+
 
 def associate_target_class(ontology,target_class_name, target_ind, property_name ): 
     target_classes = [cls for cls in ontology.classes() if target_class_name in cls.name]
@@ -138,7 +149,6 @@ def associate_target_class(ontology,target_class_name, target_ind, property_name
         return Target_Class, property_value
     else: 
         print("Vehicle class not found")
-
 
 
 def get_all_target_properties(ontology, target_name): 
@@ -454,3 +464,689 @@ def plot_pie_chart(results_df):
     plt.axis('equal')  # Equal aspect ratio ensures that pie chart is circular
     plt.tight_layout()  # Automatically adjust subplot parameters to give specified padding
     plt.show()
+
+
+def define_fatigue_rules(ontology): 
+    
+    with ontology:   
+        fatigue_undefined_1= Imp() 
+        fatigue_undefined_1.set_as_rule(
+            """hasFatigueLevels(?a, ?fl), lessThan(?fl,0) ->
+            isUndefinedFatigueLevel(?a,true), noPersonFound(?v,true)"""
+        )
+
+        fatigue_undefined_2 = Imp()
+        fatigue_undefined_2.set_as_rule(
+            """
+            hasFatigueLevels(?a, 0) -> 
+            isUndefinedFatigueLevel(?a,true),
+            noPersonFound(?v,true)
+            """
+        )
+
+        not_fatigued = Imp() 
+        not_fatigued.set_as_rule(
+            """
+            hasFatigueLevels(?a, ?fl),
+            greaterThan(?fl,40), lessThan(?fl,50) ->
+            isNotFatigued(?a,true), isAwake(?a,true)
+            """
+        )
+
+        moderate_fatigue = Imp()
+        moderate_fatigue.set_as_rule(
+            """
+            hasFatigueLevels(?a, ?fl),
+            greaterThan(?fl,50), lessThan(?fl,60) ->
+            isAwake(?a,true), isModeratelyFatigued(?a,true),
+            """
+        )
+
+        very_fatigued = Imp()
+        very_fatigued.set_as_rule(
+            """
+            hasFatigueLevels(?a, ?fl),
+            greaterThan(?fl,60), lessThan(?fl,70) -> 
+            isAwake(?a,true), isVeryFatigued(?a,true),
+            isDrowsy(?a,true), hasDrowsinessState(?a,true),
+            """
+        )
+
+        extremely_fatigued = Imp()
+        extremely_fatigued.set_as_rule(
+            """
+            hasFatigueLevels(?a, ?fl),
+            greaterThan(?fl,70), lessThan(?fl,80) -> 
+            isExtremelyFatigued(?a,true), isAwake(?a,true),
+            isDrowsy(?a,true), hasDrowsinessState(?a,true),
+            """
+        )
+
+        severely_fatigued = Imp()
+        severely_fatigued.set_as_rule(
+            """
+            hasFatigueLevels(?a, ?fl),
+            greaterThan(?fl,80), lessThan(?fl,90) ->
+            isAwake(?a,true), isSeverelyFatigued(?a,true), 
+            isDrowsy(?a,true), hasDrowsinessState(?a,true),
+            """
+        ) 
+
+        microsleep = Imp() 
+        microsleep.set_as_rule(
+            """
+            isDrowsy(?a,true) ^ hasEyesClosedForDuration(?a, ?d),
+            greaterThan(?d,1) -> isMicrosleep(?a,true)
+            """
+        )
+
+        sleeping = Imp() 
+        sleeping.set_as_rule(
+            """
+            isAwake(?a,false) ^ hasEyesClosedForDuration(?a, ?d),
+            greaterThan(?d,1) -> isAsleep(?a,true)
+            """
+        )
+
+        assesment_required = Imp() 
+        assesment_required.set_as_rule(
+        """
+            isUndefinedFatigueLevel(?a,true) -> assessmentRequired(?a,true)
+        """
+        )
+
+def define_attention_rules(ontology): 
+
+    with ontology:   
+        attention_undefined_1= Imp() 
+        attention_undefined_1.set_as_rule(
+            """hasAttentionLevels(?a, ?al), lessThan(?al,0) ->hasUndefinedAttentionState(?a,true)"""
+        )
+        attention_undefined_2= Imp() 
+        attention_undefined_2.set_as_rule(
+            """hasAttentionLevels(?a, ?al), greaterThan(?al,5) ->hasUndefinedAttentionState(?a,true)"""
+        )
+
+        attention_increasing = Imp()
+        attention_increasing.set_as_rule(
+            """
+            hasAttentionLevels(?a, ?al),greaterThan(?al,3), lessThan(?al,4) ->hasAttentionIncreasing(?a,true)
+            """
+        )
+
+        attention_decreasing = Imp()
+        attention_decreasing.set_as_rule(
+            """
+            hasAttentionLevels(?a, ?al),greaterThan(?al,1), lessThan(?al,3) ->hasAttentionDecreasing(?a,true)
+            """
+        )
+
+        attentive = Imp()
+        attentive.set_as_rule(
+            """
+                hasAttentionLevels(?a, ?al),greaterThan(?al,4), lessThan(?al,5) -> isAttentive(?a,true)
+            """
+        )
+
+        inattentive = Imp() 
+        inattentive.set_as_rule(
+            """
+                hasAttentionLevels(?a, ?al),greaterThan(?al,0), lessThan(?al,1) -> isInattentive(?a,true)
+            """
+        )
+
+        attention_increasing_2 = Imp() 
+        attention_increasing_2.set_as_rule(
+            """
+                hasAttentionLevels(?a, ?al),greaterThanOrEqual(?al,1), hasAttentionStateConfidence(?a,?conf), greaterThan(?conf, 0.5) ->hasAttentionIncreasing(?a,true)
+            """
+        )
+
+        attention_decreasing_2 = Imp()
+        attention_decreasing_2.set_as_rule(
+            """
+                hasAttentionLevels(?a, ?al),greaterThanOrEqual(?al,3), hasAttentionStateConfidence(?a,?conf), lessThan(?conf, 0.5) ->hasAttentionDecreasing(?a,true)
+            """
+        )
+
+        undefined_attention_zone = Imp() 
+        undefined_attention_zone.set_as_rule(
+            """
+                noPersonFound(?v,true) -> hasUndefinedAttentionZone(?v,true) 
+            """
+        )
+
+        undefined_attention_zone_2 = Imp() 
+        undefined_attention_zone_2.set_as_rule(
+            """
+                isUnresponsive(?a,true) -> hasUndefinedAttentionZone(?v,true)
+            """
+        )
+
+        windshield_attention_zone = Imp()
+        windshield_attention_zone.set_as_rule(
+            """
+                isAttentive(?a,true), gazeDirection(?a,?gd), stringEqualIgnoreCase(?gd, "windshield")  -> lookingAtWindshield(?a,true), activeAttentionZone(?a,"windshield")
+            """
+        )
+        
+        dashboard_attention_zone = Imp()
+        dashboard_attention_zone.set_as_rule(
+            """
+                isAttentive(?a,true), gazeDirection(?a,?gd), stringEqualIgnoreCase(?gd, "dashboard")  -> lookingAtDashboard(?a,true),  activeAttentionZone(?a,"dashboard")
+            """
+        )
+
+        driver_window_attention_zone = Imp()
+        driver_window_attention_zone.set_as_rule(
+            """
+                isAttentive(?a,true), gazeDirection(?a,?gd), stringEqualIgnoreCase(?gd, "driver_window")  -> lookingAtDriverWindow(?a,true), activeAttentionZone(?a,"driver_window")
+            """
+        )
+
+        driver_mirror_attention_zone = Imp() 
+        driver_mirror_attention_zone.set_as_rule(
+            """
+                isAttentive(?a,true), gazeDirection(?a,?gd), stringEqualIgnoreCase(?gd, "driver_mirror")  -> lookingAtDriverMirror(?a,true), activeAttentionZone(?a,"driver_mirror")
+            """
+        )
+
+        infotainment_system_attention_zone = Imp()
+        infotainment_system_attention_zone.set_as_rule(
+            """
+                isAttentive(?a,true), gazeDirection(?a,?gd), stringEqualIgnoreCase(?gd, "infotainment_system")  -> lookingAtInfotainmentSystem(?a,true), activeAttentionZone(?a,"infotainment_system")
+            """
+        )
+
+        rear_mirror_attention_zone = Imp() 
+        rear_mirror_attention_zone.set_as_rule(
+            """
+                isAttentive(?a,true), gazeDirection(?a,?gd), stringEqualIgnoreCase(?gd, "rear_mirror")  -> lookingAtRearMirror(?a,true), activeAttentionZone(?a,"rear_mirror")
+            """
+        )
+
+        unspecified_interior_attention_zone = Imp()
+        unspecified_interior_attention_zone.set_as_rule(
+            """
+                isAttentive(?a,true), gazeDirection(?a,?gd), stringEqualIgnoreCase(?gd, "unspecified_interior")  -> lookingAtUnspecifiedInterior(?a,true), activeAttentionZone(?a,"unspecified_interior")
+            """
+        )
+
+        codriver_mirror_attention_zone = Imp()
+        codriver_mirror_attention_zone.set_as_rule(
+            """
+                isAttentive(?a,true), gazeDirection(?a,?gd), stringEqualIgnoreCase(?gd, "codriver_mirror")  -> lookingAtCodriverMirror(?a,true), activeAttentionZone(?a,"codriver_mirror")
+            """
+        )
+
+        codriver_window_attention_zone = Imp()
+        codriver_window_attention_zone.set_as_rule(
+            """
+                isAttentive(?a,true), gazeDirection(?a,?gd), stringEqualIgnoreCase(?gd, "codriver_window")  -> lookingAtCodriverWindow(?a,true), activeAttentionZone(?a,"codriver_window")
+            """
+        )
+
+
+def define_unresponsivness_rules(ontology):
+    """
+    Define the rules for unresponsiveness.
+    """
+    with ontology:
+        unresponsiveness_1 = Imp()
+        unresponsiveness_1.set_as_rule(
+            """
+                isExtremelyFatigued(?a,true) -> isUnresponsive(?a,true)
+            """
+        )
+
+        unresponsiveness_2 = Imp() 
+        unresponsiveness_2.set_as_rule(
+            """ 
+                alertIssuedTime(?alert,?time), greaterThanOrEqual(?time, 3000), hasUnchangedGaze(?a, true), lookingAtFrontWindow(?a,false) -> isUnresponsive(?a,true)
+            """
+        )
+
+        unresponsiveness_3 = Imp() 
+        unresponsiveness_3.set_as_rule(
+            """
+                isAsleep(?a,true) -> isUnresponsive(?a,true)
+            """
+        )
+
+        unresponsiveness_4 = Imp()
+        unresponsiveness_4.set_as_rule(
+            """
+                hasLongDistraction(?a,true) -> isUnresponsive(?a,true)
+            """
+        )
+
+        unresponsiveness_5 = Imp() 
+        unresponsiveness_5.set_as_rule(
+            """
+                isMicrosleep(?a,true) -> isUnresponsive(?a,true)
+            """
+        )
+
+        undefined_unresponsiveness_state = Imp()
+        undefined_unresponsiveness_state.set_as_rule(
+            """
+                noPersonFound(?a,true) -> hasUndefinedUnresponsiveState(?a,true)
+            """
+        )
+
+        undefined_unresponsiveness_state_2 = Imp()
+        undefined_unresponsiveness_state_2.set_as_rule(
+            """
+                isAwake(?a,true), isSeverelyFatigued(?a,true), lookingAtFrontWindow(?a,true), hasUnchangedGaze(?a,true) -> hasUndefinedUnresponsiveState(?a,true)
+            """
+        )
+
+        undefined_unresponsiveness_state_3 = Imp()
+        undefined_unresponsiveness_state_3.set_as_rule(
+            """
+                isAwake(?a,true), isVeryFatigued(?a,true), isAttentive(?a,true) -> hasUndefinedUnresponsiveState(?a,true)
+            """
+        )
+
+        responsiveness = Imp() 
+        responsiveness.set_as_rule(
+            """
+                isAwake(?a,true), lookingAtFrontWindow(?a,true) -> isResponsive(?a,true)
+            """
+        )
+
+        responsiveness_2 = Imp() 
+        responsiveness_2.set_as_rule(
+            """
+                isNotFatigued(?a,true), isAwake(?a,true) -> isResponsive(?a,true)
+            """
+        )
+
+        responsiveness_3 = Imp()
+        responsiveness_3.set_as_rule(
+            """
+                isModeratelyFatigued(?a,true), isAwake(?a,true), hasShortDistraction(?a,true) -> isResponsive(?a,true)
+            """
+        ) 
+
+        short_distraction = Imp()
+        short_distraction.set_as_rule(
+            """
+                isAwake(?a,true), isModeratelyFatigued(?a,true), lookingAtCodriverMirror(?a,true), hasUnchangedGaze(?a,true),  hasGazeDuration(?a, ?gt), greaterThan(?gt,3) -> hasShortDistraction(?a,true)
+            """
+        )
+
+        ## DO the same for all not front window locations. 
+        long_duration_distraction = Imp()
+        long_duration_distraction.set_as_rule(
+            """
+                isAwake(?a,true), isModeratelyFatigued(?a,true), lookingAtCodriverMirror(?a,true), hasUnchangedGaze(?a,true),  hasGazeDuration(?a, ?gt), greaterThanOrEqual(?gt,3) -> hasLongDistraction(?a,true)
+            """
+        )
+
+
+def define_respiratory_rate_rules(ontology): 
+    with ontology:
+        invalid_respiratory_rate_0 = Imp()
+        invalid_respiratory_rate_0.set_as_rule(
+            """
+                hasAge(?a, ?age), lessThan(?age,0), hasRespiratoryRate(?a,?rr) -> hasInvalidRespiratoryRate(?a,true)
+            """
+        )
+
+        invalid_respiratory_rate_1 = Imp() 
+        invalid_respiratory_rate_1.set_as_rule(
+            """
+                hasAge(?a,?age), greaterThan(?age,150), hasRespiratoryRate(?a,?rr) -> hasInvalidRespiratoryRate(?a,true)
+            """
+        )
+
+        invalid_respiratory_rate_2 = Imp() 
+        invalid_respiratory_rate_2.set_as_rule(
+            """
+                hasRespiratoryRate(?a,?rr), greaterThan(?rr, 50) -> hasInvalidRespiratoryRate(?a,true)
+            """
+        )
+
+        invalid_respiratory_rate_3 = Imp()
+        invalid_respiratory_rate_3.set_as_rule(
+            """
+                hasRespiratoryRate(?a,?rr), lessThan(?rr, 10) -> hasInvalidRespiratoryRate(?a,true)
+            """
+        )
+
+
+        respiratory_rate_1 = Imp()
+        respiratory_rate_1.set_as_rule(
+            """
+                hasAge(?a,?age), lessThan(?age,1), hasRespiratoryRate(?a,?rr), greaterThanOrEqual(?rr, 30), lessThan(?rr,40)-> hasNormalRespiratoryRate(?a,true)
+            """
+        )
+
+        respiratory_rate_2 = Imp()
+        respiratory_rate_2.set_as_rule(
+            """
+                hasAge(?a,?age), lessThan(?age,3), greaterThan(?age,1), hasRespiratoryRate(?a,?rr), greaterThanOrEqual(?rr, 25), lessThan(?rr,40)-> hasNormalRespiratoryRate(?a,true)
+            """
+        )
+
+        respiratory_rate_3 = Imp()
+        respiratory_rate_3.set_as_rule(
+            """
+                hasAge(?a,?age), lessThan(?age,6), greaterThan(?age,3), hasRespiratoryRate(?a,?rr), greaterThanOrEqual(?rr, 20), lessThan(?rr,30)-> hasNormalRespiratoryRate(?a,true)
+            """
+        )
+
+        respiratory_rate_4 = Imp()
+        respiratory_rate_4.set_as_rule(
+            """
+                hasAge(?a,?age), lessThan(?age,10), greaterThan(?age,6), hasRespiratoryRate(?a,?rr), greaterThanOrEqual(?rr, 18), lessThan(?rr,25)-> hasNormalRespiratoryRate(?a,true)
+            """
+        )
+
+        respiratory_rate_5 = Imp()
+        respiratory_rate_5.set_as_rule(
+            """
+                hasAge(?a,?age), lessThan(?age,50), greaterThan(?age,10), hasRespiratoryRate(?a,?rr), greaterThanOrEqual(?rr, 15), lessThan(?rr,18)-> hasNormalRespiratoryRate(?a,true)
+            """
+        )
+
+        respiratory_rate_6 = Imp()
+        respiratory_rate_6.set_as_rule(
+            """
+                hasAge(?a,?age), lessThan(?age,65), greaterThan(?age,50), hasRespiratoryRate(?a,?rr), greaterThanOrEqual(?rr, 18), lessThan(?rr,25)-> hasNormalRespiratoryRate(?a,true)
+            """
+        )
+
+        respiratory_rate_7 = Imp()
+        respiratory_rate_7.set_as_rule(
+            """
+                hasAge(?a,?age), lessThan(?age,80), greaterThan(?age,65), hasRespiratoryRate(?a,?rr), greaterThanOrEqual(?rr, 12), lessThan(?rr,28)-> hasNormalRespiratoryRate(?a,true)
+            """
+        )
+
+        respiratory_rate_8 = Imp()
+        respiratory_rate_8.set_as_rule(
+            """
+                hasAge(?a,?age),  greaterThan(?age,80), hasRespiratoryRate(?a,?rr), greaterThanOrEqual(?rr, 10), lessThan(?rr,30) -> hasNormalRespiratoryRate(?a,true)
+            """
+        )     
+
+
+def define_heart_rate_rules(ontology):
+    with ontology:
+        invalid_heart_rate_1 = Imp()
+        invalid_heart_rate_1.set_as_rule(
+            """
+                hasAge(?a,?age), lessThan(?age,18) , hasHeartRate(?a, ?hr) -> hasInvalidHeartRate(?a,true)
+            """
+        )
+
+        invalid_heart_rate_2 = Imp() 
+        invalid_heart_rate_2.set_as_rule(
+            """
+                hasAge(?a,?age), greaterThan(?age,150) , hasHeartRate(?a, ?hr) -> hasInvalidHeartRate(?a,true)
+            """
+        )
+
+        invalid_heart_rate_3 = Imp()
+        invalid_heart_rate_3.set_as_rule(
+            """
+                hasHeartRate(?a,?hr), greaterThan(?hr, 210) -> hasInvalidHeartRate(?a,true)
+            """
+        )
+
+        heart_rate_1 = Imp()
+        heart_rate_1.set_as_rule(
+            """
+                hasAge(?a,?age), lessThan(?age,30), greaterThanOrEqual(?age,20), hasHeartRate(?a,?hr), greaterThanOrEqual(?hr, 100), lessThanOrEqual(?hr,200)-> hasNormalHeartRate(?a,true)
+            """
+        )
+
+        heart_rate_2 = Imp()
+        heart_rate_2.set_as_rule(
+            """
+                hasAge(?a,?age), lessThan(?age,35), greaterThanOrEqual(?age,30), hasHeartRate(?a,?hr), greaterThanOrEqual(?hr, 95), lessThanOrEqual(?hr,190)-> hasNormalHeartRate(?a,true)
+            """
+        )
+
+        heart_rate_3 = Imp()
+        heart_rate_3.set_as_rule(
+            """
+                hasAge(?a,?age), lessThan(?age,40), greaterThanOrEqual(?age,35), hasHeartRate(?a,?hr), greaterThanOrEqual(?hr, 93), lessThanOrEqual(?hr,185)-> hasNormalHeartRate(?a,true)
+            """
+        )
+
+        heart_rate_4 = Imp()
+        heart_rate_4.set_as_rule(
+            """
+                hasAge(?a,?age), lessThan(?age,45), greaterThanOrEqual(?age,40), hasHeartRate(?a,?hr), greaterThanOrEqual(?hr, 90), lessThanOrEqual(?hr,180)-> hasNormalHeartRate(?a,true)
+            """
+        )
+
+        heart_rate_5 = Imp()
+        heart_rate_5.set_as_rule(
+            """
+                hasAge(?a,?age), lessThan(?age,50), greaterThanOrEqual(?age,45), hasHeartRate(?a,?hr), greaterThanOrEqual(?hr, 88), lessThanOrEqual(?hr, 175)-> hasNormalHeartRate(?a,true)
+            """
+        )
+
+        heart_rate_6 = Imp()
+        heart_rate_6.set_as_rule(
+            """
+                hasAge(?a,?age), lessThan(?age,55), greaterThanOrEqual(?age,50), hasHeartRate(?a,?hr), greaterThanOrEqual(?hr, 85), lessThanOrEqual(?hr, 170)-> hasNormalHeartRate(?a,true)
+            """
+        )
+
+        heart_rate_7 = Imp()
+        heart_rate_7.set_as_rule(
+            """
+                hasAge(?a,?age), lessThan(?age,60), greaterThanOrEqual(?age,55), hasHeartRate(?a,?hr), greaterThanOrEqual(?hr, 83), lessThanOrEqual(?hr, 165)-> hasNormalHeartRate(?a,true)
+            """
+        )
+
+        heart_rate_8 = Imp()
+        heart_rate_8.set_as_rule(
+            """
+                hasAge(?a,?age), lessThan(?age,65), greaterThanOrEqual(?age,60), hasHeartRate(?a,?hr), greaterThanOrEqual(?hr, 80), lessThanOrEqual(?hr, 160)-> hasNormalHeartRate(?a,true)
+            """
+        )
+
+        heart_rate_9 = Imp()
+        heart_rate_9.set_as_rule(
+            """
+                hasAge(?a,?age), lessThan(?age,70), greaterThanOrEqual(?age,65), hasHeartRate(?a,?hr), greaterThanOrEqual(?hr, 78), lessThanOrEqual(?hr, 155)-> hasNormalHeartRate(?a,true)
+            """
+        )
+
+        heart_rate_10 = Imp()
+        heart_rate_10.set_as_rule(
+            """
+                hasAge(?a,?age), greaterThanOrEqual(?age,70), hasHeartRate(?a,?hr), greaterThanOrEqual(?hr, 75), lessThanOrEqual(?hr, 150)-> hasNormalHeartRate(?a,true)
+            """
+        )
+
+    
+
+def define_heart_rate_variability_rules(ontology):
+    with ontology:
+
+        invalid_heart_rate_variability_1 = Imp()
+        invalid_heart_rate_variability_1.set_as_rule(
+            """
+                hasAge(?a,?age), lessThan(?age,18) , hasHeartRateVariability(?a, ?hrv) -> hasInvalidHeartRateVariability(?a,true)
+            """
+        )
+
+        invalid_heart_rate_variability_2 = Imp()
+        invalid_heart_rate_variability_2.set_as_rule(
+            """
+                hasAge(?a,?age), greaterThan(?age,150) , hasHeartRateVariability(?a, ?hrv) -> hasInvalidHeartRateVariability(?a,true)
+            """
+        )
+
+        invalid_heart_rate_variability_3 = Imp()
+        invalid_heart_rate_variability_3.set_as_rule(
+            """
+                hasHeartRateVariability(?a,?hrv), greaterThan(?hrv, 115) -> hasInvalidHeartRateVariability(?a,true)
+            """
+        )
+
+        invalid_heart_rate_variability_4 = Imp()
+        invalid_heart_rate_variability_4.set_as_rule(
+            """
+                hasHeartRateVariability(?a,?hrv), lessThan(?hrv, 25) -> hasInvalidHeartRateVariability(?a,true)
+            """
+        )
+
+        heart_rate_variability_1 = Imp()
+        heart_rate_variability_1.set_as_rule(
+            """
+                hasAge(?a,?age), lessThan(?age,25), greaterThanOrEqual(?age,20), hasHeartRateVariability(?a,?hrv), greaterThanOrEqual(?hrv, 60), lessThanOrEqual(?hrv, 110)-> hasNormalHeartRateVariability(?a,true)
+            """
+        )
+
+        heart_rate_variability_2 = Imp()
+        heart_rate_variability_2.set_as_rule(
+            """
+                hasAge(?a,?age), lessThan(?age,30), greaterThanOrEqual(?age,25), hasHeartRateVariability(?a,?hrv), greaterThanOrEqual(?hrv, 55), lessThanOrEqual(?hrv, 97)-> hasNormalHeartRateVariability(?a,true)
+            """
+        )
+
+        heart_rate_variability_3 = Imp()
+        heart_rate_variability_3.set_as_rule(
+            """
+                hasAge(?a,?age), lessThan(?age,35), greaterThanOrEqual(?age,30), hasHeartRateVariability(?a,?hrv), greaterThanOrEqual(?hrv, 50), lessThanOrEqual(?hrv, 85)-> hasNormalHeartRateVariability(?a,true)
+            """
+        )
+
+        heart_rate_variability_4 = Imp()
+        heart_rate_variability_4.set_as_rule(
+            """
+                hasAge(?a,?age), lessThan(?age,40), greaterThanOrEqual(?age,35), hasHeartRateVariability(?a,?hrv), greaterThanOrEqual(?hrv, 43), lessThanOrEqual(?hrv, 71)-> hasNormalHeartRateVariability(?a,true)
+            """
+        )
+
+        heart_rate_variability_5 = Imp()
+        heart_rate_variability_5.set_as_rule(
+            """
+                hasAge(?a,?age), lessThan(?age,45), greaterThanOrEqual(?age,40), hasHeartRateVariability(?a,?hrv), greaterThanOrEqual(?hrv, 38), lessThanOrEqual(?hrv,62 )-> hasNormalHeartRateVariability(?a,true)
+            """
+        )
+
+        heart_rate_variability_6 = Imp()
+        heart_rate_variability_6.set_as_rule(
+            """
+                hasAge(?a,?age), lessThan(?age,50), greaterThanOrEqual(?age,45), hasHeartRateVariability(?a,?hrv), greaterThanOrEqual(?hrv, 35), lessThanOrEqual(?hrv, 57)-> hasNormalHeartRateVariability(?a,true)
+            """
+        )
+
+        heart_rate_variability_7 = Imp()
+        heart_rate_variability_7.set_as_rule(
+            """
+                hasAge(?a,?age), lessThan(?age,55), greaterThanOrEqual(?age,50), hasHeartRateVariability(?a,?hrv), greaterThanOrEqual(?hrv, 31), lessThanOrEqual(?hrv, 55)-> hasNormalHeartRateVariability(?a,true)
+            """
+        )
+
+        heart_rate_variability_8 = Imp()
+        heart_rate_variability_8.set_as_rule(
+            """
+                hasAge(?a,?age), lessThan(?age,60), greaterThanOrEqual(?age,55), hasHeartRateVariability(?a,?hrv), greaterThanOrEqual(?hrv, 30), lessThanOrEqual(?hrv, 53)-> hasNormalHeartRateVariability(?a,true)
+            """
+        )
+
+        heart_rate_variability_9 = Imp()
+        heart_rate_variability_9.set_as_rule(
+            """
+                hasAge(?a,?age), lessThan(?age,65), greaterThanOrEqual(?age,60), hasHeartRateVariability(?a,?hrv), greaterThanOrEqual(?hrv, 29), lessThanOrEqual(?hrv, 50)-> hasNormalHeartRateVariability(?a,true)
+            """
+        )
+
+        heart_rate_variability_10 = Imp()
+        heart_rate_variability_10.set_as_rule(
+            """
+                hasAge(?a,?age), greaterThan(?age,65), hasHeartRateVariability(?a,?hrv), greaterThanOrEqual(?hrv, 30), lessThanOrEqual(?hrv, 50)-> hasNormalHeartRateVariability(?a,true)
+            """
+        )
+
+
+def define_blood_saturation_rules(ontology):
+    """
+    Define the rules for blood saturation.
+    """
+    with ontology:
+
+        invalid_blood_saturation_1 = Imp()
+        invalid_blood_saturation_1.set_as_rule(
+            """
+                hasBloodOxygenSaturation(?a, ?bos), lessThan(?bos, 50) -> hasInvalidBloodOxygenSaturation(?a,true)
+            """
+        )
+        invalid_blood_saturation_2 = Imp()
+        invalid_blood_saturation_2.set_as_rule(
+            """
+                hasBloodOxygenSaturation(?a, ?bos), greaterThan(?bos, 100) -> hasInvalidBloodOxygenSaturation(?a,true)
+            """
+        )
+
+        blood_saturation_1 = Imp()
+        blood_saturation_1.set_as_rule(
+            """
+                hasBloodOxygenSaturation(?a, ?bos), greaterThanOrEqual(?bos,95) -> hasNormalBloodOxygenSaturation(?a,true)
+            """
+        )
+
+        blood_saturation_2 = Imp() 
+        blood_saturation_2.set_as_rule(
+            """
+                hasBloodOxygenSaturation(?a, ?bos), greaterThanOrEqual(?bos,92), lessThan(?bos, 95) -> hasBorderlineNormalBloodOxygenSaturation(?a,true)
+            """ 
+        ) 
+
+        blood_saturation_3 = Imp()
+        blood_saturation_3.set_as_rule(
+            """
+                hasBloodOxygenSaturation(?a, ?bos), greaterThanOrEqual(?bos,89), lessThan(?bos, 92) -> hasLowBloodOxygenSaturation(?a,true)
+            """
+        )
+
+        blood_saturation_4 = Imp()
+        blood_saturation_4.set_as_rule(
+            """
+                hasBloodOxygenSaturation(?a, ?bos), greaterThanOrEqual(?bos,88), lessThan(?bos, 89) -> hasVeryLowBloodOxygenSaturation(?a,true)
+            """
+        )
+
+        blood_saturation_5 = Imp()
+        blood_saturation_5.set_as_rule(
+            """
+                hasBloodOxygenSaturation(?a, ?bos), greaterThanOrEqual(?bos,88), lessThan(?bos, 89) -> hasDangerouslyLowBloodOxygenSaturation(?a,true)
+            """
+        )
+        
+        blood_saturation_6 = Imp()
+        blood_saturation_6.set_as_rule(
+            """
+                hasBloodOxygenSaturation(?a, ?bos), lessThan(?bos, 88) -> hasDangerouslyLowBloodOxygenSaturation(?a,true)
+            """
+        )
+
+
+def save_rules_into_ontology(ontology, directory, filename, format_save='rdfxml', format='xml'):
+    """
+    Save the rules from the ontology into a file.
+    """ 
+    filepath = directory + filename 
+    destination = directory + "ConnectingInCabin_Rules_refined.rdf"
+    ontology.save(file=filepath, format=format_save)
+    graph = Graph() 
+    graph.parse(filepath, format=format)
+    graph.serialize(destination=destination, format=format)
+    print("Refined Rules Saved. ")
+    os.remove(filepath)
+    return destination
+
+
+def syncrhonize_ontology(ontology):
+    with ontology:
+        sync_reasoner_pellet(infer_property_values=True)
