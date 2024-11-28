@@ -45,5 +45,11 @@ pip install -r requirements.txt
 This executes a python script that creates a graph, adds target individuals, 
 executes queries and creates links between individuals. 
 
+*** 
+## Synthetic Data geberation
+
+Uses the TimeGAN solution as implemented in [TimeGAN](https://github.com/flaviagiammarino/time-gan-tensorflow)
+TensorFlow implementation of synthetic time series generation model introduced in Yoon, J., Jarrett, D. and Van der Schaar, M., 2019. Time-series generative adversarial networks. Advances in neural information processing systems, 32.
+
    
 
