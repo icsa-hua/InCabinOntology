@@ -2,7 +2,7 @@ from simulate_scenario import load_ontology,search_class_ontology,check_property
 from simulate_scenario import create_individual, linking_to_HRM,target_property_checking
 from simulate_scenario import add_value_to_property, associate_target_class, get_all_target_properties
 from simulate_scenario import add_target_to_graph, add_data, plot_results, plot_pie_chart
-from synthetic_data_generator import SyntheticDataGenerator
+from scripts.mock_data_generator import MockDataGenerator
 from rdflib import URIRef
 import pdb
 import pandas as pd 
@@ -70,7 +70,7 @@ except Exception as e:
 
 # Generating Synthetic Data 
 # Create syntehtic data for 100 samples 
-data_generator = SyntheticDataGenerator(1000) 
+data_generator = MockDataGenerator(1000) 
 # Example: Respiratory rate for adults
 adult_resp_rate_data = data_generator.generate_resp_rate_by_age("adults")
 print("Synthetic Respiratory Rate Data for Adults:", adult_resp_rate_data)
