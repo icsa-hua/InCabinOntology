@@ -1,6 +1,6 @@
 # InCabinOntology
 An in cabin ontology for in cabin vehicle environment. 
-![Version](https://img.shields.io/badge/version-0.1.5-brightgreen.svg)
+![Version](https://img.shields.io/badge/version-0.1.7-brightgreen.svg)
 
 ## Overview
 This repository creates an OWL representation or ontology for an in-cabin vehicle environment, set to have sensors which capture the state of the air and driver. 
