@@ -6,6 +6,8 @@ An in cabin ontology for in cabin vehicle environment.
 This repository creates an OWL representation or ontology for an in-cabin vehicle environment, set to have sensors
 which capture the state of the driver.
 
+![ontology-main](https://github.com/user-attachments/assets/c16c4034-c624-41dd-8cb7-ad284425a7d4)
+
 ## Components
 - **/data** &rarr; Stores the datasets used for testing the ontology capabilities.  
 - **/scipts** &rarr; (`Python scripts`) Stores the python scripts to create and parse SWRL rules in the ontology 
@@ -47,5 +49,10 @@ python test_parser.py
 6. Do the same for the updated_ontology.owl 
 
 *** 
+Resulting Labels are as follows: 
+![Screenshot 2025-02-05 142432](https://github.com/user-attachments/assets/aea12cb3-9e27-4c3e-8098-5acb3fca3a0d)
+
+
+
    
 
