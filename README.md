@@ -24,7 +24,7 @@ The main technologies used for this project are:
 ## SetUp
 1. Clone the repository:
 ```sh
-git clone -b ontology https://github.com/icsa-hua/InCabinOntology.git
+git clone -b ontology-parser https://github.com/icsa-hua/InCabinOntology.git
 ```
 
 2. Navigate to the project directory:
@@ -37,21 +37,15 @@ cd InCabinOntology
 pip install -r requirements.txt
 ```
 
-4. Use the ontology with Protege. Open Protege
-5. File->Open->Select the ontology to open
-6. To use the simulated scenarios:
-   ```sh
-   cd scipts
-   python3 main.py
-   ```
-This executes a python script that creates a graph, adds target individuals, 
-executes queries and creates links between individuals. 
+4. To execute the ontology reasoning, run:
+```sh
+python test_parser.py 
+```
+&rarr; To see the ontology before reasoning: 
+4. Open Protege
+5. File->Open->Select in_cabin_ontology.rdf
+6. Do the same for the updated_ontology.owl 
 
 *** 
-## Synthetic Data geberation
-
-Uses the TimeGAN solution as implemented in [TimeGAN](https://github.com/flaviagiammarino/time-gan-tensorflow)
-TensorFlow implementation of synthetic time series generation model introduced in Yoon, J., Jarrett, D. and Van der Schaar, M., 2019. Time-series generative adversarial networks. Advances in neural information processing systems, 32.
-
    
 
