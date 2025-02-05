@@ -1,0 +1,24 @@
+{
+    "prompt_details": {
+        "seed": 997054,
+        "steps": 4,
+        "prompt": "Lorem ipsum...",
+        "response": "Lorem ipsum...",
+        "view_point": "front",
+        "object_name": "person",
+        "time_of_day": "morning",
+        "sky_condition": "clear",
+        "weather_condition": "sunny"
+    },
+    "label": {
+        "actor_id": "13877481-4e9f-4428-be56-b383b1de7d24",
+        "eye_state": "Undefined",
+        "age": 60,
+        "face": "Grey_hair",
+        "sex": "Woman",
+        "demographic": "Mexican",
+        "accessories": "Glasses",
+        "bounding_box": "...",
+        "bounding_polygon": "..."
+    }
+}

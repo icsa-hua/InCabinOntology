@@ -1,0 +1,24 @@
+{
+    "prompt_details": {
+        "seed": 487874,
+        "steps": 56,
+        "prompt": "Lorem ipsum...",
+        "response": "Lorem ipsum...",
+        "view_point": "front",
+        "object_name": "person",
+        "time_of_day": "morning",
+        "sky_condition": "clear",
+        "weather_condition": "sunny"
+    },
+    "label": {
+        "actor_id": "94d2d6fa-0b74-4d93-b150-7da90490115c",
+        "eye_state": "Undefined",
+        "age": 25,
+        "face": "Short_hair",
+        "sex": "Woman",
+        "demographic": "Austrian",
+        "accessories": "Glasses",
+        "bounding_box": "...",
+        "bounding_polygon": "..."
+    }
+}

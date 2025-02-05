@@ -1,0 +1,24 @@
+{
+    "prompt_details": {
+        "seed": 661093,
+        "steps": 89,
+        "prompt": "Lorem ipsum...",
+        "response": "Lorem ipsum...",
+        "view_point": "front",
+        "object_name": "person",
+        "time_of_day": "morning",
+        "sky_condition": "clear",
+        "weather_condition": "sunny"
+    },
+    "label": {
+        "actor_id": "2ad8803e-824e-4dfb-8948-81660cff5981",
+        "eye_state": "blinking",
+        "age": 25,
+        "face": "Short_hair",
+        "sex": "Man",
+        "demographic": "Mexican",
+        "accessories": "Scarf",
+        "bounding_box": "...",
+        "bounding_polygon": "..."
+    }
+}

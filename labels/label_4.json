@@ -1,0 +1,24 @@
+{
+    "prompt_details": {
+        "seed": 963195,
+        "steps": 33,
+        "prompt": "Lorem ipsum...",
+        "response": "Lorem ipsum...",
+        "view_point": "front",
+        "object_name": "person",
+        "time_of_day": "morning",
+        "sky_condition": "clear",
+        "weather_condition": "sunny"
+    },
+    "label": {
+        "actor_id": "a86ba4ea-7df9-41f6-a3ba-9c74fa5f92cc",
+        "eye_state": "Undefined",
+        "age": 25,
+        "face": "Long_hair",
+        "sex": "Man",
+        "demographic": "American",
+        "accessories": "Glasses",
+        "bounding_box": "...",
+        "bounding_polygon": "..."
+    }
+}

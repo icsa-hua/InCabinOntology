@@ -1,0 +1,24 @@
+{
+    "prompt_details": {
+        "seed": 435042,
+        "steps": 29,
+        "prompt": "Lorem ipsum...",
+        "response": "Lorem ipsum...",
+        "view_point": "front",
+        "object_name": "person",
+        "time_of_day": "morning",
+        "sky_condition": "clear",
+        "weather_condition": "sunny"
+    },
+    "label": {
+        "actor_id": "22ed0ef8-f0da-45ae-84e6-a19126f977b2",
+        "eye_state": "slow",
+        "age": 85,
+        "face": "Long_hair",
+        "sex": "Man",
+        "demographic": "Canadian",
+        "accessories": "Scarf",
+        "bounding_box": "...",
+        "bounding_polygon": "..."
+    }
+}

@@ -10,16 +10,11 @@
      xmlns:swrl="http://www.w3.org/2003/11/swrl#"
      xmlns:swrla="http://swrl.stanford.edu/ontologies/3.3/swrla.owl#"
      xmlns:swrlb="http://www.w3.org/2003/11/swrlb#"
+     xmlns:in_cabin_domain="http://test.org/in_cabin_domain#"
      xmlns:vehicleOntology="http://test.org.org/vehicleOntology#"
      xmlns:vehicleOntology1="http://test.org/vehicleOntology#">
-    <owl:Ontology rdf:about="http://test.org/vehicleOntology">
-        <owl:versionIRI rdf:resource="http://test.org/vehicleOntology_1"/>
-        <rdfs:comment>Not Optimal : Creating direct connections between the &apos;Sensor&apos; and &apos;SC&apos; classes may not be optimal. The &apos;Sensor&apos; &apos;s primary role is to capture the data, which then gets passed along to the SC for processing. Hence, since,  the data flow is already represented through the relationshisp existing between the &apos;Sensor&apos; and &apos;DataCaptured/Input&apos; and SC having an additional direct connection from &apos;Sensor&apos; to &apos;SC&apos; introduces redundancy and unecessary complexity.</rdfs:comment>
-        <rdfs:comment>This is a continuation of the previous vehicle ontology that was not saved correctly. 
-introducing the concept of items when the camera is enlisted.</rdfs:comment>
-        <rdfs:comment>Use Object Properties when the attribute has a complex structure, relationships or needs to be reused in other contexts. 
-
-Use Data Properties for simple, intrinsic properties of a class, like labels, numbers or other literals.</rdfs:comment>
+    <owl:Ontology rdf:about="http://test.org/in_cabin_domain">
+        <owl:versionIRI rdf:resource="http://test.org/in_cabin_domain_01"/>
     </owl:Ontology>
     
 
@@ -85,145 +80,336 @@ Use Data Properties for simple, intrinsic properties of a class, like labels, nu
     
 
 
-    <!-- http://test.org.org/vehicleOntology#LabelIsConcerningObservationTarget -->
+    <!-- http://test.org.org/in_cabin_domain#ActorIsTargetedByLabel -->
 
-    <owl:ObjectProperty rdf:about="http://test.org.org/vehicleOntology#LabelIsConcerningObservationTarget">
-        <owl:inverseOf rdf:resource="http://test.org.org/vehicleOntology#ObservationTargetRelatesToLabel"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#LabelsObject"/>
-        <rdfs:range rdf:resource="http://test.org.org/vehicleOntology#ObservationsTarget"/>
+    <owl:ObjectProperty rdf:about="http://test.org.org/in_cabin_domain#ActorIsTargetedByLabel">
+        <owl:inverseOf rdf:resource="http://test.org.org/in_cabin_domain#LabelTargetsActor"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Actor"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#Label"/>
+        <rdfs:comment>The driver is described by the label. As an example: 
+middle-aged afghan man with glasses_eyes_closed_mouth_open</rdfs:comment>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org.org/in_cabin_domain#LabelTargetsActor -->
+
+    <owl:ObjectProperty rdf:about="http://test.org.org/in_cabin_domain#LabelTargetsActor">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Label"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#Actor"/>
         <rdfs:comment>This property indicates that the alert is meant for a particular target. This show that each alert is directed at one or more specific targes.
 Since the alert is a message it only regards the occupants of the vehicle.</rdfs:comment>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://test.org.org/vehicleOntology#MonitoringSensorCapturesObservations -->
+    <!-- http://test.org.org/in_cabin_domain#SensorCapturesObservations -->
 
-    <owl:ObjectProperty rdf:about="http://test.org.org/vehicleOntology#MonitoringSensorCapturesObservations">
+    <owl:ObjectProperty rdf:about="http://test.org.org/in_cabin_domain#SensorCapturesObservations">
+        <owl:inverseOf rdf:resource="http://test.org/in_cabin_domain#ObservationsAreCapturedBySensor"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#MonitoringSensor"/>
-        <rdfs:range rdf:resource="http://test.org.org/vehicleOntology#Observations"/>
-        <dc:creator>jimge</dc:creator>
-        <dc:date rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2023-07-28T10:16:28Z</dc:date>
-        <rdfs:comment>This property indicates that a specific sensor is responsible for capturing a particular piece of data. 
-
-This indicates that each &apos;Sensor&apos; instance is associated with one ro more &apos;Data Captured&apos; instances. The latter instance itself does not know about the sensor that created it; rather the relationship is maintained by the sensor.</rdfs:comment>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#MonitoringSensor"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#Observations"/>
+        <rdfs:comment>This object property denotes the relationship between the Observations which can either be time series data or image data, which are captured by the sensors. Different Sensors capture different type of data based also on what the target is.</rdfs:comment>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://test.org.org/vehicleOntology#ObservationTargetRelatesToLabel -->
+    <!-- http://test.org/in_cabin_domain#ActorFromObservations -->
 
-    <owl:ObjectProperty rdf:about="http://test.org.org/vehicleOntology#ObservationTargetRelatesToLabel">
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#ObservationsTarget"/>
-        <rdfs:range rdf:resource="http://test.org.org/vehicleOntology#LabelsObject"/>
-        <dc:creator>jimge</dc:creator>
-        <dc:date rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2023-07-27T10:23:17Z</dc:date>
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#ActorFromObservations">
+        <owl:inverseOf rdf:resource="http://test.org/in_cabin_domain#ObsIsDividedIntoActor"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Actor"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#Observations"/>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://test.org/vehicleOntology#DAUProcessesDataContainer -->
+    <!-- http://test.org/in_cabin_domain#ActorHasCharacteristics -->
 
-    <owl:ObjectProperty rdf:about="http://test.org/vehicleOntology#DAUProcessesDataContainer">
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#DataAnalysisUnit"/>
-        <rdfs:range rdf:resource="http://test.org/vehicleOntology#TimeSeriesObservations"/>
-        <rdfs:comment>This property indicates that the sensor controller takes into consideration the numerical data during processing.</rdfs:comment>
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#ActorHasCharacteristics">
+        <owl:inverseOf rdf:resource="http://test.org/in_cabin_domain#CharacteristicsDescribeActor"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Actor"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#Actor"/>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://test.org/vehicleOntology#DAUProvidesLabel -->
+    <!-- http://test.org/in_cabin_domain#ActorHasEyeState -->
 
-    <owl:ObjectProperty rdf:about="http://test.org/vehicleOntology#DAUProvidesLabel">
-        <owl:inverseOf rdf:resource="http://test.org/vehicleOntology#LabelIsProvidedByDAU"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#DataAnalysisUnit"/>
-        <rdfs:range rdf:resource="http://test.org.org/vehicleOntology#EmergencyQueryLabel"/>
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#ActorHasEyeState">
+        <owl:inverseOf rdf:resource="http://test.org/in_cabin_domain#EyeStateForActor"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Actor"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#EyeClosure"/>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://test.org/vehicleOntology#EnvironmentConsiderMetaData -->
+    <!-- http://test.org/in_cabin_domain#ActorHasPhysiologicalState -->
 
-    <owl:ObjectProperty rdf:about="http://test.org/vehicleOntology#EnvironmentConsiderMetaData">
-        <owl:inverseOf rdf:resource="http://test.org/vehicleOntology#MetaDataisConsideredByEnvironment"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Environment"/>
-        <rdfs:range rdf:resource="http://test.org.org/vehicleOntology#MetaData"/>
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#ActorHasPhysiologicalState">
+        <owl:inverseOf rdf:resource="http://test.org/in_cabin_domain#PhysiologicalStateDescribesActor"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Actor"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#PhysiologicalState"/>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://test.org/vehicleOntology#LabelHasTriggeringDataContainer -->
+    <!-- http://test.org/in_cabin_domain#ActorIsMonitoredBySensor -->
 
-    <owl:ObjectProperty rdf:about="http://test.org/vehicleOntology#LabelHasTriggeringDataContainer">
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#LabelsObject"/>
-        <rdfs:range rdf:resource="http://test.org.org/vehicleOntology#DataContainer"/>
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#ActorIsMonitoredBySensor">
+        <owl:inverseOf rdf:resource="http://test.org/in_cabin_domain#SensorMonitorsActor"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Actor"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#MonitoringSensor"/>
+        <rdfs:comment>The driver is monitored in some way and with some external gudgets from sensors. This implies that the time series values are regarding the driver&apos;s health.</rdfs:comment>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://test.org/vehicleOntology#LabelIsProvidedByDAU -->
+    <!-- http://test.org/in_cabin_domain#AgeBelongsToGroup -->
 
-    <owl:ObjectProperty rdf:about="http://test.org/vehicleOntology#LabelIsProvidedByDAU">
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#EmergencyQueryLabel"/>
-        <rdfs:range rdf:resource="http://test.org.org/vehicleOntology#DataAnalysisUnit"/>
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#AgeBelongsToGroup">
+        <owl:inverseOf rdf:resource="http://test.org/in_cabin_domain#GroupHasAge"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Age"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#Age"/>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://test.org/vehicleOntology#MetaDataisConsideredByEnvironment -->
+    <!-- http://test.org/in_cabin_domain#CharacteristicsDescribeActor -->
 
-    <owl:ObjectProperty rdf:about="http://test.org/vehicleOntology#MetaDataisConsideredByEnvironment">
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#MetaData"/>
-        <rdfs:range rdf:resource="http://test.org.org/vehicleOntology#Environment"/>
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#CharacteristicsDescribeActor">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Actor"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#Actor"/>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://test.org/vehicleOntology#MonitoringManagementIsEnabledInVehicleSystems -->
+    <!-- http://test.org/in_cabin_domain#DrowsinessIs -->
 
-    <owl:ObjectProperty rdf:about="http://test.org/vehicleOntology#MonitoringManagementIsEnabledInVehicleSystems">
-        <owl:inverseOf rdf:resource="http://test.org/vehicleOntology#VehiclesSystemsHasMonitoringManagement"/>
-        <rdfs:domain rdf:resource="http://test.org/vehicleOntology#MonitoringManagement"/>
-        <rdfs:range rdf:resource="http://test.org.org/vehicleOntology#VehicleSystems"/>
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#DrowsinessIs">
+        <owl:inverseOf rdf:resource="http://test.org/in_cabin_domain#isForDrowsiness"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Drowsiness"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#Drowsiness"/>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://test.org/vehicleOntology#MonitoringSensorMonitorsObservationTarget -->
+    <!-- http://test.org/in_cabin_domain#EyeStateForActor -->
 
-    <owl:ObjectProperty rdf:about="http://test.org/vehicleOntology#MonitoringSensorMonitorsObservationTarget">
-        <owl:inverseOf rdf:resource="http://test.org/vehicleOntology#TargetisMonitoredByMonitoringSensor"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#MonitoringSensor"/>
-        <rdfs:range rdf:resource="http://test.org.org/vehicleOntology#ObservationsTarget"/>
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#EyeStateForActor">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#EyeClosure"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#Actor"/>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://test.org/vehicleOntology#ObservationTargetIsInsideVehicleSystem -->
+    <!-- http://test.org/in_cabin_domain#FatigueIs -->
 
-    <owl:ObjectProperty rdf:about="http://test.org/vehicleOntology#ObservationTargetIsInsideVehicleSystem">
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#ObservationsTarget"/>
-        <rdfs:range rdf:resource="http://test.org.org/vehicleOntology#VehicleSystems"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#TargetisMonitoredByMonitoringSensor -->
-
-    <owl:ObjectProperty rdf:about="http://test.org/vehicleOntology#TargetisMonitoredByMonitoringSensor">
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#ObservationsTarget"/>
-        <rdfs:range rdf:resource="http://test.org.org/vehicleOntology#MonitoringSensor"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#VehiclesSystemsHasMonitoringManagement -->
-
-    <owl:ObjectProperty rdf:about="http://test.org/vehicleOntology#VehiclesSystemsHasMonitoringManagement">
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#FatigueIs">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#VehicleSystems"/>
-        <rdfs:range rdf:resource="http://test.org/vehicleOntology#MonitoringManagement"/>
+        <owl:inverseOf rdf:resource="http://test.org/in_cabin_domain#isForFatigue"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Fatigue"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#Fatigue"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#GroupHasAge -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#GroupHasAge">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Age"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#Age"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#HRVis -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#HRVis">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://test.org/in_cabin_domain#isForHRV"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#HRV"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#HRV"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#HRis -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#HRis">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://test.org/in_cabin_domain#isForHR"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#HR"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#HR"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#HasThreshold -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#HasThreshold">
+        <owl:inverseOf rdf:resource="http://test.org/in_cabin_domain#isThreshold"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#PhysiologicalState"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#Thresholds"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#ObsIsDividedIntoActor -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#ObsIsDividedIntoActor">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Observations"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#Actor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#ObsIsDividedIntoPhS -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#ObsIsDividedIntoPhS">
+        <owl:inverseOf rdf:resource="http://test.org/in_cabin_domain#PhSFromObservations"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Observations"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#PhysiologicalState"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#ObservationsAreCapturedBySensor -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#ObservationsAreCapturedBySensor">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Observations"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#MonitoringSensor"/>
+        <rdfs:comment>Observations are captured by the sensors, and different sensors capture different type of observations. These are the actual data used in the processing part of the ontology in the DAU, which wants to categorize the driver based on those values.</rdfs:comment>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#ObservationsHasPhysiologicalData -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#ObservationsHasPhysiologicalData">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Observations"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#PhysiologicalState"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#PhSFromObservations -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#PhSFromObservations">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#PhysiologicalState"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#Observations"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#PhysiologicalStateDescribesActor -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#PhysiologicalStateDescribesActor">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#PhysiologicalState"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#Actor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#RRis -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#RRis">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://test.org/in_cabin_domain#isForRR"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#RR"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#RR"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#SensorMonitorsActor -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#SensorMonitorsActor">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#MonitoringSensor"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#Actor"/>
+        <rdfs:comment>The sensor monitors the driver, to capture health moniroting information</rdfs:comment>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#SpO2is -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#SpO2is">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://test.org/in_cabin_domain#isForSpO2"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#SpO2"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#SpO2"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#isForDrowsiness -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#isForDrowsiness">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Drowsiness"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#Drowsiness"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#isForFatigue -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#isForFatigue">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Fatigue"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#Fatigue"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#isForHR -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#isForHR">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#HR"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#HR"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#isForHRV -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#isForHRV">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#HRV"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#HRV"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#isForRR -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#isForRR">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#RR"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#RR"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#isForSpO2 -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#isForSpO2">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#SpO2"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#SpO2"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#isThreshold -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#isThreshold">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Thresholds"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#PhysiologicalState"/>
     </owl:ObjectProperty>
     
 
@@ -239,304 +425,126 @@ This indicates that each &apos;Sensor&apos; instance is associated with one ro m
     
 
 
-    <!-- http://test.org.org/vehicleOntology#hasDataType -->
+    <!-- http://test.org.org/in_cabin_domain#hasID -->
 
-    <owl:DatatypeProperty rdf:about="http://test.org.org/vehicleOntology#hasDataType">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Observations"/>
-        <rdfs:range rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral"/>
-        <dc:creator>jimge</dc:creator>
-        <dc:date rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2023-07-28T11:08:53Z</dc:date>
-        <rdfs:comment>Data type meaning the type of data the sensor captures aka image, float values etc.</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org.org/vehicleOntology#hasID -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org.org/vehicleOntology#hasID">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#VehicleSystems"/>
-        <rdfs:domain rdf:resource="http://test.org/vehicleOntology#MonitoringManagement"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
-        <dc:creator>jimge</dc:creator>
-        <dc:date rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2023-07-28T10:49:07Z</dc:date>
+    <owl:DatatypeProperty rdf:about="http://test.org.org/in_cabin_domain#hasID">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#MonitoringManagement"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
         <rdfs:comment>Identifier for the different systems</rdfs:comment>
     </owl:DatatypeProperty>
     
 
 
-    <!-- http://test.org.org/vehicleOntology#hasMetadataName -->
+    <!-- http://test.org.org/in_cabin_domain#hasSensorName -->
 
-    <owl:DatatypeProperty rdf:about="http://test.org.org/vehicleOntology#hasMetadataName">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#MetaData"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <dc:creator>jimge</dc:creator>
-        <dc:date rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2023-07-28T11:03:07Z</dc:date>
-        <rdfs:comment>Categorize the Metadata information.</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org.org/vehicleOntology#hasModelType -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org.org/vehicleOntology#hasModelType">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#VehicleSystems"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <dc:creator>jimge</dc:creator>
-        <dc:date rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2023-07-28T11:01:12Z</dc:date>
-        <rdfs:comment>The model type of the vehicle. Maybe this is redundant</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org.org/vehicleOntology#hasSeats -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org.org/vehicleOntology#hasSeats">
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#VehicleSystems"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
-        <dc:creator>jimge</dc:creator>
-        <dc:date rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2023-07-28T11:00:32Z</dc:date>
-        <rdfs:comment>The number of available seats of the vehicle. Indicates the maximum number of people inside the vehicle.</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org.org/vehicleOntology#hasSensorName -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org.org/vehicleOntology#hasSensorName">
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#MonitoringSensor"/>
+    <owl:DatatypeProperty rdf:about="http://test.org.org/in_cabin_domain#hasSensorName">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#MonitoringSensor"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
         <rdfs:comment>inserted the name of the sensor to categorize the sensor based on the rules defined.</rdfs:comment>
     </owl:DatatypeProperty>
     
 
 
-    <!-- http://test.org.org/vehicleOntology#isSleepy -->
+    <!-- http://test.org/in_cabin_domain#activeAttentionZone -->
 
-    <owl:DatatypeProperty rdf:about="http://test.org.org/vehicleOntology#isSleepy">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-        <dc:creator>jimge</dc:creator>
-        <dc:date rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2023-07-28T10:58:25Z</dc:date>
-        <rdfs:comment>The person is sleepy.</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#activeAttentionZone -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#activeAttentionZone">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Environment"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#VehicleSystems"/>
+    <owl:DatatypeProperty rdf:about="http://test.org/in_cabin_domain#activeAttentionZone">
+        <rdfs:domain rdf:resource="http://test.org.org/in_cabin_domain#MetaData"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
         <rdfs:comment>The currently active attention zone</rdfs:comment>
     </owl:DatatypeProperty>
     
 
 
-    <!-- http://test.org/vehicleOntology#alertIssuedTime -->
+    <!-- http://test.org/in_cabin_domain#gazeDirection -->
 
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#alertIssuedTime">
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#LabelsObject"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
-        <rdfs:comment>The time an alert was issued.</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#assessmentRequired -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#assessmentRequired">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:comment>The module is currently assessing the fatigue level. More information from more frames must be collected to compute the fatigue level</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#atTimeStamp -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#atTimeStamp">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTimeStamp"/>
-        <rdfs:comment>Thi timestamp for the generated data.</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#gazeDirection -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#gazeDirection">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
+    <owl:DatatypeProperty rdf:about="http://test.org/in_cabin_domain#gazeDirection">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Actor"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
         <rdfs:comment>Where the person is looking</rdfs:comment>
     </owl:DatatypeProperty>
     
 
 
-    <!-- http://test.org/vehicleOntology#hasAge -->
+    <!-- http://test.org/in_cabin_domain#hasAccessories -->
 
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasAge">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#hasAttentionDecreasing -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasAttentionDecreasing">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-        <rdfs:comment>The occupant was attentive before but is now not paying attention anymore and the attention level is decreasing.</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#hasAttentionIncreasing -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasAttentionIncreasing">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-        <rdfs:comment>The occupant was inattentive before but is now paying attention and the attention level is increasing.</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#hasAttentionLevels -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasAttentionLevels">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
-        <rdfs:comment>Data structure containing information from attention monitoring module</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#hasAttentionState -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasAttentionState">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
+    <owl:DatatypeProperty rdf:about="http://test.org/in_cabin_domain#hasAccessories">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Observations"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:comment>The attention state of the occupant</rdfs:comment>
     </owl:DatatypeProperty>
     
 
 
-    <!-- http://test.org/vehicleOntology#hasAttentionStateConfidence -->
+    <!-- http://test.org/in_cabin_domain#hasAge -->
 
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasAttentionStateConfidence">
+    <owl:DatatypeProperty rdf:about="http://test.org/in_cabin_domain#hasAge">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Observations"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#hasAgeValue -->
+
+    <owl:DatatypeProperty rdf:about="http://test.org/in_cabin_domain#hasAgeValue">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Age"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+        <owl:propertyDisjointWith rdf:resource="http://test.org/in_cabin_domain#hasNumericalValue"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#hasDROWSY -->
+
+    <owl:DatatypeProperty rdf:about="http://test.org/in_cabin_domain#hasDROWSY">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Observations"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#hasDemographic -->
+
+    <owl:DatatypeProperty rdf:about="http://test.org/in_cabin_domain#hasDemographic">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Observations"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:comment>The confidence of the attention state prediction in range [0, 1]</rdfs:comment>
     </owl:DatatypeProperty>
     
 
 
-    <!-- http://test.org/vehicleOntology#hasBloodOxygenSaturation -->
+    <!-- http://test.org/in_cabin_domain#hasDescription -->
 
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasBloodOxygenSaturation">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
-        <rdfs:comment>The percentage of oxygen-saturated hemoglobin relative to the total hemoglobin in the blood (SPO2).</rdfs:comment>
+    <owl:DatatypeProperty rdf:about="http://test.org/in_cabin_domain#hasDescription">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Label"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     </owl:DatatypeProperty>
     
 
 
-    <!-- http://test.org/vehicleOntology#hasBloodOxygenSaturationThreshold -->
+    <!-- http://test.org/in_cabin_domain#hasEyesClosedForDuration -->
 
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasBloodOxygenSaturationThreshold">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
-        <rdfs:comment>The blood oxygen saturation threshold to be used in the rules.</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#hasBorderlineNormalBloodOxygenSaturation -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasBorderlineNormalBloodOxygenSaturation">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#hasDangerouslyLowBloodOxygenSaturation -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasDangerouslyLowBloodOxygenSaturation">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#hasDrowsinessState -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasDrowsinessState">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
-        <rdfs:comment>The result of the sleepiness scale estimation module. The drowsiness levels according to a reduced Karolinska Sleepiness Scale (KSS) (DS).</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#hasDrowsinessStateThreshold -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasDrowsinessStateThreshold">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
-        <rdfs:comment>The KKS sleepeness scale that indicates if a person is awake, sleepy etc.</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#hasEyesClosedForDuration -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasEyesClosedForDuration">
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
+    <owl:DatatypeProperty rdf:about="http://test.org/in_cabin_domain#hasEyesClosedForDuration">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Actor"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
         <rdfs:comment>The person has its eyes closed for specific duration</rdfs:comment>
     </owl:DatatypeProperty>
     
 
 
-    <!-- http://test.org/vehicleOntology#hasFatigueLevels -->
+    <!-- http://test.org/in_cabin_domain#hasFaceCharacteristics -->
 
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasFatigueLevels">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
-        <rdfs:comment>The result of the fatigue detection</rdfs:comment>
+    <owl:DatatypeProperty rdf:about="http://test.org/in_cabin_domain#hasFaceCharacteristics">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Observations"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     </owl:DatatypeProperty>
     
 
 
-    <!-- http://test.org/vehicleOntology#hasGazeDuration -->
+    <!-- http://test.org/in_cabin_domain#hasGazeDuration -->
 
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasGazeDuration">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
+    <owl:DatatypeProperty rdf:about="http://test.org/in_cabin_domain#hasGazeDuration">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Actor"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
         <rdfs:comment>The duration of the gaze at the same location. 
 Unchanged gaze.</rdfs:comment>
@@ -544,617 +552,205 @@ Unchanged gaze.</rdfs:comment>
     
 
 
-    <!-- http://test.org/vehicleOntology#hasGender -->
+    <!-- http://test.org/in_cabin_domain#hasHR -->
 
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasGender">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
+    <owl:DatatypeProperty rdf:about="http://test.org/in_cabin_domain#hasHR">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Observations"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#hasHRV -->
+
+    <owl:DatatypeProperty rdf:about="http://test.org/in_cabin_domain#hasHRV">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Observations"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#hasNumericalValue -->
+
+    <owl:DatatypeProperty rdf:about="http://test.org/in_cabin_domain#hasNumericalValue">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#PhysiologicalState"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#hasRR -->
+
+    <owl:DatatypeProperty rdf:about="http://test.org/in_cabin_domain#hasRR">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Observations"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#hasSex -->
+
+    <owl:DatatypeProperty rdf:about="http://test.org/in_cabin_domain#hasSex">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Observations"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:comment>The gender of the person which affects its physical characteristics.</rdfs:comment>
     </owl:DatatypeProperty>
     
 
 
-    <!-- http://test.org/vehicleOntology#hasHeartRate -->
+    <!-- http://test.org/in_cabin_domain#hasSpO2 -->
 
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasHeartRate">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
-        <rdfs:comment>The number of heart beats per minute in bpm (HR).</rdfs:comment>
+    <owl:DatatypeProperty rdf:about="http://test.org/in_cabin_domain#hasSpO2">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Observations"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
     </owl:DatatypeProperty>
     
 
 
-    <!-- http://test.org/vehicleOntology#hasHeartRateThreshold -->
+    <!-- http://test.org/in_cabin_domain#hasStringValue -->
 
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasHeartRateThreshold">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org/vehicleOntology#Thresholds"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
-        <rdfs:comment>The heart rate thresholds to assess the health state of the person.</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#hasHeartRateVariability -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasHeartRateVariability">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
-        <rdfs:comment>The variation in time between consecutive heart beats in msec which is a measure of autonomic nervous system function (HRV)</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#hasHeartRateVariabilityThreshold -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasHeartRateVariabilityThreshold">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org/vehicleOntology#Thresholds"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
-        <rdfs:comment>The heart rate variability threshold to assess the health of the person.</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#hasInvalidBloodOxygenSaturation -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasInvalidBloodOxygenSaturation">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#hasInvalidHeartRate -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasInvalidHeartRate">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#hasInvalidHeartRateVariability -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasInvalidHeartRateVariability">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#hasInvalidRespiratoryRate -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasInvalidRespiratoryRate">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#hasLongDistraction -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasLongDistraction">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-        <rdfs:comment>This person tends to be distracted for long periods.</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#hasLowBloodOxygenSaturation -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasLowBloodOxygenSaturation">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#hasMessage -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasMessage">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#LabelsObject"/>
+    <owl:DatatypeProperty rdf:about="http://test.org/in_cabin_domain#hasStringValue">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Actor"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:comment>The message that the alert carries in string format.</rdfs:comment>
     </owl:DatatypeProperty>
     
 
 
-    <!-- http://test.org/vehicleOntology#hasNormalBloodOxygenSaturation -->
+    <!-- http://test.org/in_cabin_domain#hasThrValue -->
 
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasNormalBloodOxygenSaturation">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#hasNormalHeartRate -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasNormalHeartRate">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#hasNormalHeartRateVariability -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasNormalHeartRateVariability">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#hasNormalRespiratoryRate -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasNormalRespiratoryRate">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#hasRange -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasRange">
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Observations"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
-        <rdfs:comment>What is the range of values (or perhaps the max value of the metric from the sensor). 
-Changes for each sensor.</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#hasRespiratoryRate -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasRespiratoryRate">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
+    <owl:DatatypeProperty rdf:about="http://test.org/in_cabin_domain#hasThrValue">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Thresholds"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
-        <rdfs:comment>The number of breaths taken per minute in rpm (RR).</rdfs:comment>
     </owl:DatatypeProperty>
     
 
 
-    <!-- http://test.org/vehicleOntology#hasRespiratoryRateThreshold -->
+    <!-- http://test.org/in_cabin_domain#hasUnchangedGaze -->
 
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasRespiratoryRateThreshold">
-        <rdfs:domain rdf:resource="http://test.org/vehicleOntology#Thresholds"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
-        <rdfs:comment>The respitory rate threshold to assess the persons healt</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#hasShortDistraction -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasShortDistraction">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-        <rdfs:comment>This person tends to be distracted for short periods.</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#hasTemperature -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasTemperature">
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Observations"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#VOC"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
-        <rdfs:comment>The tempterature inside the vehicle. Affects the person&apos;s health.</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#hasTraveledDistance -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasTraveledDistance">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#VehicleSystems"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
-        <rdfs:comment>The traveled distance in meters (coming from GPS).</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#hasUnchangedGaze -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasUnchangedGaze">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
+    <owl:DatatypeProperty rdf:about="http://test.org/in_cabin_domain#hasUnchangedGaze">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Actor"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
         <rdfs:comment>Boolean variable to showcase that the gaze has not changed in general</rdfs:comment>
     </owl:DatatypeProperty>
     
 
 
-    <!-- http://test.org/vehicleOntology#hasUndefinedAttentionState -->
+    <!-- http://test.org/in_cabin_domain#hasUndefinedAttentionZone -->
 
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasUndefinedAttentionState">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:comment>The attention state is undefined. This can occur when the module is not executed, the occupant is not present / not visible the availability of the base signal is not high enough, or other circumstances have arisen that prevent the module from being executed.</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#hasUndefinedAttentionZone -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasUndefinedAttentionZone">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Environment"/>
+    <owl:DatatypeProperty rdf:about="http://test.org/in_cabin_domain#hasUndefinedAttentionZone">
+        <rdfs:domain rdf:resource="http://test.org.org/in_cabin_domain#MetaData"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
         <rdfs:comment>The attention zone is undefined. This can occur when no attention zone was defined, the module was not executed, the person is not present, or the availability of the base signals is not high enough, or other circumstances have arisen that prevent the module from being executed</rdfs:comment>
     </owl:DatatypeProperty>
     
 
 
-    <!-- http://test.org/vehicleOntology#hasUndefinedUnresponsiveState -->
+    <!-- http://test.org/in_cabin_domain#hasUniqueIdentifier -->
 
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasUndefinedUnresponsiveState">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-        <rdfs:comment>The unresponsive person state is undefined.</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#hasUniqueIdentifier -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasUniqueIdentifier">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
+    <owl:DatatypeProperty rdf:about="http://test.org/in_cabin_domain#hasUniqueIdentifier">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Actor"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
         <rdfs:comment>This is the identity of the person as a UUIDv4 string which can be linked with the name and other personal information of the occupant. An example of this is &quot;23f5d284-bade-4a35-8732-8053ee7ac103&quot;.</rdfs:comment>
     </owl:DatatypeProperty>
     
 
 
-    <!-- http://test.org/vehicleOntology#hasUnresponsiveState -->
+    <!-- http://test.org/in_cabin_domain#lookingAtCodriverMirror -->
 
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasUnresponsiveState">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-        <rdfs:comment>The unresponsive state of a person.</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#hasVeryLowBloodOxygenSaturation -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasVeryLowBloodOxygenSaturation">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#hasWeight -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#hasWeight">
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
-        <rdfs:comment>The weight of the person affects their health state.</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#isAsleep -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#isAsleep">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-        <rdfs:comment>The person was drowsy or suspected to be drowsy before and had the eyes closed for some longer time (typically 3 seconds). The exact time depends on the settings of the module.</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#isAttentive -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#isAttentive">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-        <rdfs:comment>The occupant is attentive</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#isAwake -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#isAwake">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-        <rdfs:comment>The person is awake</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#isDrowsy -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#isDrowsy">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-        <rdfs:comment>The person is drowsy</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#isExtremelyFatigued -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#isExtremelyFatigued">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-        <rdfs:comment>The person is extremely fatigued.</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#isInattentive -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#isInattentive">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-        <rdfs:comment>The occupant is inattentive</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#isMicrosleep -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#isMicrosleep">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-        <rdfs:comment>The person was drowsy or suspected to be drowsy before and had the eyes closed for some shorter time (typically 1 seconds). The exact time depends on the settings of the module.</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#isModeratelyFatigued -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#isModeratelyFatigued">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-        <rdfs:comment>The person is moderately fatigued.</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#isNotFatigued -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#isNotFatigued">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-        <rdfs:comment>The person is not fatigued.</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#isResponsive -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#isResponsive">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-        <rdfs:comment>The person is responsive.</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#isSeverelyFatigued -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#isSeverelyFatigued">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-        <rdfs:comment>The person is severely fatigued.</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#isSuspectOfDrowsiness -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#isSuspectOfDrowsiness">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-        <rdfs:comment>The person is suspected to be drowsy</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#isUndefinedFatigueLevel -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#isUndefinedFatigueLevel">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-        <rdfs:comment>The fatigue level is undefined. This can occur when the module is not executed, the occupant is not present / not visible, the availability of the base signal is not high enough, or other circumstances have arisen that prevent the module from being executed.</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#isUnresponsive -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#isUnresponsive">
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-        <rdfs:comment>The person in unresponsive.</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#isVeryFatigued -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#isVeryFatigued">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-        <rdfs:comment>The person is very fatigued.</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#lookingAtCodriverMirror -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#lookingAtCodriverMirror">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
+    <owl:DatatypeProperty rdf:about="http://test.org/in_cabin_domain#lookingAtCodriverMirror">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Actor"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
         <rdfs:comment>The person is looking at the codriver mirror.</rdfs:comment>
     </owl:DatatypeProperty>
     
 
 
-    <!-- http://test.org/vehicleOntology#lookingAtCodriverWindow -->
+    <!-- http://test.org/in_cabin_domain#lookingAtCodriverWindow -->
 
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#lookingAtCodriverWindow">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
+    <owl:DatatypeProperty rdf:about="http://test.org/in_cabin_domain#lookingAtCodriverWindow">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Actor"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
         <rdfs:comment>The person is looking at the codriver window</rdfs:comment>
     </owl:DatatypeProperty>
     
 
 
-    <!-- http://test.org/vehicleOntology#lookingAtDashboard -->
+    <!-- http://test.org/in_cabin_domain#lookingAtDashboard -->
 
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#lookingAtDashboard">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
+    <owl:DatatypeProperty rdf:about="http://test.org/in_cabin_domain#lookingAtDashboard">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Actor"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
         <rdfs:comment>The person is looking at the dashboard (instrument cluster)</rdfs:comment>
     </owl:DatatypeProperty>
     
 
 
-    <!-- http://test.org/vehicleOntology#lookingAtDriverMirror -->
+    <!-- http://test.org/in_cabin_domain#lookingAtDriverMirror -->
 
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#lookingAtDriverMirror">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
+    <owl:DatatypeProperty rdf:about="http://test.org/in_cabin_domain#lookingAtDriverMirror">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Actor"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
         <rdfs:comment>The person is looking at the driver mirror</rdfs:comment>
     </owl:DatatypeProperty>
     
 
 
-    <!-- http://test.org/vehicleOntology#lookingAtDriverWindow -->
+    <!-- http://test.org/in_cabin_domain#lookingAtDriverWindow -->
 
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#lookingAtDriverWindow">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
+    <owl:DatatypeProperty rdf:about="http://test.org/in_cabin_domain#lookingAtDriverWindow">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Actor"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
         <rdfs:comment>The person is looking at the driver window</rdfs:comment>
     </owl:DatatypeProperty>
     
 
 
-    <!-- http://test.org/vehicleOntology#lookingAtFrontWindow -->
+    <!-- http://test.org/in_cabin_domain#lookingAtFrontWindow -->
 
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#lookingAtFrontWindow">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
+    <owl:DatatypeProperty rdf:about="http://test.org/in_cabin_domain#lookingAtFrontWindow">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Actor"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
         <rdfs:comment>The person is looking from the front view window</rdfs:comment>
     </owl:DatatypeProperty>
     
 
 
-    <!-- http://test.org/vehicleOntology#lookingAtInfotainmentSystem -->
+    <!-- http://test.org/in_cabin_domain#lookingAtInfotainmentSystem -->
 
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#lookingAtInfotainmentSystem">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
+    <owl:DatatypeProperty rdf:about="http://test.org/in_cabin_domain#lookingAtInfotainmentSystem">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Actor"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
         <rdfs:comment>The person is looking at the infotainment system</rdfs:comment>
     </owl:DatatypeProperty>
     
 
 
-    <!-- http://test.org/vehicleOntology#lookingAtRearMirror -->
+    <!-- http://test.org/in_cabin_domain#lookingAtRearMirror -->
 
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#lookingAtRearMirror">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
+    <owl:DatatypeProperty rdf:about="http://test.org/in_cabin_domain#lookingAtRearMirror">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Actor"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
         <rdfs:comment>The person is looking at the rear mirror in the center of the cabin</rdfs:comment>
     </owl:DatatypeProperty>
     
 
 
-    <!-- http://test.org/vehicleOntology#lookingAtUnspecifiedInterior -->
+    <!-- http://test.org/in_cabin_domain#lookingAtUnspecifiedInterior -->
 
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#lookingAtUnspecifiedInterior">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
+    <owl:DatatypeProperty rdf:about="http://test.org/in_cabin_domain#lookingAtUnspecifiedInterior">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Actor"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
         <rdfs:comment>The person is looking at another object or part of the interior. Other than the ones already defined</rdfs:comment>
     </owl:DatatypeProperty>
     
 
 
-    <!-- http://test.org/vehicleOntology#lookingAtWindshield -->
+    <!-- http://test.org/in_cabin_domain#lookingAtWindshield -->
 
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#lookingAtWindshield">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
+    <owl:DatatypeProperty rdf:about="http://test.org/in_cabin_domain#lookingAtWindshield">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Actor"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
         <rdfs:comment>The person is looking at the windshield</rdfs:comment>
     </owl:DatatypeProperty>
-    
-
-
-    <!-- http://test.org/vehicleOntology#noPersonFound -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/vehicleOntology#noPersonFound">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#LabelsObject"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#VehicleSystems"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-        <rdfs:comment>There is no person from whom to determine the fatigue level</rdfs:comment>
-    </owl:DatatypeProperty>
-    
-
-
-    <!-- http://www.w3.org/2002/07/owl#topDataProperty -->
-
-    <rdf:Description rdf:about="http://www.w3.org/2002/07/owl#topDataProperty">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
-    </rdf:Description>
     
 
 
@@ -1169,680 +765,777 @@ Changes for each sensor.</rdfs:comment>
     
 
 
-    <!-- http://test.org.org/vehicleOntology#Actor -->
+    <!-- http://test.org.org/in_cabin_domain#DataAnalysisUnit -->
 
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#Actor">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#ObservationsTarget"/>
-        <owl:disjointWith rdf:resource="http://test.org.org/vehicleOntology#DataContainer"/>
-        <owl:disjointWith rdf:resource="http://test.org.org/vehicleOntology#Environment"/>
-        <owl:disjointWith rdf:resource="http://test.org.org/vehicleOntology#LabelsObject"/>
-        <owl:disjointWith rdf:resource="http://test.org/vehicleOntology#MonitoringManagement"/>
-        <owl:hasKey rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#ObservationTargetRelatesToLabel"/>
-        </owl:hasKey>
-        <owl:hasKey rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#hasID"/>
-        </owl:hasKey>
-        <dc:creator>jimge</dc:creator>
-        <dc:date rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2023-07-27T09:26:57Z</dc:date>
+    <owl:Class rdf:about="http://test.org.org/in_cabin_domain#DataAnalysisUnit">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#MonitoringManagement"/>
+        <rdfs:comment>The virtual analysis unit to connect data and processing.</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- http://test.org.org/vehicleOntology#BCG -->
+    <!-- http://test.org.org/in_cabin_domain#DataContainer -->
 
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#BCG">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#HeartRateMonitor"/>
+    <owl:Class rdf:about="http://test.org.org/in_cabin_domain#DataContainer">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:comment>This class represents all the data that are passed in the ontology/system. 
+It holds the data created after processing the observations captured by the sensors which are then passed into the analysis unit. Finally we store in this class the meta data which are the information of the external environment (weather, time of day, temperature, humidity, etc) and the thresholds which are predefined values for the health factors such as activity levels, fatigue levels, etc.</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- http://test.org.org/vehicleOntology#COTGS -->
+    <!-- http://test.org.org/in_cabin_domain#MetaData -->
 
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#COTGS">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#ToxicGassesSensor"/>
+    <owl:Class rdf:about="http://test.org.org/in_cabin_domain#MetaData">
+        <rdfs:subClassOf rdf:resource="http://test.org.org/in_cabin_domain#DataContainer"/>
+        <rdfs:comment>External environment information which will be kept into the ontology for further stages of health assesmnet if the corresponding data are available.</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- http://test.org.org/vehicleOntology#CameraSensor -->
+    <!-- http://test.org/in_cabin_domain#Accessories -->
 
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#CameraSensor">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#MonitoringSensor"/>
-        <dc:creator>jimge</dc:creator>
-        <dc:date rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2023-07-27T09:54:17Z</dc:date>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Accessories">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Actor"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org.org/vehicleOntology#CapacityHS -->
+    <!-- http://test.org/in_cabin_domain#Actor -->
 
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#CapacityHS">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#HumiditySensor"/>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org.org/vehicleOntology#DataAnalysisUnit -->
-
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#DataAnalysisUnit">
-        <rdfs:subClassOf rdf:resource="http://test.org/vehicleOntology#MonitoringManagement"/>
-        <owl:disjointWith rdf:resource="http://test.org.org/vehicleOntology#MonitoringSensor"/>
-        <dc:creator>jimge</dc:creator>
-        <dc:date rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2023-07-27T09:59:09Z</dc:date>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org.org/vehicleOntology#DataContainer -->
-
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#DataContainer">
-        <dc:creator>jimge</dc:creator>
-        <dc:date rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2023-07-27T09:34:03Z</dc:date>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org.org/vehicleOntology#DopplerRadarMonitor -->
-
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#DopplerRadarMonitor">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#HeartRateMonitor"/>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org.org/vehicleOntology#ECG -->
-
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#ECG">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#HeartRateMonitor"/>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org.org/vehicleOntology#EMG -->
-
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#EMG">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#HeartRateMonitor"/>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org.org/vehicleOntology#EmergencyQueryLabel -->
-
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#EmergencyQueryLabel">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#LabelsObject"/>
-        <owl:disjointWith rdf:resource="http://test.org.org/vehicleOntology#NotificationQueryLabel"/>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org.org/vehicleOntology#Environment -->
-
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#Environment">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#ObservationsTarget"/>
-        <dc:creator>jimge</dc:creator>
-        <dc:date rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2023-07-27T10:52:47Z</dc:date>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org.org/vehicleOntology#EventCamera -->
-
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#EventCamera">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#CameraSensor"/>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org.org/vehicleOntology#FishEyeCamera -->
-
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#FishEyeCamera">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#CameraSensor"/>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org.org/vehicleOntology#GalvanicOS -->
-
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#GalvanicOS">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#OxygenSensor"/>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org.org/vehicleOntology#GestureRecognitionCamera -->
-
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#GestureRecognitionCamera">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#CameraSensor"/>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org.org/vehicleOntology#H2STGS -->
-
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#H2STGS">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#ToxicGassesSensor"/>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org.org/vehicleOntology#HCHOTGS -->
-
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#HCHOTGS">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#ToxicGassesSensor"/>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org.org/vehicleOntology#HEGOOS -->
-
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#HEGOOS">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#OxygenSensor"/>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org.org/vehicleOntology#HeartRateMonitor -->
-
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#HeartRateMonitor">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#MonitoringSensor"/>
-        <dc:creator>jimge</dc:creator>
-        <dc:date rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2023-07-27T09:54:17Z</dc:date>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org.org/vehicleOntology#Humidity -->
-
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#Humidity">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#Environment"/>
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#MetaData"/>
-        <dc:creator>jimge</dc:creator>
-        <dc:date rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2023-07-27T09:39:53Z</dc:date>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org.org/vehicleOntology#HumiditySensor -->
-
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#HumiditySensor">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#MonitoringSensor"/>
-        <dc:creator>jimge</dc:creator>
-        <dc:date rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2023-07-27T09:54:17Z</dc:date>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org.org/vehicleOntology#Hygrometer -->
-
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#Hygrometer">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#HumiditySensor"/>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org.org/vehicleOntology#ImpedanceCardiographyMonitor -->
-
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#ImpedanceCardiographyMonitor">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#HeartRateMonitor"/>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org.org/vehicleOntology#InfraredCamera -->
-
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#InfraredCamera">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#CameraSensor"/>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org.org/vehicleOntology#LabelsObject -->
-
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#LabelsObject">
-        <owl:hasKey rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#LabelIsConcerningObservationTarget"/>
-        </owl:hasKey>
-        <dc:creator>jimge</dc:creator>
-        <dc:date rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2023-07-28T09:41:51Z</dc:date>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org.org/vehicleOntology#MetaData -->
-
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#MetaData">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#DataContainer"/>
-        <owl:hasKey rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#hasMetadataName"/>
-        </owl:hasKey>
-        <dc:creator>jimge</dc:creator>
-        <dc:date rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2023-07-27T09:34:03Z</dc:date>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org.org/vehicleOntology#MicrowaveDopplerMonitor -->
-
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#MicrowaveDopplerMonitor">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#HeartRateMonitor"/>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org.org/vehicleOntology#MonitoringSensor -->
-
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#MonitoringSensor">
-        <rdfs:subClassOf rdf:resource="http://test.org/vehicleOntology#MonitoringManagement"/>
-        <owl:hasKey rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#MonitoringSensorCapturesObservations"/>
-        </owl:hasKey>
-        <owl:hasKey rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#hasID"/>
-        </owl:hasKey>
-        <owl:hasKey rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#hasSensorName"/>
-        </owl:hasKey>
-        <dc:creator>jimge</dc:creator>
-        <dc:date rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2023-07-27T09:53:17Z</dc:date>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org.org/vehicleOntology#NH3TGS -->
-
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#NH3TGS">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#ToxicGassesSensor"/>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org.org/vehicleOntology#NO2TGS -->
-
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#NO2TGS">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#ToxicGassesSensor"/>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org.org/vehicleOntology#NonDispersiveInfraredOS -->
-
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#NonDispersiveInfraredOS">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#OxygenSensor"/>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org.org/vehicleOntology#NotificationQueryLabel -->
-
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#NotificationQueryLabel">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#LabelsObject"/>
-        <dc:creator>jimge</dc:creator>
-        <dc:date rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2023-07-27T09:26:57Z</dc:date>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org.org/vehicleOntology#O3TGS -->
-
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#O3TGS">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#ToxicGassesSensor"/>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org.org/vehicleOntology#Observations -->
-
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#Observations">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#DataContainer"/>
-        <rdfs:comment>Exclusively the data captured by the sensor</rdfs:comment>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org.org/vehicleOntology#ObservationsTarget -->
-
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#ObservationsTarget">
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Actor">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org.org/vehicleOntology#OpticalHS -->
+    <!-- http://test.org/in_cabin_domain#Adult -->
 
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#OpticalHS">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#HumiditySensor"/>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Adult">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Age"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org.org/vehicleOntology#OxygenSensor -->
+    <!-- http://test.org/in_cabin_domain#Afghan -->
 
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#OxygenSensor">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#MonitoringSensor"/>
-        <dc:creator>jimge</dc:creator>
-        <dc:date rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2023-07-27T09:54:17Z</dc:date>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Afghan">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org.org/vehicleOntology#PMTGS -->
+    <!-- http://test.org/in_cabin_domain#African -->
 
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#PMTGS">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#ToxicGassesSensor"/>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#African">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org.org/vehicleOntology#PPG -->
+    <!-- http://test.org/in_cabin_domain#Age -->
 
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#PPG">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#HeartRateMonitor"/>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Age">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Actor"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org.org/vehicleOntology#ParamagneticOS -->
+    <!-- http://test.org/in_cabin_domain#American -->
 
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#ParamagneticOS">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#OxygenSensor"/>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#American">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org.org/vehicleOntology#PolarographicOS -->
+    <!-- http://test.org/in_cabin_domain#AttentionLevels -->
 
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#PolarographicOS">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#OxygenSensor"/>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#AttentionLevels">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#PhysiologicalState"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org.org/vehicleOntology#PulseOximeterMonitor -->
+    <!-- http://test.org/in_cabin_domain#Attention_Decreasing -->
 
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#PulseOximeterMonitor">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#HeartRateMonitor"/>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Attention_Decreasing">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#AttentionLevels"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org.org/vehicleOntology#RGBCamera -->
+    <!-- http://test.org/in_cabin_domain#Attention_Increasing -->
 
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#RGBCamera">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#CameraSensor"/>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Attention_Increasing">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#AttentionLevels"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org.org/vehicleOntology#SAWHS -->
+    <!-- http://test.org/in_cabin_domain#Attentive -->
 
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#SAWHS">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#HumiditySensor"/>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Attentive">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#AttentionLevels"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org.org/vehicleOntology#SinteredMetalHS -->
+    <!-- http://test.org/in_cabin_domain#Austrian -->
 
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#SinteredMetalHS">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#HumiditySensor"/>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Austrian">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org.org/vehicleOntology#StereoCamera -->
+    <!-- http://test.org/in_cabin_domain#Awake -->
 
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#StereoCamera">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#CameraSensor"/>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Awake">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Fatigue"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org.org/vehicleOntology#Temperature -->
+    <!-- http://test.org/in_cabin_domain#Beard -->
 
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#Temperature">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#Environment"/>
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#MetaData"/>
-        <dc:creator>jimge</dc:creator>
-        <dc:date rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2023-07-27T09:39:53Z</dc:date>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Beard">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#FaceCharacteristics"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org.org/vehicleOntology#ThermalCamera -->
+    <!-- http://test.org/in_cabin_domain#Blinking -->
 
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#ThermalCamera">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#CameraSensor"/>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Blinking">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#EyeClosure"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org.org/vehicleOntology#ThermalConductivityHS -->
+    <!-- http://test.org/in_cabin_domain#Brazilian -->
 
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#ThermalConductivityHS">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#HumiditySensor"/>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Brazilian">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org.org/vehicleOntology#ThinFilmPolymeterHS -->
+    <!-- http://test.org/in_cabin_domain#Canadian -->
 
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#ThinFilmPolymeterHS">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#HumiditySensor"/>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Canadian">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org.org/vehicleOntology#TimeOfFlightCamera -->
+    <!-- http://test.org/in_cabin_domain#Critical_SpO2 -->
 
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#TimeOfFlightCamera">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#CameraSensor"/>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Critical_SpO2">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#SpO2"/>
+        <rdfs:comment>Values &lt;85% (Severe hypoxia, risk of unconciousness)</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- http://test.org.org/vehicleOntology#TitaniaOS -->
+    <!-- http://test.org/in_cabin_domain#Croatian -->
 
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#TitaniaOS">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#OxygenSensor"/>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Croatian">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org.org/vehicleOntology#ToxicGassesSensor -->
+    <!-- http://test.org/in_cabin_domain#Czech -->
 
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#ToxicGassesSensor">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#MonitoringSensor"/>
-        <dc:creator>jimge</dc:creator>
-        <dc:date rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2023-07-27T09:54:17Z</dc:date>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Czech">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org.org/vehicleOntology#VOC -->
+    <!-- http://test.org/in_cabin_domain#Demographic -->
 
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#VOC">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#Environment"/>
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#MetaData"/>
-        <dc:creator>jimge</dc:creator>
-        <dc:date rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2023-07-27T09:39:53Z</dc:date>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Demographic">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Actor"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org.org/vehicleOntology#VehicleSystems -->
+    <!-- http://test.org/in_cabin_domain#Drowsiness -->
 
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#VehicleSystems">
-        <owl:hasKey rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#hasID"/>
-        </owl:hasKey>
-        <owl:hasKey rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#hasSeats"/>
-        </owl:hasKey>
-        <dc:creator>jimge</dc:creator>
-        <dc:date rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2023-07-27T09:53:12Z</dc:date>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Drowsiness">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#PhysiologicalState"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org.org/vehicleOntology#VolatileOrganicTGS -->
+    <!-- http://test.org/in_cabin_domain#Drowsiness_Suspected -->
 
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#VolatileOrganicTGS">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#ToxicGassesSensor"/>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Drowsiness_Suspected">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Fatigue"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org.org/vehicleOntology#WideAngleCamera -->
+    <!-- http://test.org/in_cabin_domain#Drowsy -->
 
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#WideAngleCamera">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#CameraSensor"/>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Drowsy">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Fatigue"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org.org/vehicleOntology#WidebandOS -->
+    <!-- http://test.org/in_cabin_domain#Egyptian -->
 
-    <owl:Class rdf:about="http://test.org.org/vehicleOntology#WidebandOS">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#OxygenSensor"/>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Egyptian">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org/vehicleOntology#Abilities -->
+    <!-- http://test.org/in_cabin_domain#EyeClosure -->
 
-    <owl:Class rdf:about="http://test.org/vehicleOntology#Abilities">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#EyeClosure">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Actor"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org/vehicleOntology#AttentionLevelThreshold -->
+    <!-- http://test.org/in_cabin_domain#FaceCharacteristics -->
 
-    <owl:Class rdf:about="http://test.org/vehicleOntology#AttentionLevelThreshold">
-        <rdfs:subClassOf rdf:resource="http://test.org/vehicleOntology#Thresholds"/>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#FaceCharacteristics">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Actor"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org/vehicleOntology#Characteristics -->
+    <!-- http://test.org/in_cabin_domain#Fatigue -->
 
-    <owl:Class rdf:about="http://test.org/vehicleOntology#Characteristics">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Fatigue">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#PhysiologicalState"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org/vehicleOntology#Demographic -->
+    <!-- http://test.org/in_cabin_domain#Female -->
 
-    <owl:Class rdf:about="http://test.org/vehicleOntology#Demographic">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Female">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Sex"/>
+        <owl:disjointWith rdf:resource="http://test.org/in_cabin_domain#Male"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org/vehicleOntology#EmotionalState -->
+    <!-- http://test.org/in_cabin_domain#German -->
 
-    <owl:Class rdf:about="http://test.org/vehicleOntology#EmotionalState">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#German">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org/vehicleOntology#FatigueLevelThreshold -->
+    <!-- http://test.org/in_cabin_domain#Glasses -->
 
-    <owl:Class rdf:about="http://test.org/vehicleOntology#FatigueLevelThreshold">
-        <rdfs:subClassOf rdf:resource="http://test.org/vehicleOntology#Thresholds"/>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Glasses">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Accessories"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org/vehicleOntology#HeartRateThreshold -->
+    <!-- http://test.org/in_cabin_domain#Grey_Hair -->
 
-    <owl:Class rdf:about="http://test.org/vehicleOntology#HeartRateThreshold">
-        <rdfs:subClassOf rdf:resource="http://test.org/vehicleOntology#Thresholds"/>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Grey_Hair">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#FaceCharacteristics"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org/vehicleOntology#HeartRateVariabilityThreshold -->
+    <!-- http://test.org/in_cabin_domain#HR -->
 
-    <owl:Class rdf:about="http://test.org/vehicleOntology#HeartRateVariabilityThreshold">
-        <rdfs:subClassOf rdf:resource="http://test.org/vehicleOntology#Thresholds"/>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#HR">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#PhysiologicalState"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org/vehicleOntology#ImageObservations -->
+    <!-- http://test.org/in_cabin_domain#HRV -->
 
-    <owl:Class rdf:about="http://test.org/vehicleOntology#ImageObservations">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#Observations"/>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#HRV">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#PhysiologicalState"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org/vehicleOntology#MentalState -->
+    <!-- http://test.org/in_cabin_domain#HRV_THR -->
 
-    <owl:Class rdf:about="http://test.org/vehicleOntology#MentalState">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#HRV_THR">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Thresholds"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org/vehicleOntology#MonitoringManagement -->
+    <!-- http://test.org/in_cabin_domain#HR_THR -->
 
-    <owl:Class rdf:about="http://test.org/vehicleOntology#MonitoringManagement">
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#HR_THR">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Thresholds"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Hat -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Hat">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Accessories"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#High_HR -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#High_HR">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#HR"/>
+        <rdfs:comment>Values &gt;100 bpm (Tachycardia, often due to stress, fatigue, or dehydration)</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#High_HRV -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#High_HRV">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#HRV"/>
+        <rdfs:comment>Values &gt; 100 ms (Excellent alertness, recovery and relaxation)</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#High_RR -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#High_RR">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#RR"/>
+        <rdfs:comment>Values &gt; 20 bpm (Stress, hypervenrilation or drowsiness)</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Inattentive -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Inattentive">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#AttentionLevels"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Japanese -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Japanese">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Label -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Label">
+        <rdfs:subClassOf rdf:resource="http://test.org.org/in_cabin_domain#DataContainer"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Level_3_KSS -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Level_3_KSS">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Drowsiness"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Level_5_KSS -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Level_5_KSS">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Drowsiness"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Level_7_KSS -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Level_7_KSS">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Drowsiness"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Level_9_KSS -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Level_9_KSS">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Drowsiness"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Long_Hair -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Long_Hair">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#FaceCharacteristics"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Long_distraction -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Long_distraction">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Unresponsiveness"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Low_HR -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Low_HR">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#HR"/>
+        <rdfs:comment>&lt;50 bpm (Bradycardia, common in highly fit individuals or fatigue/drowsiness)</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Low_HRV -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Low_HRV">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#HRV"/>
+        <rdfs:comment>Values 20-50 ms (Mild fatigue, reduced focus)</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Low_RR -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Low_RR">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#RR"/>
+        <rdfs:comment>Values 12-14 breaths per minute (mild Fatigue, relaxation)</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Low_SpO2 -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Low_SpO2">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#SpO2"/>
+        <rdfs:comment>Values 85-94% (Mild hypoxia, fatigue, drowsiness, low alertness)</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Male -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Male">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Sex"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Mexican -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Mexican">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#MicroSleeping -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#MicroSleeping">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#EyeClosure"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Microsleep -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Microsleep">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Fatigue"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Moderate_HR -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Moderate_HR">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#HR"/>
+        <rdfs:comment>Values 60-100 bpm (Normal range, indicates alertness) for adults</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Moderate_HRV -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Moderate_HRV">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#HRV"/>
+        <rdfs:comment>Values 50-100ms</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Moderate_RR -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Moderate_RR">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#RR"/>
+        <rdfs:comment>Values 15-20 bpm (Normal, indicates alertness)</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#MonitoringManagement -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#MonitoringManagement">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:comment>This is the fundamental main class that involves the capturing (or loading) of the data and the processing in the analysis unit (which leverages the SWRL rules). The DAU is a virtual entity that is used to connect the data with the processing and back to the label. The sensor is a class to represent the different types of sensors that can be used.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#MonitoringSensor -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#MonitoringSensor">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#MonitoringManagement"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Normal_SpO2 -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Normal_SpO2">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#SpO2"/>
+        <rdfs:comment>Values between 95-100% (Healthy, alert state)</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Not_responsive -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Not_responsive">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Unresponsiveness"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Observations -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Observations">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org/vehicleOntology#Personality -->
+    <!-- http://test.org/in_cabin_domain#Old -->
 
-    <owl:Class rdf:about="http://test.org/vehicleOntology#Personality">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Old">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Age"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org/vehicleOntology#PhysicalProperties -->
+    <!-- http://test.org/in_cabin_domain#PhysiologicalState -->
 
-    <owl:Class rdf:about="http://test.org/vehicleOntology#PhysicalProperties">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#PhysiologicalState">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org/vehicleOntology#PhysiologicalState -->
+    <!-- http://test.org/in_cabin_domain#RR -->
 
-    <owl:Class rdf:about="http://test.org/vehicleOntology#PhysiologicalState">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#Actor"/>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#RR">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#PhysiologicalState"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org/vehicleOntology#RespitoryRateThreshold -->
+    <!-- http://test.org/in_cabin_domain#RR_THR -->
 
-    <owl:Class rdf:about="http://test.org/vehicleOntology#RespitoryRateThreshold">
-        <rdfs:subClassOf rdf:resource="http://test.org/vehicleOntology#Thresholds"/>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#RR_THR">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Thresholds"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org/vehicleOntology#Thresholds -->
+    <!-- http://test.org/in_cabin_domain#Responsive -->
 
-    <owl:Class rdf:about="http://test.org/vehicleOntology#Thresholds">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#DataContainer"/>
-        <rdfs:comment>Must add the rest of the sensor metrics eg humidity metric</rdfs:comment>
-        <rdfs:comment>Thresholds for each metric of sensors and profiles.</rdfs:comment>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Responsive">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Unresponsiveness"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org/vehicleOntology#TimeSeriesObservations -->
+    <!-- http://test.org/in_cabin_domain#Scarf -->
 
-    <owl:Class rdf:about="http://test.org/vehicleOntology#TimeSeriesObservations">
-        <rdfs:subClassOf rdf:resource="http://test.org.org/vehicleOntology#Observations"/>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Scarf">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Accessories"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Sex -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Sex">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Actor"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Short_Hair -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Short_Hair">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#FaceCharacteristics"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Short_distraction -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Short_distraction">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Unresponsiveness"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Sleep -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Sleep">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Fatigue"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Sleeping -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Sleeping">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#EyeClosure"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Slightly_Low_HR -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Slightly_Low_HR">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#HR"/>
+        <rdfs:comment>Values 50-60bpm (indicating sleepiness)</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Slow_Closure -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Slow_Closure">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#EyeClosure"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#SpO2 -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#SpO2">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#PhysiologicalState"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#SpO2_THR -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#SpO2_THR">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Thresholds"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Swedish -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Swedish">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#TemporalContext -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#TemporalContext">
+        <rdfs:subClassOf rdf:resource="http://test.org.org/in_cabin_domain#MetaData"/>
+        <rdfs:comment>This will represent the time related information for example &quot;morning&quot;.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Thresholds -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Thresholds">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Undefined_Attention -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Undefined_Attention">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#AttentionLevels"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Undefined_State -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Undefined_State">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Fatigue"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Undefined_state -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Undefined_state">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Unresponsiveness"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Unresponsiveness -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Unresponsiveness">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#PhysiologicalState"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Very_Low_HRV -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Very_Low_HRV">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#HRV"/>
+        <rdfs:comment>Values &lt;20 ms (Severe fatigue, stress, risk of drowsiness).</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Very_Low_RR -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Very_Low_RR">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#RR"/>
+        <rdfs:comment>Values &lt;12 (hypoventilation)</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#WeatherCondition -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#WeatherCondition">
+        <rdfs:subClassOf rdf:resource="http://test.org.org/in_cabin_domain#MetaData"/>
+        <rdfs:comment>This will represent the weather in the environment for example &quot;sunny&quot; .</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Young -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Young">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Age"/>
     </owl:Class>
     
 
@@ -1858,174 +1551,342 @@ Changes for each sensor.</rdfs:comment>
     
 
 
-    <!-- http://test.org/vehicleOntology#Audi_vehicle -->
+    <!-- http://test.org/in_cabin_domain#data_container -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/vehicleOntology#Audi_vehicle">
-        <rdf:type rdf:resource="http://test.org.org/vehicleOntology#VehicleSystems"/>
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#data_container">
+        <rdf:type rdf:resource="http://test.org.org/in_cabin_domain#DataContainer"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/vehicleOntology#Dimitris_driver -->
+    <!-- http://test.org/in_cabin_domain#driver -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/vehicleOntology#Dimitris_driver"/>
-    
-
-
-    <!-- http://test.org/vehicleOntology#Maria_occupant -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/vehicleOntology#Maria_occupant">
-        <vehicleOntology1:ObservationTargetIsInsideVehicleSystem rdf:resource="http://test.org/vehicleOntology#Audi_vehicle"/>
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#driver">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#Actor"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/vehicleOntology#actor_healthy_state -->
+    <!-- http://test.org/in_cabin_domain#high_hr_adult -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/vehicleOntology#actor_healthy_state"/>
-    
-
-
-    <!-- http://test.org/vehicleOntology#actor_healthy_state_2 -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/vehicleOntology#actor_healthy_state_2"/>
-    
-
-
-    <!-- http://test.org/vehicleOntology#all_meta_data -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/vehicleOntology#all_meta_data">
-        <rdf:type rdf:resource="http://test.org.org/vehicleOntology#MetaData"/>
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#high_hr_adult">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
+        <in_cabin_domain:hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">100</in_cabin_domain:hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/vehicleOntology#camera_sensor -->
+    <!-- http://test.org/in_cabin_domain#high_hr_old -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/vehicleOntology#camera_sensor">
-        <rdf:type rdf:resource="http://test.org.org/vehicleOntology#CameraSensor"/>
-        <vehicleOntology1:MonitoringManagementIsEnabledInVehicleSystems rdf:resource="http://test.org/vehicleOntology#Audi_vehicle"/>
-        <vehicleOntology1:MonitoringSensorMonitorsObservationTarget rdf:resource="http://test.org/vehicleOntology#Dimitris_driver"/>
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#high_hr_old">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
+        <in_cabin_domain:hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">90</in_cabin_domain:hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/vehicleOntology#emergency_alert_for_environment -->
+    <!-- http://test.org/in_cabin_domain#high_hr_young -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/vehicleOntology#emergency_alert_for_environment">
-        <rdf:type rdf:resource="http://test.org.org/vehicleOntology#EmergencyQueryLabel"/>
-        <vehicleOntology:LabelIsConcerningObservationTarget rdf:resource="http://test.org/vehicleOntology#Maria_occupant"/>
-        <vehicleOntology1:LabelHasTriggeringDataContainer rdf:resource="http://test.org/vehicleOntology#numerical_data_2"/>
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#high_hr_young">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
+        <in_cabin_domain:hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">100</in_cabin_domain:hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/vehicleOntology#heart_rate_normal -->
+    <!-- http://test.org/in_cabin_domain#high_hrv_adult -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/vehicleOntology#heart_rate_normal"/>
-    
-
-
-    <!-- http://test.org/vehicleOntology#heart_rate_sensor -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/vehicleOntology#heart_rate_sensor">
-        <rdf:type rdf:resource="http://test.org.org/vehicleOntology#HeartRateMonitor"/>
-        <vehicleOntology1:MonitoringManagementIsEnabledInVehicleSystems rdf:resource="http://test.org/vehicleOntology#Audi_vehicle"/>
-        <vehicleOntology1:MonitoringSensorMonitorsObservationTarget rdf:resource="http://test.org/vehicleOntology#Maria_occupant"/>
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#high_hrv_adult">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
+        <in_cabin_domain:hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">100</in_cabin_domain:hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/vehicleOntology#humidity_sensor -->
+    <!-- http://test.org/in_cabin_domain#high_hrv_old -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/vehicleOntology#humidity_sensor">
-        <rdf:type rdf:resource="http://test.org.org/vehicleOntology#HumiditySensor"/>
-        <vehicleOntology1:MonitoringManagementIsEnabledInVehicleSystems rdf:resource="http://test.org/vehicleOntology#Audi_vehicle"/>
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#high_hrv_old">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
+        <in_cabin_domain:hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">70</in_cabin_domain:hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/vehicleOntology#image_data_1 -->
+    <!-- http://test.org/in_cabin_domain#high_hrv_young -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/vehicleOntology#image_data_1">
-        <rdf:type rdf:resource="http://test.org/vehicleOntology#ImageObservations"/>
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#high_hrv_young">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
+        <in_cabin_domain:hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">120</in_cabin_domain:hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/vehicleOntology#in_cabin -->
+    <!-- http://test.org/in_cabin_domain#high_rr_adult -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/vehicleOntology#in_cabin">
-        <vehicleOntology1:EnvironmentConsiderMetaData rdf:resource="http://test.org/vehicleOntology#all_meta_data"/>
-        <vehicleOntology1:ObservationTargetIsInsideVehicleSystem rdf:resource="http://test.org/vehicleOntology#Audi_vehicle"/>
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#high_rr_adult">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
+        <in_cabin_domain:hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">20</in_cabin_domain:hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/vehicleOntology#in_cabin_normal -->
+    <!-- http://test.org/in_cabin_domain#high_rr_old -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/vehicleOntology#in_cabin_normal"/>
-    
-
-
-    <!-- http://test.org/vehicleOntology#main_controller -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/vehicleOntology#main_controller">
-        <rdf:type rdf:resource="http://test.org.org/vehicleOntology#DataAnalysisUnit"/>
-        <vehicleOntology1:DAUProcessesDataContainer rdf:resource="http://test.org/vehicleOntology#numerical_data_1"/>
-        <vehicleOntology1:DAUProcessesDataContainer rdf:resource="http://test.org/vehicleOntology#numerical_data_2"/>
-        <vehicleOntology1:DAUProvidesLabel rdf:resource="http://test.org/vehicleOntology#emergency_alert_for_environment"/>
-        <vehicleOntology1:MonitoringManagementIsEnabledInVehicleSystems rdf:resource="http://test.org/vehicleOntology#Audi_vehicle"/>
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#high_rr_old">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
+        <in_cabin_domain:hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">22</in_cabin_domain:hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/vehicleOntology#notification_message -->
+    <!-- http://test.org/in_cabin_domain#high_rr_young -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/vehicleOntology#notification_message">
-        <rdf:type rdf:resource="http://test.org.org/vehicleOntology#NotificationQueryLabel"/>
-        <vehicleOntology:LabelIsConcerningObservationTarget rdf:resource="http://test.org/vehicleOntology#Dimitris_driver"/>
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#high_rr_young">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
+        <in_cabin_domain:hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">20</in_cabin_domain:hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/vehicleOntology#numerical_data_1 -->
+    <!-- http://test.org/in_cabin_domain#high_spo2_adult -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/vehicleOntology#numerical_data_1">
-        <rdf:type rdf:resource="http://test.org/vehicleOntology#TimeSeriesObservations"/>
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#high_spo2_adult">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
+        <in_cabin_domain:hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">99</in_cabin_domain:hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/vehicleOntology#numerical_data_2 -->
+    <!-- http://test.org/in_cabin_domain#high_spo2_old -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/vehicleOntology#numerical_data_2">
-        <rdf:type rdf:resource="http://test.org/vehicleOntology#TimeSeriesObservations"/>
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#high_spo2_old">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
+        <in_cabin_domain:hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">98</in_cabin_domain:hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/vehicleOntology#oxygen_normal -->
+    <!-- http://test.org/in_cabin_domain#high_spo2_young -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/vehicleOntology#oxygen_normal"/>
-    
-
-
-    <!-- http://test.org/vehicleOntology#oxygen_sensor -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/vehicleOntology#oxygen_sensor">
-        <rdf:type rdf:resource="http://test.org.org/vehicleOntology#OxygenSensor"/>
-        <vehicleOntology1:MonitoringManagementIsEnabledInVehicleSystems rdf:resource="http://test.org/vehicleOntology#Audi_vehicle"/>
-        <vehicleOntology1:MonitoringSensorMonitorsObservationTarget rdf:resource="http://test.org/vehicleOntology#in_cabin"/>
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#high_spo2_young">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
+        <in_cabin_domain:hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">100</in_cabin_domain:hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/vehicleOntology#toxic_gasses_sensor -->
+    <!-- http://test.org/in_cabin_domain#low_hr_adult -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/vehicleOntology#toxic_gasses_sensor">
-        <rdf:type rdf:resource="http://test.org.org/vehicleOntology#ToxicGassesSensor"/>
-        <vehicleOntology1:MonitoringManagementIsEnabledInVehicleSystems rdf:resource="http://test.org/vehicleOntology#Audi_vehicle"/>
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#low_hr_adult">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
+        <in_cabin_domain:hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</in_cabin_domain:hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#low_hr_old -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#low_hr_old">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
+        <in_cabin_domain:hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</in_cabin_domain:hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#low_hr_young -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#low_hr_young">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
+        <in_cabin_domain:hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</in_cabin_domain:hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#low_hrv_adult -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#low_hrv_adult">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
+        <in_cabin_domain:hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">30</in_cabin_domain:hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#low_hrv_old -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#low_hrv_old">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
+        <in_cabin_domain:hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">20</in_cabin_domain:hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#low_hrv_young -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#low_hrv_young">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
+        <in_cabin_domain:hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</in_cabin_domain:hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#low_rr_adult -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#low_rr_adult">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
+        <in_cabin_domain:hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">10</in_cabin_domain:hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#low_rr_old -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#low_rr_old">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
+        <in_cabin_domain:hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">12</in_cabin_domain:hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#low_rr_young -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#low_rr_young">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
+        <in_cabin_domain:hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">10</in_cabin_domain:hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#low_spo2_adult -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#low_spo2_adult">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
+        <in_cabin_domain:hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">85</in_cabin_domain:hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#low_spo2_old -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#low_spo2_old">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
+        <in_cabin_domain:hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">85</in_cabin_domain:hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#low_spo2_young -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#low_spo2_young">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
+        <in_cabin_domain:hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">85</in_cabin_domain:hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#moderate_hr_adult -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_hr_adult">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
+        <in_cabin_domain:hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">60</in_cabin_domain:hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#moderate_hr_old -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_hr_old">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
+        <in_cabin_domain:hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</in_cabin_domain:hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#moderate_hr_young -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_hr_young">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
+        <in_cabin_domain:hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">70</in_cabin_domain:hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#moderate_hrv_adult -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_hrv_adult">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
+        <in_cabin_domain:hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">60</in_cabin_domain:hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#moderate_hrv_old -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_hrv_old">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
+        <in_cabin_domain:hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</in_cabin_domain:hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#moderate_hrv_young -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_hrv_young">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
+        <in_cabin_domain:hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">70</in_cabin_domain:hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#moderate_rr_adult -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_rr_adult">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
+        <in_cabin_domain:hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">14</in_cabin_domain:hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#moderate_rr_old -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_rr_old">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
+        <in_cabin_domain:hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">16</in_cabin_domain:hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#moderate_rr_young -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_rr_young">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
+        <in_cabin_domain:hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">14</in_cabin_domain:hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#moderate_spo2_adult -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_spo2_adult">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
+        <in_cabin_domain:hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">94</in_cabin_domain:hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#moderate_spo2_old -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_spo2_old">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
+        <in_cabin_domain:hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">93</in_cabin_domain:hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#moderate_spo2_young -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_spo2_young">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
+        <in_cabin_domain:hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">95</in_cabin_domain:hasThrValue>
     </owl:NamedIndividual>
     
 
@@ -2041,108 +1902,138 @@ Changes for each sensor.</rdfs:comment>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#BCG"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#DopplerRadarMonitor"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#ECG"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#EMG"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#ImpedanceCardiographyMonitor"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#MicrowaveDopplerMonitor"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#PPG"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#PulseOximeterMonitor"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Adult"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Old"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Young"/>
         </owl:members>
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#COTGS"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#H2STGS"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#HCHOTGS"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#NH3TGS"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#NO2TGS"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#O3TGS"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#PMTGS"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#VolatileOrganicTGS"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Afghan"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#African"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#American"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Austrian"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Brazilian"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Canadian"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Croatian"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Czech"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Egyptian"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#German"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Japanese"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Mexican"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Swedish"/>
         </owl:members>
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#CameraSensor"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#HeartRateMonitor"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#HumiditySensor"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#OxygenSensor"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#ToxicGassesSensor"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#AttentionLevels"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Drowsiness"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Fatigue"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#HR"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#HRV"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#RR"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#SpO2"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Unresponsiveness"/>
         </owl:members>
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#CapacityHS"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#Hygrometer"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#OpticalHS"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#SAWHS"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#SinteredMetalHS"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#ThermalConductivityHS"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#ThinFilmPolymeterHS"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Attention_Decreasing"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Attention_Increasing"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Attentive"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Inattentive"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Undefined_Attention"/>
         </owl:members>
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#DataContainer"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#LabelsObject"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#ObservationsTarget"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#VehicleSystems"/>
-            <rdf:Description rdf:about="http://test.org/vehicleOntology#MonitoringManagement"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Beard"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Grey_Hair"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Long_Hair"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Short_Hair"/>
         </owl:members>
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#EventCamera"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#FishEyeCamera"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#GestureRecognitionCamera"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#InfraredCamera"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#RGBCamera"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#StereoCamera"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#ThermalCamera"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#TimeOfFlightCamera"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#WideAngleCamera"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Blinking"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#MicroSleeping"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Sleeping"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Slow_Closure"/>
         </owl:members>
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#GalvanicOS"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#HEGOOS"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#NonDispersiveInfraredOS"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#ParamagneticOS"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#PolarographicOS"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#TitaniaOS"/>
-            <rdf:Description rdf:about="http://test.org.org/vehicleOntology#WidebandOS"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Critical_SpO2"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Low_SpO2"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Normal_SpO2"/>
         </owl:members>
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://test.org/vehicleOntology#Abilities"/>
-            <rdf:Description rdf:about="http://test.org/vehicleOntology#Characteristics"/>
-            <rdf:Description rdf:about="http://test.org/vehicleOntology#Demographic"/>
-            <rdf:Description rdf:about="http://test.org/vehicleOntology#EmotionalState"/>
-            <rdf:Description rdf:about="http://test.org/vehicleOntology#MentalState"/>
-            <rdf:Description rdf:about="http://test.org/vehicleOntology#Personality"/>
-            <rdf:Description rdf:about="http://test.org/vehicleOntology#PhysicalProperties"/>
-            <rdf:Description rdf:about="http://test.org/vehicleOntology#PhysiologicalState"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Glasses"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Hat"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Scarf"/>
         </owl:members>
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://test.org/vehicleOntology#AttentionLevelThreshold"/>
-            <rdf:Description rdf:about="http://test.org/vehicleOntology#FatigueLevelThreshold"/>
-            <rdf:Description rdf:about="http://test.org/vehicleOntology#HeartRateThreshold"/>
-            <rdf:Description rdf:about="http://test.org/vehicleOntology#HeartRateVariabilityThreshold"/>
-            <rdf:Description rdf:about="http://test.org/vehicleOntology#RespitoryRateThreshold"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#HRV_THR"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#HR_THR"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#RR_THR"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#SpO2_THR"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#High_HR"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Low_HR"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Moderate_HR"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Slightly_Low_HR"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#High_HRV"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Low_HRV"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Moderate_HRV"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Very_Low_HRV"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#High_RR"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Low_RR"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Moderate_RR"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Level_3_KSS"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Level_5_KSS"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Level_7_KSS"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Level_9_KSS"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Long_distraction"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Not_responsive"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Responsive"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Short_distraction"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Undefined_state"/>
         </owl:members>
     </rdf:Description>
 </rdf:RDF>
