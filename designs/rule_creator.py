@@ -1,10 +1,9 @@
 from owlready2 import *
-from rdflib import Graph, URIRef, Literal
+from rdflib import Graph
 import os 
 import uuid 
 import json 
 import random
-import pdb
 
 
 class RuleCreator: 

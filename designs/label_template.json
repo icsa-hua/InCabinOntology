@@ -1,0 +1,42 @@
+{
+    "prompt_details": {
+        "seed": 9100619,
+        "steps": 50,
+        "prompt": "front view on a person++ in the car driving through city, high detailed. Passenger cabin interior. Face of person is clearly visible. Person sitting in the drivers seat.  Person has eyes open. Person is yawning. elderly australia woman with a hat",
+        "prompt_template": "front view on a person++ in the car driving through city, high detailed. Passenger cabin interior. Face of person is clearly visible. Person sitting in the drivers seat.  Person has eyes open. Person is yawning. elderly australia woman with a hat",
+        "view_point": "front",
+        "object_name": "person",
+        "time_of_day": "person",
+        "sky_condition": "eyes_mouth",
+        "weather_condition": "result"
+    },
+    "labels": [
+        {
+            "score": 0.0,
+            "class_id": 0,
+            "bounding_box": {
+                "x": 0.0,
+                "y": 0.0,
+                "cx": 0.0,
+                "cy": 0.0,
+                "width": 0.0,
+                "height": 0.0,
+                "coordinates": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            },
+            "bounding_polygon": [],
+            "character": [
+                "age_group",
+                "region-demographix",
+                "sex-gender",
+                "accessory"
+            ],
+            "eye": "eye_state",
+            "mouth": "mouth_state"
+        }
+    ]
+}

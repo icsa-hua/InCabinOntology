@@ -1,7 +1,7 @@
 from owlready2 import *
-from scripts.rule_creator import RuleCreator
+from designs.rule_creator import RuleCreator
 import pandas as pd
-import pdb 
+
 
 
 class OntologyParser: 
