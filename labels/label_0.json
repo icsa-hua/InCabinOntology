@@ -1,7 +1,7 @@
 {
     "prompt_details": {
-        "seed": 661093,
-        "steps": 89,
+        "seed": 667758,
+        "steps": 52,
         "prompt": "Lorem ipsum...",
         "response": "Lorem ipsum...",
         "view_point": "front",
@@ -11,8 +11,8 @@
         "weather_condition": "sunny"
     },
     "label": {
-        "actor_id": "2ad8803e-824e-4dfb-8948-81660cff5981",
-        "eye_state": "blinking",
+        "actor_id": "dea27cdb-5792-43e4-8fe2-e426ed3f9d61",
+        "eye_state": "slow",
         "age": 25,
         "face": "Short_hair",
         "sex": "Man",

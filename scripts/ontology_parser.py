@@ -1,8 +1,7 @@
 from owlready2 import *
-from rdflib import Graph, URIRef, Literal
 from scripts.rule_creator import RuleCreator
 import pandas as pd
-
+import pdb 
 
 
 class OntologyParser: 
@@ -29,7 +28,6 @@ class OntologyParser:
         --only_local is used to manually load the ontology without processing owl:versionIRI
         """
         ontology = get_ontology("file://"+self.ontology_path).load(only_local=True) 
-        #Validate that ontology was correctly loaded:         
         return ontology
     
 
@@ -65,6 +63,7 @@ class OntologyParser:
         try: 
             # Create instances for the Label and the Sensor
             with self.ontology: 
+                
                 self.rule_parser.create_instances("Label")
                 self.rule_parser.create_instances("MonitoringSensor")
 
@@ -99,30 +98,35 @@ class OntologyParser:
                 obs.hasDemographic.append(row["Demographic"] if "Demographic" in dataset.columns and isinstance(row['Demographic'],str)  else [-1])
 
                 # Connect the observation to the corresponding subclasses inside the ontology, based on the super class they belong to. 
+            
                 self.rule_parser.observations_to_classes(obs, "PhysiologicalState", "ObsIsDividedIntoPhS")
                 self.rule_parser.observations_to_classes(obs, "Actor", "ObsIsDividedIntoActor")
-                
+
                 # Run the reasoner for each updated observation
                 self.rule_parser.synchronize_ontology()
-
-                # Assign values to the subclasses instances based on the observations
-                for obs in self.ontology.Observations.instances(): 
+                
+                for obs in self.ontology.Observations.instances():
+                    # Assign values to the subclasses instances based on the observations
                     self.rule_parser.assign_values(obs,"ObsIsDividedIntoPhS","hasNumericalValue")
                     self.rule_parser.assign_values(obs,"ObsIsDividedIntoActor","hasStringValue")
-                
+
                 # Create the rules (once) for numerical comparison and health assessment
                 self.rule_parser.set_up_rules(index)
-            
+                
                 # Run the reasoner to update the ontology with the new values
                 self.rule_parser.synchronize_ontology()
-
+                                
                 # Create the description of the actor and save it in JSON format
                 self.rule_parser.create_label(filepath, index)
-                
+
                 # Save the parsed ontology to a file for vizualization of the rules' results. 
-                if index ==0: 
+                if index==0 or index == 3: 
                     ontology_save_path =  os.getcwd() + "/ontologies/updated_ontology.owl"
                     self.ontology.save(file=ontology_save_path) 
+                    time.sleep(5)
+                    
+
+                self.rule_parser.determine_trends() 
 
                 # Remove the previous values from the ontology to avoid conflicts
                 self.rule_parser.remove_prev_values(obs)
