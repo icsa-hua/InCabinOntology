@@ -1,11 +1,7 @@
 from owlready2 import * 
-from scripts.ontology_parser import OntologyParser
-from scripts.individuals_generation import IndGenerator
-import logging 
-
-logger = logging.getLogger("owlready2").setLevel(logging.ERROR)
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+from designs.ontology_parser import OntologyParser
+from designs.individuals_generation import IndGenerator
+from tools.logger import logger 
 
 def main():
     logger.info(os.getcwd())
@@ -18,7 +14,7 @@ def main():
     parser = OntologyParser(file, logger)
     
     if not getattr(parser.ontology, "HR_THR").instances():
-        ind_generator = IndGenerator('data/metrics_thresholds.csv', parser.ontology,logger)
+        ind_generator = IndGenerator('data/metrics_thresholds.csv', parser.ontology)
         ind_generator.create_individuals()
 
     message = parser.parse_observations(dataset_path=dataset_file)

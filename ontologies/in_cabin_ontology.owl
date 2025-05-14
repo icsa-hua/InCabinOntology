@@ -146,7 +146,7 @@ Since the alert is a message it only regards the occupants of the vehicle.</rdfs
     <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#ActorHasEyeState">
         <owl:inverseOf rdf:resource="http://test.org/in_cabin_domain#EyeStateForActor"/>
         <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Actor"/>
-        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#EyeClosure"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#EyeState"/>
     </owl:ObjectProperty>
     
 
@@ -277,7 +277,7 @@ Since the alert is a message it only regards the occupants of the vehicle.</rdfs
     <!-- http://test.org/in_cabin_domain#EyeStateForActor -->
 
     <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#EyeStateForActor">
-        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#EyeClosure"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#EyeState"/>
         <rdfs:range rdf:resource="http://test.org/in_cabin_domain#Actor"/>
     </owl:ObjectProperty>
     
@@ -1026,42 +1026,10 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#Adult -->
-
-    <owl:Class rdf:about="http://test.org/in_cabin_domain#Adult">
-        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Age"/>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#Afghan -->
-
-    <owl:Class rdf:about="http://test.org/in_cabin_domain#Afghan">
-        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#African -->
-
-    <owl:Class rdf:about="http://test.org/in_cabin_domain#African">
-        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
-    </owl:Class>
-    
-
-
     <!-- http://test.org/in_cabin_domain#Age -->
 
     <owl:Class rdf:about="http://test.org/in_cabin_domain#Age">
         <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Actor"/>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#American -->
-
-    <owl:Class rdf:about="http://test.org/in_cabin_domain#American">
-        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
     </owl:Class>
     
 
@@ -1098,9 +1066,9 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#Austrian -->
+    <!-- http://test.org/in_cabin_domain#Australian -->
 
-    <owl:Class rdf:about="http://test.org/in_cabin_domain#Austrian">
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Australian">
         <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
     </owl:Class>
     
@@ -1125,23 +1093,47 @@ It holds the data created after processing the observations captured by the sens
     <!-- http://test.org/in_cabin_domain#Blinking -->
 
     <owl:Class rdf:about="http://test.org/in_cabin_domain#Blinking">
-        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#EyeClosure"/>
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#EyeState"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org/in_cabin_domain#Brazilian -->
+    <!-- http://test.org/in_cabin_domain#Central-African -->
 
-    <owl:Class rdf:about="http://test.org/in_cabin_domain#Brazilian">
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Central-African">
         <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org/in_cabin_domain#Canadian -->
+    <!-- http://test.org/in_cabin_domain#Central-American -->
 
-    <owl:Class rdf:about="http://test.org/in_cabin_domain#Canadian">
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Central-American">
         <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Central-Asia -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Central-Asia">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Central-Europe -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Central-Europe">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Closed -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Closed">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#MouthState"/>
     </owl:Class>
     
 
@@ -1164,27 +1156,11 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#Croatian -->
-
-    <owl:Class rdf:about="http://test.org/in_cabin_domain#Croatian">
-        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
-    </owl:Class>
-    
-
-
     <!-- http://test.org/in_cabin_domain#CurrentReading -->
 
     <owl:Class rdf:about="http://test.org/in_cabin_domain#CurrentReading">
         <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#TemporalContext"/>
         <owl:disjointWith rdf:resource="http://test.org/in_cabin_domain#PreviousReading"/>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#Czech -->
-
-    <owl:Class rdf:about="http://test.org/in_cabin_domain#Czech">
-        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
     </owl:Class>
     
 
@@ -1221,17 +1197,41 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#Egyptian -->
+    <!-- http://test.org/in_cabin_domain#East-Africa -->
 
-    <owl:Class rdf:about="http://test.org/in_cabin_domain#Egyptian">
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#East-Africa">
         <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org/in_cabin_domain#EyeClosure -->
+    <!-- http://test.org/in_cabin_domain#East-Asia -->
 
-    <owl:Class rdf:about="http://test.org/in_cabin_domain#EyeClosure">
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#East-Asia">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#East-Europe -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#East-Europe">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Elderly -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Elderly">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Age"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#EyeState -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#EyeState">
         <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Actor"/>
     </owl:Class>
     
@@ -1258,14 +1258,6 @@ It holds the data created after processing the observations captured by the sens
     <owl:Class rdf:about="http://test.org/in_cabin_domain#Female">
         <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Sex"/>
         <owl:disjointWith rdf:resource="http://test.org/in_cabin_domain#Male"/>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#German -->
-
-    <owl:Class rdf:about="http://test.org/in_cabin_domain#German">
-        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
     </owl:Class>
     
 
@@ -1365,14 +1357,6 @@ It holds the data created after processing the observations captured by the sens
 
     <owl:Class rdf:about="http://test.org/in_cabin_domain#Inattentive">
         <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#AttentionLevels"/>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#Japanese -->
-
-    <owl:Class rdf:about="http://test.org/in_cabin_domain#Japanese">
-        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
     </owl:Class>
     
 
@@ -1477,18 +1461,10 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#Mexican -->
-
-    <owl:Class rdf:about="http://test.org/in_cabin_domain#Mexican">
-        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
-    </owl:Class>
-    
-
-
     <!-- http://test.org/in_cabin_domain#MicroSleeping -->
 
     <owl:Class rdf:about="http://test.org/in_cabin_domain#MicroSleeping">
-        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#EyeClosure"/>
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#EyeState"/>
     </owl:Class>
     
 
@@ -1497,6 +1473,14 @@ It holds the data created after processing the observations captured by the sens
 
     <owl:Class rdf:about="http://test.org/in_cabin_domain#Microsleep">
         <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Fatigue"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Middle-Aged -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Middle-Aged">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Age"/>
     </owl:Class>
     
 
@@ -1553,11 +1537,51 @@ It holds the data created after processing the observations captured by the sens
     
 
 
+    <!-- http://test.org/in_cabin_domain#MouthState -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#MouthState">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Actor"/>
+    </owl:Class>
+    
+
+
     <!-- http://test.org/in_cabin_domain#Normal_SpO2 -->
 
     <owl:Class rdf:about="http://test.org/in_cabin_domain#Normal_SpO2">
         <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#SpO2"/>
         <rdfs:comment>Values between 95-100% (Healthy, alert state)</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#North-African -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#North-African">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#North-American -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#North-American">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#North-Asia -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#North-Asia">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#North-Europe -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#North-Europe">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
     </owl:Class>
     
 
@@ -1578,10 +1602,10 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#Old -->
+    <!-- http://test.org/in_cabin_domain#Open -->
 
-    <owl:Class rdf:about="http://test.org/in_cabin_domain#Old">
-        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Age"/>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Open">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#MouthState"/>
     </owl:Class>
     
 
@@ -1669,7 +1693,7 @@ It holds the data created after processing the observations captured by the sens
     <!-- http://test.org/in_cabin_domain#Sleeping -->
 
     <owl:Class rdf:about="http://test.org/in_cabin_domain#Sleeping">
-        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#EyeClosure"/>
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#EyeState"/>
     </owl:Class>
     
 
@@ -1677,7 +1701,39 @@ It holds the data created after processing the observations captured by the sens
     <!-- http://test.org/in_cabin_domain#Slow_Closure -->
 
     <owl:Class rdf:about="http://test.org/in_cabin_domain#Slow_Closure">
-        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#EyeClosure"/>
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#EyeState"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#South-Africa -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#South-Africa">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#South-American -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#South-American">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#South-Asia -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#South-Asia">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#South-Europe -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#South-Europe">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
     </owl:Class>
     
 
@@ -1694,14 +1750,6 @@ It holds the data created after processing the observations captured by the sens
 
     <owl:Class rdf:about="http://test.org/in_cabin_domain#SpO2_THR">
         <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Thresholds"/>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#Swedish -->
-
-    <owl:Class rdf:about="http://test.org/in_cabin_domain#Swedish">
-        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
     </owl:Class>
     
 
@@ -1790,6 +1838,46 @@ It holds the data created after processing the observations captured by the sens
     
 
 
+    <!-- http://test.org/in_cabin_domain#West-Africa -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#West-Africa">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#West-America -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#West-America">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#West-Asia -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#West-Asia">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#West-Europe -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#West-Europe">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Demographic"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#Yawning -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Yawning">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#MouthState"/>
+    </owl:Class>
+    
+
+
     <!-- http://test.org/in_cabin_domain#Young -->
 
     <owl:Class rdf:about="http://test.org/in_cabin_domain#Young">
@@ -1809,38 +1897,38 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#cold_high_hr_adult_female -->
+    <!-- http://test.org/in_cabin_domain#cold_high_hr_elderly_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_high_hr_adult_female">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">110</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#cold_high_hr_adult_male -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_high_hr_adult_male">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">110</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#cold_high_hr_old_female -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_high_hr_old_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_high_hr_elderly_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">100</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#cold_high_hr_old_male -->
+    <!-- http://test.org/in_cabin_domain#cold_high_hr_elderly_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_high_hr_old_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_high_hr_elderly_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">95</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#cold_high_hr_middle-aged_female -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_high_hr_middle-aged_female">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">110</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#cold_high_hr_middle-aged_male -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_high_hr_middle-aged_male">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">110</hasThrValue>
     </owl:NamedIndividual>
     
 
@@ -1863,38 +1951,38 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#cold_high_hrv_adult_female -->
+    <!-- http://test.org/in_cabin_domain#cold_high_hrv_elderly_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_high_hrv_adult_female">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">75</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#cold_high_hrv_adult_male -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_high_hrv_adult_male">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">80</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#cold_high_hrv_old_female -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_high_hrv_old_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_high_hrv_elderly_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">55</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#cold_high_hrv_old_male -->
+    <!-- http://test.org/in_cabin_domain#cold_high_hrv_elderly_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_high_hrv_old_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_high_hrv_elderly_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">60</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#cold_high_hrv_middle-aged_female -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_high_hrv_middle-aged_female">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">75</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#cold_high_hrv_middle-aged_male -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_high_hrv_middle-aged_male">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">80</hasThrValue>
     </owl:NamedIndividual>
     
 
@@ -1917,38 +2005,38 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#cold_high_rr_adult_female -->
+    <!-- http://test.org/in_cabin_domain#cold_high_rr_elderly_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_high_rr_adult_female">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">29</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#cold_high_rr_adult_male -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_high_rr_adult_male">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">27</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#cold_high_rr_old_female -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_high_rr_old_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_high_rr_elderly_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">24</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#cold_high_rr_old_male -->
+    <!-- http://test.org/in_cabin_domain#cold_high_rr_elderly_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_high_rr_old_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_high_rr_elderly_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">22</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#cold_high_rr_middle-aged_female -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_high_rr_middle-aged_female">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">29</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#cold_high_rr_middle-aged_male -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_high_rr_middle-aged_male">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">27</hasThrValue>
     </owl:NamedIndividual>
     
 
@@ -1971,38 +2059,38 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#cold_high_spo2_adult_female -->
+    <!-- http://test.org/in_cabin_domain#cold_high_spo2_elderly_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_high_spo2_adult_female">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">97</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#cold_high_spo2_adult_male -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_high_spo2_adult_male">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">97</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#cold_high_spo2_old_female -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_high_spo2_old_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_high_spo2_elderly_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">96</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#cold_high_spo2_old_male -->
+    <!-- http://test.org/in_cabin_domain#cold_high_spo2_elderly_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_high_spo2_old_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_high_spo2_elderly_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">96</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#cold_high_spo2_middle-aged_female -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_high_spo2_middle-aged_female">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">97</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#cold_high_spo2_middle-aged_male -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_high_spo2_middle-aged_male">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">97</hasThrValue>
     </owl:NamedIndividual>
     
 
@@ -2025,38 +2113,38 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#cold_low_hr_adult_female -->
+    <!-- http://test.org/in_cabin_domain#cold_low_hr_elderly_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_low_hr_adult_female">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">69</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#cold_low_hr_adult_male -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_low_hr_adult_male">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">64</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#cold_low_hr_old_female -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_low_hr_old_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_low_hr_elderly_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">59</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#cold_low_hr_old_male -->
+    <!-- http://test.org/in_cabin_domain#cold_low_hr_elderly_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_low_hr_old_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_low_hr_elderly_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">54</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#cold_low_hr_middle-aged_female -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_low_hr_middle-aged_female">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">69</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#cold_low_hr_middle-aged_male -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_low_hr_middle-aged_male">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">64</hasThrValue>
     </owl:NamedIndividual>
     
 
@@ -2079,38 +2167,38 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#cold_low_hrv_adult_female -->
+    <!-- http://test.org/in_cabin_domain#cold_low_hrv_elderly_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_low_hrv_adult_female">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">30</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#cold_low_hrv_adult_male -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_low_hrv_adult_male">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">35</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#cold_low_hrv_old_female -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_low_hrv_old_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_low_hrv_elderly_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">28</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#cold_low_hrv_old_male -->
+    <!-- http://test.org/in_cabin_domain#cold_low_hrv_elderly_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_low_hrv_old_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_low_hrv_elderly_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">30</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#cold_low_hrv_middle-aged_female -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_low_hrv_middle-aged_female">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">30</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#cold_low_hrv_middle-aged_male -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_low_hrv_middle-aged_male">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">35</hasThrValue>
     </owl:NamedIndividual>
     
 
@@ -2133,38 +2221,38 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#cold_low_rr_adult_female -->
+    <!-- http://test.org/in_cabin_domain#cold_low_rr_elderly_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_low_rr_adult_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_low_rr_elderly_female">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">14</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#cold_low_rr_elderly_male -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_low_rr_elderly_male">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">12</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#cold_low_rr_middle-aged_female -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_low_rr_middle-aged_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">16</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#cold_low_rr_adult_male -->
+    <!-- http://test.org/in_cabin_domain#cold_low_rr_middle-aged_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_low_rr_adult_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_low_rr_middle-aged_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">14</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#cold_low_rr_old_female -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_low_rr_old_female">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">14</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#cold_low_rr_old_male -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_low_rr_old_male">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">12</hasThrValue>
     </owl:NamedIndividual>
     
 
@@ -2187,36 +2275,36 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#cold_low_spo2_adult_female -->
+    <!-- http://test.org/in_cabin_domain#cold_low_spo2_elderly_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_low_spo2_adult_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_low_spo2_elderly_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">83</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#cold_low_spo2_adult_male -->
+    <!-- http://test.org/in_cabin_domain#cold_low_spo2_elderly_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_low_spo2_adult_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_low_spo2_elderly_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">83</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#cold_low_spo2_old_female -->
+    <!-- http://test.org/in_cabin_domain#cold_low_spo2_middle-aged_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_low_spo2_old_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_low_spo2_middle-aged_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">83</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#cold_low_spo2_old_male -->
+    <!-- http://test.org/in_cabin_domain#cold_low_spo2_middle-aged_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_low_spo2_old_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_low_spo2_middle-aged_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">83</hasThrValue>
     </owl:NamedIndividual>
@@ -2241,38 +2329,38 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#cold_moderate_hr_adult_female -->
+    <!-- http://test.org/in_cabin_domain#cold_moderate_hr_elderly_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_moderate_hr_adult_female">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">70</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#cold_moderate_hr_adult_male -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_moderate_hr_adult_male">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">65</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#cold_moderate_hr_old_female -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_moderate_hr_old_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_moderate_hr_elderly_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">60</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#cold_moderate_hr_old_male -->
+    <!-- http://test.org/in_cabin_domain#cold_moderate_hr_elderly_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_moderate_hr_old_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_moderate_hr_elderly_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">55</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#cold_moderate_hr_middle-aged_female -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_moderate_hr_middle-aged_female">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">70</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#cold_moderate_hr_middle-aged_male -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_moderate_hr_middle-aged_male">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">65</hasThrValue>
     </owl:NamedIndividual>
     
 
@@ -2295,38 +2383,38 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#cold_moderate_hrv_adult_female -->
+    <!-- http://test.org/in_cabin_domain#cold_moderate_hrv_elderly_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_moderate_hrv_adult_female">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">31</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#cold_moderate_hrv_adult_male -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_moderate_hrv_adult_male">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">36</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#cold_moderate_hrv_old_female -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_moderate_hrv_old_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_moderate_hrv_elderly_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">29</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#cold_moderate_hrv_old_male -->
+    <!-- http://test.org/in_cabin_domain#cold_moderate_hrv_elderly_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_moderate_hrv_old_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_moderate_hrv_elderly_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">31</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#cold_moderate_hrv_middle-aged_female -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_moderate_hrv_middle-aged_female">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">31</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#cold_moderate_hrv_middle-aged_male -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_moderate_hrv_middle-aged_male">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">36</hasThrValue>
     </owl:NamedIndividual>
     
 
@@ -2349,38 +2437,38 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#cold_moderate_rr_adult_female -->
+    <!-- http://test.org/in_cabin_domain#cold_moderate_rr_elderly_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_moderate_rr_adult_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_moderate_rr_elderly_female">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">15</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#cold_moderate_rr_elderly_male -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_moderate_rr_elderly_male">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">13</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#cold_moderate_rr_middle-aged_female -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_moderate_rr_middle-aged_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">17</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#cold_moderate_rr_adult_male -->
+    <!-- http://test.org/in_cabin_domain#cold_moderate_rr_middle-aged_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_moderate_rr_adult_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_moderate_rr_middle-aged_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">15</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#cold_moderate_rr_old_female -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_moderate_rr_old_female">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">15</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#cold_moderate_rr_old_male -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_moderate_rr_old_male">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">13</hasThrValue>
     </owl:NamedIndividual>
     
 
@@ -2403,38 +2491,38 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#cold_moderate_spo2_adult_female -->
+    <!-- http://test.org/in_cabin_domain#cold_moderate_spo2_elderly_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_moderate_spo2_adult_female">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">94</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#cold_moderate_spo2_adult_male -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_moderate_spo2_adult_male">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">94</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#cold_moderate_spo2_old_female -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_moderate_spo2_old_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_moderate_spo2_elderly_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">93</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#cold_moderate_spo2_old_male -->
+    <!-- http://test.org/in_cabin_domain#cold_moderate_spo2_elderly_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_moderate_spo2_old_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_moderate_spo2_elderly_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">93</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#cold_moderate_spo2_middle-aged_female -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_moderate_spo2_middle-aged_female">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">94</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#cold_moderate_spo2_middle-aged_male -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#cold_moderate_spo2_middle-aged_male">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">94</hasThrValue>
     </owl:NamedIndividual>
     
 
@@ -2473,38 +2561,38 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#hot_high_hr_adult_female -->
+    <!-- http://test.org/in_cabin_domain#hot_high_hr_elderly_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_high_hr_adult_female">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">115</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#hot_high_hr_adult_male -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_high_hr_adult_male">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">115</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#hot_high_hr_old_female -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_high_hr_old_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_high_hr_elderly_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">105</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#hot_high_hr_old_male -->
+    <!-- http://test.org/in_cabin_domain#hot_high_hr_elderly_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_high_hr_old_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_high_hr_elderly_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">100</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#hot_high_hr_middle-aged_female -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_high_hr_middle-aged_female">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">115</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#hot_high_hr_middle-aged_male -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_high_hr_middle-aged_male">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">115</hasThrValue>
     </owl:NamedIndividual>
     
 
@@ -2527,38 +2615,38 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#hot_high_hrv_adult_female -->
+    <!-- http://test.org/in_cabin_domain#hot_high_hrv_elderly_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_high_hrv_adult_female">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">70</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#hot_high_hrv_adult_male -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_high_hrv_adult_male">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">75</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#hot_high_hrv_old_female -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_high_hrv_old_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_high_hrv_elderly_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#hot_high_hrv_old_male -->
+    <!-- http://test.org/in_cabin_domain#hot_high_hrv_elderly_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_high_hrv_old_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_high_hrv_elderly_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">55</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#hot_high_hrv_middle-aged_female -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_high_hrv_middle-aged_female">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">70</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#hot_high_hrv_middle-aged_male -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_high_hrv_middle-aged_male">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">75</hasThrValue>
     </owl:NamedIndividual>
     
 
@@ -2581,38 +2669,38 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#hot_high_rr_adult_female -->
+    <!-- http://test.org/in_cabin_domain#hot_high_rr_elderly_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_high_rr_adult_female">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">30</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#hot_high_rr_adult_male -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_high_rr_adult_male">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">28</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#hot_high_rr_old_female -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_high_rr_old_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_high_rr_elderly_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">25</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#hot_high_rr_old_male -->
+    <!-- http://test.org/in_cabin_domain#hot_high_rr_elderly_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_high_rr_old_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_high_rr_elderly_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">23</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#hot_high_rr_middle-aged_female -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_high_rr_middle-aged_female">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">30</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#hot_high_rr_middle-aged_male -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_high_rr_middle-aged_male">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">28</hasThrValue>
     </owl:NamedIndividual>
     
 
@@ -2635,38 +2723,38 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#hot_high_spo2_adult_female -->
+    <!-- http://test.org/in_cabin_domain#hot_high_spo2_elderly_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_high_spo2_adult_female">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">98</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#hot_high_spo2_adult_male -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_high_spo2_adult_male">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">98</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#hot_high_spo2_old_female -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_high_spo2_old_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_high_spo2_elderly_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">97</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#hot_high_spo2_old_male -->
+    <!-- http://test.org/in_cabin_domain#hot_high_spo2_elderly_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_high_spo2_old_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_high_spo2_elderly_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">97</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#hot_high_spo2_middle-aged_female -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_high_spo2_middle-aged_female">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">98</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#hot_high_spo2_middle-aged_male -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_high_spo2_middle-aged_male">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">98</hasThrValue>
     </owl:NamedIndividual>
     
 
@@ -2689,38 +2777,38 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#hot_low_hr_adult_female -->
+    <!-- http://test.org/in_cabin_domain#hot_low_hr_elderly_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_low_hr_adult_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_low_hr_elderly_female">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">59</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#hot_low_hr_elderly_male -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_low_hr_elderly_male">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">59</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#hot_low_hr_middle-aged_female -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_low_hr_middle-aged_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">74</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#hot_low_hr_adult_male -->
+    <!-- http://test.org/in_cabin_domain#hot_low_hr_middle-aged_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_low_hr_adult_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_low_hr_middle-aged_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">69</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#hot_low_hr_old_female -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_low_hr_old_female">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">59</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#hot_low_hr_old_male -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_low_hr_old_male">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">59</hasThrValue>
     </owl:NamedIndividual>
     
 
@@ -2743,38 +2831,38 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#hot_low_hrv_adult_female -->
+    <!-- http://test.org/in_cabin_domain#hot_low_hrv_elderly_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_low_hrv_adult_female">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">25</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#hot_low_hrv_adult_male -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_low_hrv_adult_male">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">30</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#hot_low_hrv_old_female -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_low_hrv_old_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_low_hrv_elderly_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">23</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#hot_low_hrv_old_male -->
+    <!-- http://test.org/in_cabin_domain#hot_low_hrv_elderly_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_low_hrv_old_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_low_hrv_elderly_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">25</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#hot_low_hrv_middle-aged_female -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_low_hrv_middle-aged_female">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">25</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#hot_low_hrv_middle-aged_male -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_low_hrv_middle-aged_male">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">30</hasThrValue>
     </owl:NamedIndividual>
     
 
@@ -2797,38 +2885,38 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#hot_low_rr_adult_female -->
+    <!-- http://test.org/in_cabin_domain#hot_low_rr_elderly_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_low_rr_adult_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_low_rr_elderly_female">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">15</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#hot_low_rr_elderly_male -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_low_rr_elderly_male">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">13</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#hot_low_rr_middle-aged_female -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_low_rr_middle-aged_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">17</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#hot_low_rr_adult_male -->
+    <!-- http://test.org/in_cabin_domain#hot_low_rr_middle-aged_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_low_rr_adult_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_low_rr_middle-aged_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">15</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#hot_low_rr_old_female -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_low_rr_old_female">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">15</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#hot_low_rr_old_male -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_low_rr_old_male">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">13</hasThrValue>
     </owl:NamedIndividual>
     
 
@@ -2851,36 +2939,36 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#hot_low_spo2_adult_female -->
+    <!-- http://test.org/in_cabin_domain#hot_low_spo2_elderly_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_low_spo2_adult_female">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">84</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#hot_low_spo2_adult_male -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_low_spo2_adult_male">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">84</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#hot_low_spo2_old_female -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_low_spo2_old_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_low_spo2_elderly_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">85</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#hot_low_spo2_old_male -->
+    <!-- http://test.org/in_cabin_domain#hot_low_spo2_elderly_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_low_spo2_old_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_low_spo2_elderly_male">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">84</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#hot_low_spo2_middle-aged_female -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_low_spo2_middle-aged_female">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">84</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#hot_low_spo2_middle-aged_male -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_low_spo2_middle-aged_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">84</hasThrValue>
     </owl:NamedIndividual>
@@ -2905,38 +2993,38 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#hot_moderate_hr_adult_female -->
+    <!-- http://test.org/in_cabin_domain#hot_moderate_hr_elderly_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_moderate_hr_adult_female">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">75</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#hot_moderate_hr_adult_male -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_moderate_hr_adult_male">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">70</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#hot_moderate_hr_old_female -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_moderate_hr_old_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_moderate_hr_elderly_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">65</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#hot_moderate_hr_old_male -->
+    <!-- http://test.org/in_cabin_domain#hot_moderate_hr_elderly_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_moderate_hr_old_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_moderate_hr_elderly_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">60</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#hot_moderate_hr_middle-aged_female -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_moderate_hr_middle-aged_female">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">75</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#hot_moderate_hr_middle-aged_male -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_moderate_hr_middle-aged_male">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">70</hasThrValue>
     </owl:NamedIndividual>
     
 
@@ -2959,38 +3047,38 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#hot_moderate_hrv_adult_female -->
+    <!-- http://test.org/in_cabin_domain#hot_moderate_hrv_elderly_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_moderate_hrv_adult_female">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">26</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#hot_moderate_hrv_adult_male -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_moderate_hrv_adult_male">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">31</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#hot_moderate_hrv_old_female -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_moderate_hrv_old_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_moderate_hrv_elderly_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">24</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#hot_moderate_hrv_old_male -->
+    <!-- http://test.org/in_cabin_domain#hot_moderate_hrv_elderly_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_moderate_hrv_old_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_moderate_hrv_elderly_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">26</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#hot_moderate_hrv_middle-aged_female -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_moderate_hrv_middle-aged_female">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">26</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#hot_moderate_hrv_middle-aged_male -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_moderate_hrv_middle-aged_male">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">31</hasThrValue>
     </owl:NamedIndividual>
     
 
@@ -3013,38 +3101,38 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#hot_moderate_rr_adult_female -->
+    <!-- http://test.org/in_cabin_domain#hot_moderate_rr_elderly_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_moderate_rr_adult_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_moderate_rr_elderly_female">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">16</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#hot_moderate_rr_elderly_male -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_moderate_rr_elderly_male">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">14</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#hot_moderate_rr_middle-aged_female -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_moderate_rr_middle-aged_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">18</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#hot_moderate_rr_adult_male -->
+    <!-- http://test.org/in_cabin_domain#hot_moderate_rr_middle-aged_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_moderate_rr_adult_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_moderate_rr_middle-aged_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">16</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#hot_moderate_rr_old_female -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_moderate_rr_old_female">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">16</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#hot_moderate_rr_old_male -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_moderate_rr_old_male">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">14</hasThrValue>
     </owl:NamedIndividual>
     
 
@@ -3067,38 +3155,38 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#hot_moderate_spo2_adult_female -->
+    <!-- http://test.org/in_cabin_domain#hot_moderate_spo2_elderly_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_moderate_spo2_adult_female">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">94</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#hot_moderate_spo2_adult_male -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_moderate_spo2_adult_male">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">94</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#hot_moderate_spo2_old_female -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_moderate_spo2_old_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_moderate_spo2_elderly_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">93</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#hot_moderate_spo2_old_male -->
+    <!-- http://test.org/in_cabin_domain#hot_moderate_spo2_elderly_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_moderate_spo2_old_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_moderate_spo2_elderly_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">93</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#hot_moderate_spo2_middle-aged_female -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_moderate_spo2_middle-aged_female">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">94</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#hot_moderate_spo2_middle-aged_male -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#hot_moderate_spo2_middle-aged_male">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">94</hasThrValue>
     </owl:NamedIndividual>
     
 
@@ -3121,38 +3209,38 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#moderate_high_hr_adult_female -->
+    <!-- http://test.org/in_cabin_domain#moderate_high_hr_elderly_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_high_hr_adult_female">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">105</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#moderate_high_hr_adult_male -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_high_hr_adult_male">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">100</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#moderate_high_hr_old_female -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_high_hr_old_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_high_hr_elderly_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">95</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#moderate_high_hr_old_male -->
+    <!-- http://test.org/in_cabin_domain#moderate_high_hr_elderly_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_high_hr_old_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_high_hr_elderly_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">90</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#moderate_high_hr_middle-aged_female -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_high_hr_middle-aged_female">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">105</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#moderate_high_hr_middle-aged_male -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_high_hr_middle-aged_male">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">100</hasThrValue>
     </owl:NamedIndividual>
     
 
@@ -3175,38 +3263,38 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#moderate_high_hrv_adult_female -->
+    <!-- http://test.org/in_cabin_domain#moderate_high_hrv_elderly_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_high_hrv_adult_female">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">80</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#moderate_high_hrv_adult_male -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_high_hrv_adult_male">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">85</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#moderate_high_hrv_old_female -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_high_hrv_old_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_high_hrv_elderly_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">60</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#moderate_high_hrv_old_male -->
+    <!-- http://test.org/in_cabin_domain#moderate_high_hrv_elderly_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_high_hrv_old_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_high_hrv_elderly_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">65</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#moderate_high_hrv_middle-aged_female -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_high_hrv_middle-aged_female">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">80</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#moderate_high_hrv_middle-aged_male -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_high_hrv_middle-aged_male">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">85</hasThrValue>
     </owl:NamedIndividual>
     
 
@@ -3229,38 +3317,38 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#moderate_high_rr_adult_female -->
+    <!-- http://test.org/in_cabin_domain#moderate_high_rr_elderly_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_high_rr_adult_female">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">27</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#moderate_high_rr_adult_male -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_high_rr_adult_male">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">25</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#moderate_high_rr_old_female -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_high_rr_old_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_high_rr_elderly_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">22</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#moderate_high_rr_old_male -->
+    <!-- http://test.org/in_cabin_domain#moderate_high_rr_elderly_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_high_rr_old_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_high_rr_elderly_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">20</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#moderate_high_rr_middle-aged_female -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_high_rr_middle-aged_female">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">27</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#moderate_high_rr_middle-aged_male -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_high_rr_middle-aged_male">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">25</hasThrValue>
     </owl:NamedIndividual>
     
 
@@ -3283,38 +3371,38 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#moderate_high_spo2_adult_female -->
+    <!-- http://test.org/in_cabin_domain#moderate_high_spo2_elderly_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_high_spo2_adult_female">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">99</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#moderate_high_spo2_adult_male -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_high_spo2_adult_male">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">99</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#moderate_high_spo2_old_female -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_high_spo2_old_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_high_spo2_elderly_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">98</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#moderate_high_spo2_old_male -->
+    <!-- http://test.org/in_cabin_domain#moderate_high_spo2_elderly_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_high_spo2_old_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_high_spo2_elderly_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">98</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#moderate_high_spo2_middle-aged_female -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_high_spo2_middle-aged_female">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">99</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#moderate_high_spo2_middle-aged_male -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_high_spo2_middle-aged_male">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">99</hasThrValue>
     </owl:NamedIndividual>
     
 
@@ -3337,38 +3425,38 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#moderate_low_hr_adult_female -->
+    <!-- http://test.org/in_cabin_domain#moderate_low_hr_elderly_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_low_hr_adult_female">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">64</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#moderate_low_hr_adult_male -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_low_hr_adult_male">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">59</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#moderate_low_hr_old_female -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_low_hr_old_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_low_hr_elderly_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">54</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#moderate_low_hr_old_male -->
+    <!-- http://test.org/in_cabin_domain#moderate_low_hr_elderly_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_low_hr_old_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_low_hr_elderly_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">49</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#moderate_low_hr_middle-aged_female -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_low_hr_middle-aged_female">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">64</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#moderate_low_hr_middle-aged_male -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_low_hr_middle-aged_male">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">59</hasThrValue>
     </owl:NamedIndividual>
     
 
@@ -3391,38 +3479,38 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#moderate_low_hrv_adult_female -->
+    <!-- http://test.org/in_cabin_domain#moderate_low_hrv_elderly_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_low_hrv_adult_female">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">35</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#moderate_low_hrv_adult_male -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_low_hrv_adult_male">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#moderate_low_hrv_old_female -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_low_hrv_old_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_low_hrv_elderly_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">33</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#moderate_low_hrv_old_male -->
+    <!-- http://test.org/in_cabin_domain#moderate_low_hrv_elderly_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_low_hrv_old_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_low_hrv_elderly_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">35</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#moderate_low_hrv_middle-aged_female -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_low_hrv_middle-aged_female">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">35</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#moderate_low_hrv_middle-aged_male -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_low_hrv_middle-aged_male">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</hasThrValue>
     </owl:NamedIndividual>
     
 
@@ -3445,38 +3533,38 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#moderate_low_rr_adult_female -->
+    <!-- http://test.org/in_cabin_domain#moderate_low_rr_elderly_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_low_rr_adult_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_low_rr_elderly_female">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">12</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#moderate_low_rr_elderly_male -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_low_rr_elderly_male">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">10</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#moderate_low_rr_middle-aged_female -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_low_rr_middle-aged_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">14</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#moderate_low_rr_adult_male -->
+    <!-- http://test.org/in_cabin_domain#moderate_low_rr_middle-aged_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_low_rr_adult_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_low_rr_middle-aged_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">12</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#moderate_low_rr_old_female -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_low_rr_old_female">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">12</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#moderate_low_rr_old_male -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_low_rr_old_male">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">10</hasThrValue>
     </owl:NamedIndividual>
     
 
@@ -3499,36 +3587,36 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#moderate_low_spo2_adult_female -->
+    <!-- http://test.org/in_cabin_domain#moderate_low_spo2_elderly_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_low_spo2_adult_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_low_spo2_elderly_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">85</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#moderate_low_spo2_adult_male -->
+    <!-- http://test.org/in_cabin_domain#moderate_low_spo2_elderly_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_low_spo2_adult_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_low_spo2_elderly_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">85</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#moderate_low_spo2_old_female -->
+    <!-- http://test.org/in_cabin_domain#moderate_low_spo2_middle-aged_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_low_spo2_old_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_low_spo2_middle-aged_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">85</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#moderate_low_spo2_old_male -->
+    <!-- http://test.org/in_cabin_domain#moderate_low_spo2_middle-aged_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_low_spo2_old_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_low_spo2_middle-aged_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">85</hasThrValue>
     </owl:NamedIndividual>
@@ -3553,38 +3641,38 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#moderate_moderate_hr_adult_female -->
+    <!-- http://test.org/in_cabin_domain#moderate_moderate_hr_elderly_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_moderate_hr_adult_female">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">65</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#moderate_moderate_hr_adult_male -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_moderate_hr_adult_male">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">60</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#moderate_moderate_hr_old_female -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_moderate_hr_old_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_moderate_hr_elderly_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">55</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#moderate_moderate_hr_old_male -->
+    <!-- http://test.org/in_cabin_domain#moderate_moderate_hr_elderly_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_moderate_hr_old_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_moderate_hr_elderly_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#moderate_moderate_hr_middle-aged_female -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_moderate_hr_middle-aged_female">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">65</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#moderate_moderate_hr_middle-aged_male -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_moderate_hr_middle-aged_male">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">60</hasThrValue>
     </owl:NamedIndividual>
     
 
@@ -3607,38 +3695,38 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#moderate_moderate_hrv_adult_female -->
+    <!-- http://test.org/in_cabin_domain#moderate_moderate_hrv_elderly_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_moderate_hrv_adult_female">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">36</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#moderate_moderate_hrv_adult_male -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_moderate_hrv_adult_male">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">41</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#moderate_moderate_hrv_old_female -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_moderate_hrv_old_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_moderate_hrv_elderly_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">34</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#moderate_moderate_hrv_old_male -->
+    <!-- http://test.org/in_cabin_domain#moderate_moderate_hrv_elderly_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_moderate_hrv_old_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_moderate_hrv_elderly_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">36</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#moderate_moderate_hrv_middle-aged_female -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_moderate_hrv_middle-aged_female">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">36</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#moderate_moderate_hrv_middle-aged_male -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_moderate_hrv_middle-aged_male">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">41</hasThrValue>
     </owl:NamedIndividual>
     
 
@@ -3661,38 +3749,38 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#moderate_moderate_rr_adult_female -->
+    <!-- http://test.org/in_cabin_domain#moderate_moderate_rr_elderly_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_moderate_rr_adult_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_moderate_rr_elderly_female">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">13</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#moderate_moderate_rr_elderly_male -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_moderate_rr_elderly_male">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">11</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#moderate_moderate_rr_middle-aged_female -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_moderate_rr_middle-aged_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">15</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#moderate_moderate_rr_adult_male -->
+    <!-- http://test.org/in_cabin_domain#moderate_moderate_rr_middle-aged_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_moderate_rr_adult_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_moderate_rr_middle-aged_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">13</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#moderate_moderate_rr_old_female -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_moderate_rr_old_female">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">13</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#moderate_moderate_rr_old_male -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_moderate_rr_old_male">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">11</hasThrValue>
     </owl:NamedIndividual>
     
 
@@ -3715,38 +3803,38 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#moderate_moderate_spo2_adult_female -->
+    <!-- http://test.org/in_cabin_domain#moderate_moderate_spo2_elderly_female -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_moderate_spo2_adult_female">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">94</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#moderate_moderate_spo2_adult_male -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_moderate_spo2_adult_male">
-        <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
-        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">94</hasThrValue>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#moderate_moderate_spo2_old_female -->
-
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_moderate_spo2_old_female">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_moderate_spo2_elderly_female">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">93</hasThrValue>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://test.org/in_cabin_domain#moderate_moderate_spo2_old_male -->
+    <!-- http://test.org/in_cabin_domain#moderate_moderate_spo2_elderly_male -->
 
-    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_moderate_spo2_old_male">
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_moderate_spo2_elderly_male">
         <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
         <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">93</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#moderate_moderate_spo2_middle-aged_female -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_moderate_spo2_middle-aged_female">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">94</hasThrValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#moderate_moderate_spo2_middle-aged_male -->
+
+    <owl:NamedIndividual rdf:about="http://test.org/in_cabin_domain#moderate_moderate_spo2_middle-aged_male">
+        <rdf:type rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
+        <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">94</hasThrValue>
     </owl:NamedIndividual>
     
 
@@ -3780,32 +3868,6 @@ It holds the data created after processing the observations captured by the sens
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Adult"/>
-            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Old"/>
-            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Young"/>
-        </owl:members>
-    </rdf:Description>
-    <rdf:Description>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
-        <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Afghan"/>
-            <rdf:Description rdf:about="http://test.org/in_cabin_domain#African"/>
-            <rdf:Description rdf:about="http://test.org/in_cabin_domain#American"/>
-            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Austrian"/>
-            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Brazilian"/>
-            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Canadian"/>
-            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Croatian"/>
-            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Czech"/>
-            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Egyptian"/>
-            <rdf:Description rdf:about="http://test.org/in_cabin_domain#German"/>
-            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Japanese"/>
-            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Mexican"/>
-            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Swedish"/>
-        </owl:members>
-    </rdf:Description>
-    <rdf:Description>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
-        <owl:members rdf:parseType="Collection">
             <rdf:Description rdf:about="http://test.org/in_cabin_domain#AttentionLevels"/>
             <rdf:Description rdf:about="http://test.org/in_cabin_domain#Drowsiness"/>
             <rdf:Description rdf:about="http://test.org/in_cabin_domain#Fatigue"/>
@@ -3829,6 +3891,49 @@ It holds the data created after processing the observations captured by the sens
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Australian"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Central-African"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Central-American"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Central-Asia"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Central-Europe"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#East-Africa"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#East-Asia"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#East-Europe"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#North-African"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#North-American"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#North-Asia"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#North-Europe"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#South-Africa"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Australian"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Central-African"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Central-American"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Central-Asia"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Central-Europe"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#East-Africa"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#East-Asia"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#East-Europe"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#North-African"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#North-American"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#North-Asia"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#North-Europe"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#South-Africa"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#South-American"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#South-Asia"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#South-Europe"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#West-Africa"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#West-America"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#West-Asia"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#West-Europe"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
             <rdf:Description rdf:about="http://test.org/in_cabin_domain#Beard"/>
             <rdf:Description rdf:about="http://test.org/in_cabin_domain#Grey_Hair"/>
             <rdf:Description rdf:about="http://test.org/in_cabin_domain#Long_Hair"/>
@@ -3847,9 +3952,25 @@ It holds the data created after processing the observations captured by the sens
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Closed"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Open"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Yawning"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
             <rdf:Description rdf:about="http://test.org/in_cabin_domain#Critical_SpO2"/>
             <rdf:Description rdf:about="http://test.org/in_cabin_domain#Low_SpO2"/>
             <rdf:Description rdf:about="http://test.org/in_cabin_domain#Normal_SpO2"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Elderly"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Middle-Aged"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Young"/>
         </owl:members>
     </rdf:Description>
     <rdf:Description>

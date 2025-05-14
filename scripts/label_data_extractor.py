@@ -33,7 +33,12 @@ def main():
     # Print the categorized data
     for category, items in categorized_data.items():
         print(f"{category}: {set(items)}")
-        
+
 
 if __name__ == "__main__":
     main()
+
+
+# Dataset 
+# Has no East-America 
+# Has different accessory string formats short hair, gray-hair. 

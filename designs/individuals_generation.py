@@ -1,11 +1,12 @@
+import os 
 import pandas as pd 
 from owlready2 import * 
-import os 
-import pdb
+from tools.logger import logger 
+
 
 class IndGenerator: 
 
-    def __init__(self, df_path, ontology, logger): 
+    def __init__(self, df_path, ontology): 
 
         try: 
             self.dataset = pd.read_csv(df_path, sep=',')
@@ -13,24 +14,24 @@ class IndGenerator:
             relative = os.getcwd()
             data_filepath = relative + "data/metrics_thresholds.csv"
             self.dataset = pd.read_csv(data_filepath)
+            logger.exception("Error while reading the dataset: {}".format(e))
         
         self.ontology = ontology 
         self.age_group = [] 
         self.sex_group = [] 
         self.temp_group = []
-        self.logger = logger  
+
 
     def check_if_individuals_exist(self, Superclass):
-
         try: 
             entity = getattr(self.ontology, Superclass)
             list_ind = entity.instances()
             if list_ind is None: 
                 return False
-
             return True 
 
         except ValueError as v : 
+            logger.exception(f"Error while checking if individuals exist: {v}")
             return False  
         
 
@@ -46,7 +47,7 @@ class IndGenerator:
         
         if not list(getattr(self.ontology, ind_class).instances()): 
             new_instance = getattr(self.ontology, ind_class)(f"{ind_class.lower()}_instance")
-            self.logger.info(f"New instance of {ind_class} created.")
+            logger.info(f"New instance of {ind_class} created.")
             return new_instance 
         return None
 
@@ -61,7 +62,7 @@ class IndGenerator:
             if "Age" in subclasses: 
                 self.age_group = [entity.name for entity in self.ontology.Age.subclasses()]
             else: 
-                self.age_group = ["Young", "Adult", "Old"]
+                self.age_group = ["Young", "Middle-Aged", "Elderly"]
 
             if "Sex" in subclasses: 
                 self.sex_group = [entity.name for entity in self.ontology.Sex.subclasses()]
@@ -72,7 +73,6 @@ class IndGenerator:
                 self.temp_group_group = [entity.name for entity in self.ontology.WeatherConditions.subclasses()]
             else: 
                 self.temp_group = ["ColdTemp", "ModerateTemp","HotTemp"]
-
 
             for row in self.dataset.iterrows():
                 try: 
@@ -89,7 +89,7 @@ class IndGenerator:
                     self.logger.info(f"New instance {name} created.")
 
                 except Exception as e:
-                    self.logger.info(f"Error: {e}")
+                    logger.exception(f"Error: {e}")
                     continue
 
         self.synchronize_ontology()
@@ -113,6 +113,7 @@ class IndGenerator:
         
         ontology_save_path =  os.getcwd() + "/ontologies/" + filename
         self.ontology.save(file=ontology_save_path) 
+        logger.info(f"Ontology saved to {ontology_save_path}")
 
 
                 

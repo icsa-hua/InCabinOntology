@@ -1,7 +1,7 @@
 from owlready2 import *
 from designs.rule_creator import RuleCreator
+from tools.logger import logger
 import pandas as pd
-
 
 
 class OntologyParser: 
@@ -17,7 +17,6 @@ class OntologyParser:
 
         self.ontology_path = ontology_path
         self.ontology = self.load_ontology()
-        self.logger = logger  
         self.graph = None 
         self.rule_parser = RuleCreator(self)
 
@@ -70,11 +69,11 @@ class OntologyParser:
             # Check if the Observations class exists in the ontology
             for cls in self.ontology.classes():
                 if cls.name == "Observations":
-                    self.logger.info(f"Class {cls.name} found.")
+                    logger.debug(f"Class {cls.name} found.")
                     break
             else:
-                self.logger.error(f"Class Observation not found in the ontology.")
-                return
+                logger.error(f"Class Observation not found in the ontology.")
+                raise ValueError("Class Observation not found in the ontology.")
             
             # Create the main instance of the Observations class
             obs = self.ontology.Observations(f"observation_{0}")
@@ -123,6 +122,8 @@ class OntologyParser:
                 if index==0 or index == 3: 
                     ontology_save_path =  os.getcwd() + "/ontologies/updated_ontology.owl"
                     self.ontology.save(file=ontology_save_path) 
+                    logger.info("Ontology saved.")
+
                     time.sleep(5)
                     
 
@@ -132,11 +133,11 @@ class OntologyParser:
                 self.rule_parser.remove_prev_values(obs)
                 
 
-            self.logger.info("Ontology saved.")
             return f"Ontology finished processing dataset observations."
+        
         except Exception as e:
-                self.logger.error(f"Error parsing the ontology: {e}")
-                return f"Error parsing the ontology: {e}"
+                logger.exception(f"Error parsing the ontology: {e}")
+                exit(1)
 
 
 

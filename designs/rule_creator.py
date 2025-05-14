@@ -4,7 +4,7 @@ import os
 import uuid 
 import json 
 import random
-
+from tools.logger import logger 
 
 class RuleCreator: 
 
@@ -48,7 +48,6 @@ class RuleCreator:
         """ 
         self.ontology = ontology_parser.ontology 
         self.ontology_path = ontology_parser.ontology_path
-        self.logger = ontology_parser.logger
         self.age_groups = None 
         self.sex_groups = None 
         self.age_group_names = None 
@@ -69,7 +68,7 @@ class RuleCreator:
         graph = Graph() 
         graph.parse(filepath, format=format)
         graph.serialize(destination=destination, format=format) 
-        self.logger("Refined Rules Saved.")
+        logger("Refined Rules Saved...")
         os.remove(filepath)
         return destination 
     
@@ -96,7 +95,7 @@ class RuleCreator:
         
         if not list(getattr(self.ontology, ind_class).instances()): 
             new_instance = getattr(self.ontology, ind_class)(f"{ind_class.lower()}_instance")
-            self.logger.info(f"New instance of {ind_class} created.")
+            logger.debug(f"New instance of {ind_class} created.")
             return new_instance 
         return None
 
@@ -113,7 +112,7 @@ class RuleCreator:
             sensor_instance = getattr(self.ontology, "MonitoringSensor").instances()[0]
             sensor_instance.SensorCapturesObservations = [obs] 
             sensor_instance.SensorMonitorsActor = [self.ontology.Actor.instances()[0]]
-            
+        logger.debug("Monitoring Management system initialized based on observations...")
 
     def observations_to_classes(self, obs, cls_name, property_name):
         """
@@ -126,7 +125,8 @@ class RuleCreator:
         """
 
         if obs is None: 
-            return None 
+            logger.error("The observation data is empty...")
+            exit(1) 
         
         # Get the subclasses for the desired class. 
         phs_class = next(cls for cls in self.ontology.classes() if cls.name.strip() == cls_name)
@@ -136,7 +136,7 @@ class RuleCreator:
             try: 
                 name_prop = prop.name.split('has')[1]
             except: 
-                self.logger.info("Property already in ontology...")
+                logger.debug(f"Property {prop} already exists in ontology...")
                 continue
 
             name_prop = "Drowsiness" if name_prop == "DROWSY" else name_prop
@@ -145,6 +145,7 @@ class RuleCreator:
             flag = [True for cls in phs_class.subclasses() if cls.name == name_prop]
     
             if not flag:
+                logger.debug("Subclasses not in dataset...")
                 continue
 
             # Connect Observation to each subclass 
@@ -154,7 +155,8 @@ class RuleCreator:
                 instance = self.create_instances(name_prop)
                 
                 # Check if instance was created.
-                if instance is None: 
+                if instance is None:
+                    logger.debug(f"Instance of {name_prop} was not created...")
                     continue
                
                 # Define the SWRL rule for the property. 
@@ -167,8 +169,7 @@ class RuleCreator:
                         -> {property_name}(?obs_ind,?{name_prop.lower()})
                     """
                 )
-
-        self.logger.info(f"Rules for Observations successfully created...")
+        logger.debug("Observation rule to get the data created...")
         return True
 
             
@@ -186,48 +187,41 @@ class RuleCreator:
         with self.ontology: 
             # Check if the observation has the object property.
             if not hasattr(obs, cls_property):
-                return None 
+                logger.debug(f"Observation does not have the object property {cls_property}...")
+                raise ValueError(f"Observation does not have the object property {cls_property}...")
             
             ind_property = getattr(obs, cls_property)
 
-            if len(ind_property)==0:
-                return None 
+            if len(ind_property) == 0:
+                logger.debug(f"Empty observation property {cls_property}...")
+                raise ValueError(f"Empty observation property {cls_property}...")
             
             # Iterate through the instances of the object property.
             for instance in ind_property:
 
                 if not hasattr(instance,property_name): 
+                    logger.debug(f"Instance {instance} does not have the property {property_name}...")
                     continue
 
                 name_of_ind = instance.name.split('_')[0]
                 instance_property = getattr(instance, property_name)
 
                 # Pass the value of the observation to the instance.
-                if name_of_ind == 'spo2': 
-                    instance_property.append(int(obs.hasSpO2.pop(0)))
-                elif name_of_ind == 'hr':
-                    instance_property.append(int(obs.hasHR.pop(0)))
-                elif name_of_ind == 'rr':
-                    instance_property.append(int(obs.hasRR.pop(0)))
-                elif name_of_ind == 'hrv':
-                    instance_property.append(int(obs.hasHRV.pop(0)))
-                elif name_of_ind == 'sex':
-
-                    instance_property.append(obs.hasSex.pop(0))
-                    print(instance_property)
+                if name_of_ind == 'spo2': instance_property.append(int(obs.hasSpO2.pop(0)))
+                elif name_of_ind == 'hr': instance_property.append(int(obs.hasHR.pop(0)))
+                elif name_of_ind == 'rr': instance_property.append(int(obs.hasRR.pop(0)))
+                elif name_of_ind == 'hrv': instance_property.append(int(obs.hasHRV.pop(0)))
+                elif name_of_ind == 'sex': instance_property.append(obs.hasSex.pop(0))
                 elif name_of_ind == 'age':
-                    # Because Age is a subclass of actor with numerical value, explicitly use a distinct property name. 
                     if hasattr(instance, 'hasAgeValue'):
                         instance_property = getattr(instance, 'hasAgeValue')
                         instance_property.append(int(obs.hasAge.pop(0)))
-                elif name_of_ind == 'facecharacteristics':
-                    instance_property.append(obs.hasFaceCharacteristics.pop(0))
-                elif name_of_ind == 'demographic':
-                    instance_property.append(obs.hasDemographic.pop(0))
-                elif name_of_ind == 'accessories':
-                    instance_property.append(obs.hasAccessories.pop(0))
-                elif name_of_ind == 'drowsiness':
-                    instance_property.append(int(obs.hasDROWSY.pop(0)))
+                elif name_of_ind == 'facecharacteristics': instance_property.append(obs.hasFaceCharacteristics.pop(0))
+                elif name_of_ind == 'demographic': instance_property.append(obs.hasDemographic.pop(0))
+                elif name_of_ind == 'accessories': instance_property.append(obs.hasAccessories.pop(0))
+                elif name_of_ind == 'drowsiness': instance_property.append(int(obs.hasDROWSY.pop(0)))
+        
+        logger.debug("Values assigned to the appropriate instances...") 
 
 
     def determine_age(self): 
@@ -235,8 +229,8 @@ class RuleCreator:
         This funciton creates the rules to categorize the age of the actor into 
         a group : 
         * Young (0-18) 
-        * Adult (18-65)
-        * Old (>65) 
+        * Middle-Aged (18-65)
+        * Elderly (>65) 
         """
 
         with self.ontology: 
@@ -244,8 +238,8 @@ class RuleCreator:
             if self.ontology.Age is not None: 
                 age_rules = [
                     ("Young", "lessThanOrEqual", 18),
-                    ("Adult", "greaterThanOrEqual", 18, "lessThanOrEqual", 65),
-                    ("Old", "greaterThan", 65)
+                    ("Middle-Aged", "greaterThanOrEqual", 18, "lessThanOrEqual", 65),
+                    ("Elderly", "greaterThan", 65)
                 ]
                 
                 for rule in age_rules:
@@ -264,8 +258,11 @@ class RuleCreator:
             self.age_groups = [age.name.lower() for age in self.ontology.Age.subclasses()]        
             self.age_group_names = [age.name for age in self.ontology.Age.subclasses() ]
 
+        logger.debug("Determine Age | Rules Created successfully...")
+        
 
     def determine_gender(self): 
+
         with self.ontology:
             person_sex = {
                 "Male": ["Man"],
@@ -292,6 +289,8 @@ class RuleCreator:
             self.sex_groups = [gen.name.lower() for gen in self.ontology.Sex.subclasses()]
             self.sex_group_names = [gen.name for gen in self.ontology.Sex.subclasses()]
 
+        logger.debug("Determine Gender | Rules Created successfully...")
+        
 
     def denote_temperature(self): 
 
@@ -320,6 +319,8 @@ class RuleCreator:
 
         self.temp_groups = [gen.name.lower() for gen in self.ontology.WeatherCondition.subclasses()]
         self.temp_group_names = [gen.name for gen in self.ontology.WeatherCondition.subclasses()]
+
+        logger.debug("Denote Temperature created all Temporal instances...")
 
 
     def determine_acc_and_temp(self): 
@@ -361,6 +362,9 @@ class RuleCreator:
             ModerateTemp(?temp), -> AccessoriesIncludeWearables(?accessories_instance, ?glasses),DenotesTemperature(?glasses, ?temp)
             """
         )
+
+        logger.debug("Determine Accessories and Temperature | Rules Created successfully...")
+
 
 
     def determine_HR(self):
@@ -494,6 +498,9 @@ class RuleCreator:
 
                         High_HR(?high_hr) ->  HRis(hr_instance, ?high_hr)
                         """)
+        
+        logger.debug("Determine HR | Rules Created successfully...")
+
                     
 
     def determine_HRV(self): 
@@ -628,6 +635,8 @@ class RuleCreator:
 
                         High_HRV(?high_hrv) -> HRVis(hrv_instance,?high_hrv)
                         """)
+        
+        logger.debug("Determine HRV | Rules Created successfully...")
 
 
     def determine_RR(self):
@@ -763,6 +772,9 @@ class RuleCreator:
 
                         High_RR(?high_rr) -> RRis(rr_instance,?high_rr)
                         """)
+                    
+        logger.debug("Determine RR | Rules Created successfully...")
+        
     
 
     def determine_spo2(self): 
@@ -865,6 +877,7 @@ class RuleCreator:
 
                         Critical_SpO2(?critical_spo2) -> SpO2is(spo2_instance, ?critical_spo2)
                         """)
+        logger.debug("Determine SPo2 | Rules Created successfully...")
             
                 
     def determine_drowsiness(self): 
@@ -924,9 +937,10 @@ class RuleCreator:
             Level_9_KSS(?level_9_kss) -> DrowsinessIs(drowsiness_instance, ?level_9_kss)
             """
         )
+    logger.debug("Determine Drowsiness | Rules Created successfully... ")
 
 
-    def set_up_trends(self): 
+    def set_up_trends(self):  
         self.create_instances('CurrentReading')
         self.create_instances('PreviousReading') 
         ph_factors = ["HR", "HRV", "RR"]
@@ -945,6 +959,8 @@ class RuleCreator:
                     PreviousReading(?previous) -> CurrentHas{ph}Trend(?curr_reading, ?sub_instance), CurrentReadingBecomesPrevious(?curr_reading, ?previous)
                     """
                 )
+            
+        logger.debug("Trends set up successfully... ")
                 
 
     def connect_actor_to_values(self): 
@@ -990,6 +1006,9 @@ class RuleCreator:
                 ActorHasCharacteristics(driver,sex_instance)
             """
         )
+
+        logger.debug("Connect Actor to Individuals | Rules Created Successfully...")
+
 
         
     def determine_fatigue(self): 
@@ -1194,6 +1213,8 @@ class RuleCreator:
                 FatigueIs(fatigue_instance, ?fatigue),
             """)       
         
+    logger.debug("Determining Fatigue State | Rules Created Successfully...")
+        
 
     def determine_eye_state(self): 
         """
@@ -1256,6 +1277,7 @@ class RuleCreator:
             Slow_Closure(?eye_state)-> EyeStateForActor(?eye_state, ?actor)
             """
         )
+    logger.debug("Determine Eye State | Rules Created successfully...")
 
 
     def determine_trends(self):
@@ -1264,12 +1286,14 @@ class RuleCreator:
         prev_trend = self.ontology.PreviousReading.instances()[0] 
         level = ["high", "low", "moderate","very_low"]
         rank = {v:r for r,v in enumerate(level)} 
-        print(current_trend.hasHRRank)
-        print(prev_trend.hasHRRank)
-        print(current_trend.hasHRVRank)
-        print(prev_trend.hasHRVRank)
-        print(current_trend.hasRRRank)
-        print(prev_trend.hasRRRank)
+        
+        logger.debug(current_trend.hasHRRank)
+        logger.debug(current_trend.hasHRVRank)
+        logger.debug(current_trend.hasRRRank)
+        logger.debug(prev_trend.hasHRRank)
+        logger.debug(prev_trend.hasHRVRank)        
+        logger.debug(prev_trend.hasRRRank)
+        
         # Access the individual HR,HRV, RR instances 
         hr_instance = current_trend.CurrentHasHRTrend.pop(0) 
         hrv_instance = current_trend.CurrentHasHRVTrend.pop(0)
@@ -1277,24 +1301,33 @@ class RuleCreator:
 
         # List of individuals accessed through temporal Context 
         comp = [hr_instance, hrv_instance, rr_instance] 
-        print(comp)
+
         # Get the level based on the name of each instance (high, low, moderate, very_low)
         for individual in comp : 
-            
-            level_name = individual.name.split("_")[0] 
-            name_ph = individual.name.split("_")[1] 
+            if "very_low" in individual.name:
+                level_name = individual.name.split("_")[0:2]
+                level_name = "_".join(level_name)
+                name_ph = individual.name.split("_")[2]
+            else: 
+                level_name = individual.name.split("_")[0] 
+                name_ph = individual.name.split("_")[1] 
+
             rank_level = rank[level_name] 
             has_temporal_value = getattr(current_trend, f"has{name_ph.upper()}Rank")
-            print("HasTemporalValue ", has_temporal_value)
+
             if len(has_temporal_value)==0 : 
                 has_temporal_value.append(rank_level)
+
             else: 
                 property_prev = getattr(prev_trend, f"has{name_ph.upper()}Rank")
+
                 if len(property_prev) == 0 : 
                     property_prev.append(has_temporal_value.pop(0))
                 else:
                     property_prev[0] = has_temporal_value.pop(0)
                 has_temporal_value.append(rank_level)
+
+        logger.debug("Determine Trends | Finished setting up trends...")
 
 
     def set_up_rules(self, index): 
@@ -1324,10 +1357,8 @@ class RuleCreator:
                     self.update_trends()
                     # self.determine_trends() 
 
-            
-
         except Exception as e:
-            self.logger.info(e)
+            logger.exception(e)
                 
 
 
@@ -1354,7 +1385,7 @@ class RuleCreator:
                 data[val.name] = val.hasStringValue[0]
             
             driver.hasUniqueIdentifier.append(str(uuid.uuid4()))
-            self.logger.info("Preparing data for label")
+            logger.debug("Preparing data for label")
             try: 
                 eye_state =  driver.ActorHasEyeState[0].name.split("_")[0]
             except: 
@@ -1393,8 +1424,8 @@ class RuleCreator:
                 label.hasDescription.append(json.dumps(actor_data))
                 # label.hasUniqueIdentifier.append(str(uuid.uuid4()))
                 label.LabelTargetsActor = [driver]
-                self.logger.info(f"Label created successfully: {label.hasDescription[0]}")
-            self.logger.info("Label created successfully with name: label.json")
+                logger.debug(f"Label created successfully: {label.hasDescription[0]}")
+            logger.debug("Label created successfully with name: label.json")
         
         except Exception as e:
             print(e)
@@ -1453,7 +1484,7 @@ class RuleCreator:
             fatigue_indi.FatigueIs = [] 
             fatigue_indi.PhysiologicalStateDescribesActor = []
 
-            for state in self.ontology.EyeClosure.instances(): 
+            for state in self.ontology.EyeState.instances(): 
                 state.EyeStateForActor = [] 
 
             for num, indi in numerical_dict.items():
