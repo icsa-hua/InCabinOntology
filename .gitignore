@@ -6,3 +6,5 @@ aiq_env
 AIQ_In_Cabin_Health_Assessment_Ontology.egg-info
 scripts/dataset.py
 logs
+NOTES.md
+

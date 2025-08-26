@@ -1388,7 +1388,7 @@ It holds the data created after processing the observations captured by the sens
   <ActorHasPhysiologicalState rdf:resource="#hrv_instance"/>
   <ActorHasPhysiologicalState rdf:resource="#hr_instance"/>
   <ActorHasPhysiologicalState rdf:resource="#rr_instance"/>
-  <hasUniqueIdentifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">e22c5d8e-1a37-415c-8ce4-f2a56cbe5e20</hasUniqueIdentifier>
+  <hasUniqueIdentifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">03997587-0f64-45c4-8458-58a2f4855e53</hasUniqueIdentifier>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#hot_high_hr_elderly_female">
@@ -2114,7 +2114,7 @@ It holds the data created after processing the observations captured by the sens
 <owl:NamedIndividual rdf:about="#label_instance">
   <rdf:type rdf:resource="#Label"/>
   <in_c:LabelTargetsActor rdf:resource="#driver"/>
-  <hasDescription rdf:datatype="http://www.w3.org/2001/XMLSchema#string">{"prompt_details": {"seed": 914735, "steps": 70, "prompt": "Lorem ipsum...", "response": "Lorem ipsum...", "view_point": "front", "object_name": "person", "time_of_day": "morning", "sky_condition": "clear", "weather_condition": "sunny"}, "label": {"actor_id": "e22c5d8e-1a37-415c-8ce4-f2a56cbe5e20", "eye_state": "Undefined", "age": 25, "face": "Short_hair", "sex": "Woman", "demographic": "Austrian", "accessories": "Glasses", "bounding_box": "...", "bounding_polygon": "..."}}</hasDescription>
+  <hasDescription rdf:datatype="http://www.w3.org/2001/XMLSchema#string">{"prompt_details": {"seed": 364957, "steps": 72, "prompt": "Lorem ipsum...", "response": "Lorem ipsum...", "view_point": "front", "object_name": "person", "time_of_day": "morning", "sky_condition": "clear", "weather_condition": "sunny"}, "label": {"actor_id": "03997587-0f64-45c4-8458-58a2f4855e53", "eye_state": "Undefined", "age": 25, "face": "Short_hair", "sex": "Woman", "demographic": "Austrian", "accessories": "Glasses", "bounding_box": "...", "bounding_polygon": "..."}}</hasDescription>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#monitoringsensor_instance">
@@ -2162,14 +2162,6 @@ It holds the data created after processing the observations captured by the sens
   <ObsIsDividedIntoPhS rdf:resource="#high_hrv_instance"/>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#rr_instance">
-  <rdf:type rdf:resource="#RR"/>
-  <PhSFromObservations rdf:resource="#observation_0"/>
-  <PhysiologicalStateDescribesActor rdf:resource="#driver"/>
-  <RRis rdf:resource="#moderate_rr_instance"/>
-  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">18</hasNumericalValue>
-</owl:NamedIndividual>
-
 <owl:NamedIndividual rdf:about="#hr_instance">
   <rdf:type rdf:resource="#HR"/>
   <PhSFromObservations rdf:resource="#observation_0"/>
@@ -2203,11 +2195,12 @@ It holds the data created after processing the observations captured by the sens
   <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">34</hasNumericalValue>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#facecharacteristics_instance">
-  <rdf:type rdf:resource="#FaceCharacteristics"/>
-  <CharacteristicsDescribeActor rdf:resource="#driver"/>
-  <ActorFromObservations rdf:resource="#observation_0"/>
-  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Short_hair</hasStringValue>
+<owl:NamedIndividual rdf:about="#rr_instance">
+  <rdf:type rdf:resource="#RR"/>
+  <PhSFromObservations rdf:resource="#observation_0"/>
+  <PhysiologicalStateDescribesActor rdf:resource="#driver"/>
+  <RRis rdf:resource="#moderate_rr_instance"/>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">18</hasNumericalValue>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#sex_instance">
@@ -2241,6 +2234,13 @@ It holds the data created after processing the observations captured by the sens
   <CharacteristicsDescribeActor rdf:resource="#driver"/>
   <ActorFromObservations rdf:resource="#observation_0"/>
   <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Austrian</hasStringValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#facecharacteristics_instance">
+  <rdf:type rdf:resource="#FaceCharacteristics"/>
+  <CharacteristicsDescribeActor rdf:resource="#driver"/>
+  <ActorFromObservations rdf:resource="#observation_0"/>
+  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Short_hair</hasStringValue>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#glasses_instance">
@@ -2467,8 +2467,6 @@ It holds the data created after processing the observations captured by the sens
 
 <swrl:Variable rdf:about="urn:swrl#Val"/>
 
-<swrl:Variable rdf:about="urn:swrl#rr"/>
-
 <swrl:Variable rdf:about="urn:swrl#hr"/>
 
 <swrl:Variable rdf:about="urn:swrl#spo2"/>
@@ -2477,7 +2475,7 @@ It holds the data created after processing the observations captured by the sens
 
 <swrl:Variable rdf:about="urn:swrl#hrv"/>
 
-<swrl:Variable rdf:about="urn:swrl#facecharacteristics"/>
+<swrl:Variable rdf:about="urn:swrl#rr"/>
 
 <swrl:Variable rdf:about="urn:swrl#sex"/>
 
@@ -2486,6 +2484,8 @@ It holds the data created after processing the observations captured by the sens
 <swrl:Variable rdf:about="urn:swrl#age"/>
 
 <swrl:Variable rdf:about="urn:swrl#demographic"/>
+
+<swrl:Variable rdf:about="urn:swrl#facecharacteristics"/>
 
 <swrl:Variable rdf:about="urn:swrl#age_value"/>
 
@@ -69509,6 +69509,53 @@ It holds the data created after processing the observations captured by the sens
         <rdf:Description>
           <rdf:first>
             <swrl:DatavaluedPropertyAtom>
+              <swrl:propertyPredicate rdf:resource="#hasFaceCharacteristics"/>
+              <swrl:argument1 rdf:resource="urn:swrl#obs_ind"/>
+              <swrl:argument2 rdf:resource="urn:swrl#Val"/>
+            </swrl:DatavaluedPropertyAtom>
+          </rdf:first>
+          <rdf:rest>
+            <rdf:Description>
+              <rdf:first>
+                <swrl:ClassAtom>
+                  <swrl:classPredicate rdf:resource="#FaceCharacteristics"/>
+                  <swrl:argument1 rdf:resource="urn:swrl#facecharacteristics"/>
+                </swrl:ClassAtom>
+              </rdf:first>
+              <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            </rdf:Description>
+          </rdf:rest>
+        </rdf:Description>
+      </rdf:rest>
+    </rdf:Description>
+  </swrl:body>
+  <swrl:head>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:IndividualPropertyAtom>
+          <swrl:propertyPredicate rdf:resource="#ObsIsDividedIntoActor"/>
+          <swrl:argument1 rdf:resource="urn:swrl#obs_ind"/>
+          <swrl:argument2 rdf:resource="urn:swrl#facecharacteristics"/>
+        </swrl:IndividualPropertyAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </rdf:Description>
+  </swrl:head>
+</swrl:Imp>
+
+<swrl:Imp>
+  <swrl:body>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="#Observations"/>
+          <swrl:argument1 rdf:resource="urn:swrl#obs_ind"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest>
+        <rdf:Description>
+          <rdf:first>
+            <swrl:DatavaluedPropertyAtom>
               <swrl:propertyPredicate rdf:resource="#hasDemographic"/>
               <swrl:argument1 rdf:resource="urn:swrl#obs_ind"/>
               <swrl:argument2 rdf:resource="urn:swrl#Val"/>
@@ -69697,7 +69744,7 @@ It holds the data created after processing the observations captured by the sens
         <rdf:Description>
           <rdf:first>
             <swrl:DatavaluedPropertyAtom>
-              <swrl:propertyPredicate rdf:resource="#hasFaceCharacteristics"/>
+              <swrl:propertyPredicate rdf:resource="#hasRR"/>
               <swrl:argument1 rdf:resource="urn:swrl#obs_ind"/>
               <swrl:argument2 rdf:resource="urn:swrl#Val"/>
             </swrl:DatavaluedPropertyAtom>
@@ -69706,8 +69753,8 @@ It holds the data created after processing the observations captured by the sens
             <rdf:Description>
               <rdf:first>
                 <swrl:ClassAtom>
-                  <swrl:classPredicate rdf:resource="#FaceCharacteristics"/>
-                  <swrl:argument1 rdf:resource="urn:swrl#facecharacteristics"/>
+                  <swrl:classPredicate rdf:resource="#RR"/>
+                  <swrl:argument1 rdf:resource="urn:swrl#rr"/>
                 </swrl:ClassAtom>
               </rdf:first>
               <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
@@ -69721,9 +69768,9 @@ It holds the data created after processing the observations captured by the sens
     <rdf:Description>
       <rdf:first>
         <swrl:IndividualPropertyAtom>
-          <swrl:propertyPredicate rdf:resource="#ObsIsDividedIntoActor"/>
+          <swrl:propertyPredicate rdf:resource="#ObsIsDividedIntoPhS"/>
           <swrl:argument1 rdf:resource="urn:swrl#obs_ind"/>
-          <swrl:argument2 rdf:resource="urn:swrl#facecharacteristics"/>
+          <swrl:argument2 rdf:resource="urn:swrl#rr"/>
         </swrl:IndividualPropertyAtom>
       </rdf:first>
       <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
@@ -69912,53 +69959,6 @@ It holds the data created after processing the observations captured by the sens
           <swrl:propertyPredicate rdf:resource="#ObsIsDividedIntoPhS"/>
           <swrl:argument1 rdf:resource="urn:swrl#obs_ind"/>
           <swrl:argument2 rdf:resource="urn:swrl#hr"/>
-        </swrl:IndividualPropertyAtom>
-      </rdf:first>
-      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-    </rdf:Description>
-  </swrl:head>
-</swrl:Imp>
-
-<swrl:Imp>
-  <swrl:body>
-    <rdf:Description>
-      <rdf:first>
-        <swrl:ClassAtom>
-          <swrl:classPredicate rdf:resource="#Observations"/>
-          <swrl:argument1 rdf:resource="urn:swrl#obs_ind"/>
-        </swrl:ClassAtom>
-      </rdf:first>
-      <rdf:rest>
-        <rdf:Description>
-          <rdf:first>
-            <swrl:DatavaluedPropertyAtom>
-              <swrl:propertyPredicate rdf:resource="#hasRR"/>
-              <swrl:argument1 rdf:resource="urn:swrl#obs_ind"/>
-              <swrl:argument2 rdf:resource="urn:swrl#Val"/>
-            </swrl:DatavaluedPropertyAtom>
-          </rdf:first>
-          <rdf:rest>
-            <rdf:Description>
-              <rdf:first>
-                <swrl:ClassAtom>
-                  <swrl:classPredicate rdf:resource="#RR"/>
-                  <swrl:argument1 rdf:resource="urn:swrl#rr"/>
-                </swrl:ClassAtom>
-              </rdf:first>
-              <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-            </rdf:Description>
-          </rdf:rest>
-        </rdf:Description>
-      </rdf:rest>
-    </rdf:Description>
-  </swrl:body>
-  <swrl:head>
-    <rdf:Description>
-      <rdf:first>
-        <swrl:IndividualPropertyAtom>
-          <swrl:propertyPredicate rdf:resource="#ObsIsDividedIntoPhS"/>
-          <swrl:argument1 rdf:resource="urn:swrl#obs_ind"/>
-          <swrl:argument2 rdf:resource="urn:swrl#rr"/>
         </swrl:IndividualPropertyAtom>
       </rdf:first>
       <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
