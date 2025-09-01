@@ -1,10 +1,16 @@
-from owlready2 import *
-from rdflib import Graph
+from tools.common import *
+from tools.appraisal import StepContext 
+from tools.logger import logger 
+
 import os 
 import uuid 
 import json 
 import random
-from tools.logger import logger 
+
+from typing import Any
+from owlready2 import *
+from rdflib import Graph
+
 
 class RuleCreator: 
 
@@ -68,7 +74,7 @@ class RuleCreator:
         graph = Graph() 
         graph.parse(filepath, format=format)
         graph.serialize(destination=destination, format=format) 
-        logger("Refined Rules Saved...")
+        logger.info("Refined Rules Saved...")
         os.remove(filepath)
         return destination 
     
@@ -114,7 +120,8 @@ class RuleCreator:
             sensor_instance.SensorMonitorsActor = [self.ontology.Actor.instances()[0]]
         logger.debug("Monitoring Management system initialized based on observations...")
 
-    def observations_to_classes(self, obs, cls_name, property_name):
+
+    def observations_to_classes(self, obs_state=None, cls_name="", property_name=""):
         """
         This function connects the observation to every class corresponding to a column in the 
         dataset. It uses the object property name to connect to the Actor or Physiological State class. 
@@ -124,7 +131,7 @@ class RuleCreator:
             property_name (str): The name of the property to connect to.
         """
 
-        if obs is None: 
+        if obs_state is None: 
             logger.error("The observation data is empty...")
             exit(1) 
         
@@ -132,14 +139,15 @@ class RuleCreator:
         phs_class = next(cls for cls in self.ontology.classes() if cls.name.strip() == cls_name)
 
         # Check the property and connect the observation to the class.
-        for prop in obs.get_properties():
+        for prop in obs_state.get_properties():
+
             try: 
                 name_prop = prop.name.split('has')[1]
             except: 
                 logger.debug(f"Property {prop} already exists in ontology...")
                 continue
 
-            name_prop = "Drowsiness" if name_prop == "DROWSY" else name_prop
+            name_prop = "Drowsiness" if name_prop == "Drowsy" else name_prop
 
             # Flag is raised when Physiological State class iterates through subclasses not in the dataset.
             flag = [True for cls in phs_class.subclasses() if cls.name == name_prop]
@@ -150,7 +158,6 @@ class RuleCreator:
 
             # Connect Observation to each subclass 
             with self.ontology:
-                
                 # Instance of the subclass (e.g. HR, Accessories, ..., etc.)
                 instance = self.create_instances(name_prop)
                 
@@ -160,20 +167,27 @@ class RuleCreator:
                     continue
                
                 # Define the SWRL rule for the property. 
-                rule = Imp() 
-                rule.set_as_rule(
-                    f"""
-                        Observations(?obs_ind),
-                        {prop.name}(?obs_ind,?Val),
-                        {name_prop}(?{name_prop.lower()})
-                        -> {property_name}(?obs_ind,?{name_prop.lower()})
-                    """
-                )
-        logger.debug("Observation rule to get the data created...")
+                rule_name = f"{prop.name}_{name_prop}" 
+
+                if not has_rule_named(self.ontology,name=rule_name):  
+                    rule = Imp(rule_name, namespace=self.ontology) 
+
+                    rule.set_as_rule(
+                        f"""
+                            Observations(?obs_ind),
+                            {prop.name}(?obs_ind,?Val),
+                            {name_prop}(?{name_prop.lower()})
+                            -> {property_name}(?obs_ind,?{name_prop.lower()})
+                        """
+                    )
+                    logger.debug(f"[checked] Observation rulle with name {rule_name} added")
+                else: 
+                    logger.debug(f"[!] Observation rule with name {rule_name} already exists")
+
         return True
 
-            
-    def assign_values(self, obs, cls_property, property_name):
+    
+    def assign_values(self, obs_state:Any=None, cls_property:str="", property_name:str=""):
         """
         This function assigns the values of the observations to the instances of the classes, 
         previously created in the ontology. Requires the reasoner to have been executed, otherwise 
@@ -184,44 +198,32 @@ class RuleCreator:
             property_name (str): The name of the data property to pass the values. 
         """
 
-        with self.ontology: 
-            # Check if the observation has the object property.
-            if not hasattr(obs, cls_property):
-                logger.debug(f"Observation does not have the object property {cls_property}...")
-                raise ValueError(f"Observation does not have the object property {cls_property}...")
-            
-            ind_property = getattr(obs, cls_property)
+        # Check if the observation has the object property.
+        if not hasattr(obs_state, cls_property):
+            logger.debug(f"Observation does not have the object property {cls_property}...")
+            raise ValueError(f"Observation does not have the object property {cls_property}...")
 
-            if len(ind_property) == 0:
-                logger.debug(f"Empty observation property {cls_property}...")
-                raise ValueError(f"Empty observation property {cls_property}...")
-            
-            # Iterate through the instances of the object property.
-            for instance in ind_property:
+        with StepContext(name='Assign Values From Obs', catch=(KeyError, )): 
 
-                if not hasattr(instance,property_name): 
-                    logger.debug(f"Instance {instance} does not have the property {property_name}...")
-                    continue
+            with self.ontology: 
+                ind_property = getattr(obs_state, cls_property)
 
-                name_of_ind = instance.name.split('_')[0]
-                instance_property = getattr(instance, property_name)
+                if len(ind_property) == 0:
+                    logger.debug(f"Empty observation property {cls_property}...")
+                    raise ValueError(f"Empty observation property {cls_property}...")
+                
+                # Iterate through the instances of the object property.
+                for instance in ind_property:
+                    if not hasattr(instance,property_name): 
+                        logger.debug(f"Instance {instance} does not have the property {property_name}...")
+                        continue
 
-                # Pass the value of the observation to the instance.
-                if name_of_ind == 'spo2': instance_property.append(int(obs.hasSpO2.pop(0)))
-                elif name_of_ind == 'hr': instance_property.append(int(obs.hasHR.pop(0)))
-                elif name_of_ind == 'rr': instance_property.append(int(obs.hasRR.pop(0)))
-                elif name_of_ind == 'hrv': instance_property.append(int(obs.hasHRV.pop(0)))
-                elif name_of_ind == 'sex': instance_property.append(obs.hasSex.pop(0))
-                elif name_of_ind == 'age':
-                    if hasattr(instance, 'hasAgeValue'):
-                        instance_property = getattr(instance, 'hasAgeValue')
-                        instance_property.append(int(obs.hasAge.pop(0)))
-                elif name_of_ind == 'facecharacteristics': instance_property.append(obs.hasFaceCharacteristics.pop(0))
-                elif name_of_ind == 'demographic': instance_property.append(obs.hasDemographic.pop(0))
-                elif name_of_ind == 'accessories': instance_property.append(obs.hasAccessories.pop(0))
-                elif name_of_ind == 'drowsiness': instance_property.append(int(obs.hasDROWSY.pop(0)))
-        
-        logger.debug("Values assigned to the appropriate instances...") 
+                    obs_to_PHY_instance(
+                        obs_state=obs_state, 
+                        instance=instance, 
+                        property_name=property_name
+                    )
+
 
 
     def determine_age(self): 
@@ -236,29 +238,32 @@ class RuleCreator:
         with self.ontology: 
 
             if self.ontology.Age is not None: 
+
                 age_rules = [
                     ("Young", "lessThanOrEqual", 18),
                     ("Middle-Aged", "greaterThanOrEqual", 18, "lessThanOrEqual", 65),
                     ("Elderly", "greaterThan", 65)
                 ]
-                
+
                 for rule in age_rules:
                     self.create_instances(rule[0])
-                    age_rule = Imp()
-                    age_rule.set_as_rule(
-                        f"""
-                        Age(age_instance),
-                        hasAgeValue(age_instance, ?age_value),
-                        {rule[1]}(?age_value, {rule[2]})
-                        {f', {rule[3]}(?age_value, {rule[4]})' if len(rule) > 3 else ''},
-                        {rule[0]}(?age_group) -> AgeBelongsToGroup(age_instance, ?age_group)
-                        """
-                    )
+                    rule_name = f"{rule[0]}_group_rule"
+                    
+                    if not has_rule_named(self.ontology, name=rule_name): 
+                        Imp(rule_name).set_as_rule(
+                            f"""
+                            Age(age_instance),
+                            hasAgeValue(age_instance, ?age_value),
+                            {rule[1]}(?age_value, {rule[2]})
+                            {f', {rule[3]}(?age_value, {rule[4]})' if len(rule) > 3 else ''},
+                            {rule[0]}(?age_group) -> AgeBelongsToGroup(age_instance, ?age_group)
+                            """
+                        )
+
             # Keep the age groups in a list to get the corresponding threshold instance later. 
             self.age_groups = [age.name.lower() for age in self.ontology.Age.subclasses()]        
             self.age_group_names = [age.name for age in self.ontology.Age.subclasses() ]
 
-        logger.debug("Determine Age | Rules Created successfully...")
         
 
     def determine_gender(self): 
@@ -320,52 +325,58 @@ class RuleCreator:
         self.temp_groups = [gen.name.lower() for gen in self.ontology.WeatherCondition.subclasses()]
         self.temp_group_names = [gen.name for gen in self.ontology.WeatherCondition.subclasses()]
 
-        logger.debug("Denote Temperature created all Temporal instances...")
 
 
     def determine_acc_and_temp(self): 
         
-        rule_scarf = Imp()
-        rule_scarf.set_as_rule(
-            f""" 
-            Actor(?actor), 
-            ActorHasCharacteristics(?actor, ?accessories_instance),
-            Accessories(?accessories_instance),
-            hasStringValue(?accessories_instance, ?acc_value),
-            stringEqualIgnoreCase(?acc_value, "Scarf"),
-            Scarf(?scarf),
-            ColdTemp(?temp) -> AccessoriesIncludeWearables(?accessories_instance, ?scarf),DenotesTemperature(?scarf, ?temp)
-            """
-        )
-        rule_hat = Imp()
-        rule_hat.set_as_rule(
-            f""" 
-            Actor(?actor), 
-            ActorHasCharacteristics(?actor, ?accessories_instance),
-            Accessories(?accessories_instance),
-            hasStringValue(?accessories_instance, ?acc_value),
-            stringEqualIgnoreCase(?acc_value, "Hat"),
-            Hat(?hat),
-            HotTemp(?temp), -> AccessoriesIncludeWearables(?accessories_instance, ?hat),DenotesTemperature(?hat, ?temp)
-            """
-        )
+        rule_name = "scarf_cold_rule" 
+        
+        names = ["scarf_cold_rule", "hat_hot_rule", "glasses_normaltemp_rule"]
+        temps = ["ColdTemp", "HotTemp","ModerateTemp"]
+        accs = ["Scarf", "Hat", "Glasses"]
 
-        rule_glasses = Imp()
-        rule_glasses.set_as_rule(
-            f""" 
-            Actor(?actor), 
-            ActorHasCharacteristics(?actor, ?accessories_instance),
-            Accessories(?accessories_instance),
-            hasStringValue(?accessories_instance, ?acc_value),
-            stringEqualIgnoreCase(?acc_value, "Glasses"),
-            Glasses(?glasses),
-            ModerateTemp(?temp), -> AccessoriesIncludeWearables(?accessories_instance, ?glasses),DenotesTemperature(?glasses, ?temp)
-            """
-        )
+        for indx, name in enumerate(names): 
+            if not  has_rule_named(self.ontology, name=rule_name): 
+                Imp(name).set_as_rule(
+                    f"""
+                        ActorState(?actor_state), ActorStateHasCharacteristics(?actor_state, ?accessories_instance), 
+                        Accessories(?accessories_instance), hasStringValue(?accessories_instance, ?acc_value),
+                        stringEqualIgnoreCase(?acc_value, "{accs[indx]}"), {accs[indx]}(?accs), {temps[indx]}(?temp) -> 
+                        AccessoriesIncludeWearables(?accessories_instance, ?accs), DenotesTemperature(?accs,?temp)
+                    """
+                )
+                
 
-        logger.debug("Determine Accessories and Temperature | Rules Created successfully...")
+    def find_threshold_profile_rules(self): 
+        for i, age_group in enumerate(self.age_group_names): 
+            age = self.age_groups[i] 
+            for jj, sex_group in enumerate(self.sex_group_names): 
+                sex = self.sex_groups[jj] 
+                for tt, temp_group in enumerate(self.temp_group_names): 
+                    temp = self.temp_groups[tt] 
+                    rule_name = f"profile_{age}_{sex}_{temp}"
+                    if not has_rule_named(self.ontology, name=rule_name): 
+                        Imp(rule_name).set_as_rule(
+                            f"""
+                                ActorState(?act_state), ActorStateHasCharacteristics(?act_state, ?age_instance),
+                                AgeBelongsToGroup(?age_instance, ?age_group), {age_group}(?age_group), 
+                                ActorStateHasCharacteristics(?act_state, ?sex_instance), 
+                                SexBelongsToPerson(?sex_instance, ?sex_group), {sex_group}(?sex_group), 
+                                ActorStateHasCharacteristics(?act_state, ?accs), 
+                                AccessoriesIncludeWearables(?accs, ?v), 
+                                DenotesTemperature(?v, ?temp), {temp_group}(?temp), 
+                                ThresholdProfile(?tp) 
+                                -> StateHasThresholdProfile(?act_state, ?tp) 
+                            """
+                        )
 
 
+    def determine_thresholds_profile(self):
+
+        self.find_threshold_profile_rules()
+        thr_values = capture_thr_values_from_individuals(self.ontology) 
+        parse_thr_profiles(self.ontology, thr_values) 
+        
 
     def determine_HR(self):
         """
@@ -379,127 +390,57 @@ class RuleCreator:
         These threshold ranges change based on the Age group of the actor.
         """
 
-        for i,group in enumerate(self.age_group_names): 
-            age = self.age_groups[i]
-            for jj, sex_group in enumerate(self.sex_group_names):
-                sex = self.sex_groups[jj]
-                for ll, temp_group in enumerate(self.temp_group_names):
-                    temp = self.temp_groups[ll].split('temp')[0]
+        if not self.ontology.search(iri="Very_Low_HR"): self.create_instances("Very_Low_HR") 
+        if not has_rule_named(onto=self.ontology, name="very_low_hr_rule"): 
+            Imp("very_low_hr_rule").set_as_rule(
+                f""" 
+                ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
+                appliesHRLow(?tp, ?hr_low), hasThrValue(?hr_low, ?low), 
+                HR(?hr), hasNumericalValue(?hr, ?value), 
+                lessThan(?value, ?low), 
+                Very_Low_HR(?vrl_hr)  -> HRis(hr_instance, ?vrl_hr) 
+                """
+            )
 
-                    hr_rule_low = Imp()
-                    self.create_instances("Very_Low_HR")
-                    hr_rule_low.set_as_rule(
-                        f"""
-                        Actor(?actor), 
-                        ActorHasCharacteristics(?actor, ?age_instance),
-                        AgeBelongsToGroup(?age_instance, ?group),
+        if not self.ontology.search(iri="Low_HR"): self.create_instances("Low_HR") 
+        if not has_rule_named(onto=self.ontology, name="low_hr_rule"): 
+            Imp("low_hr_rule").set_as_rule(
+                 f""" 
+                ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
+                appliesHRLow(?tp, ?hr_low), hasThrValue(?hr_low, ?low), 
+                appliesHRModerate(?tp, ?hr_mod), hasThrValue(?hr_mod, ?mod), 
+                HR(?hr), hasNumericalValue(?hr, ?value), 
+                greaterThanOrEqual(?value, ?hr_low),
+                lessThan(?value, ?hr_mod), 
+                Low_HR(?l_hr)  -> HRis(hr_instance, ?l_hr) 
+                """
+            )
 
-                        {group}(?group),
-                        ActorHasCharacteristics(?actor, ?sex_instance),
-                        SexBelongsToPerson(?sex_instance, ?sex_group),
-                        {sex_group}(?sex_group),
+        if not self.ontology.search(iri="Moderate_HR"): self.create_instances("Moderate_HR") 
+        if not has_rule_named(onto=self.ontology, name="moderate_hr_rule"): 
+            Imp("moderate_hr_rule").set_as_rule(
+                f""" 
+                ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
+                appliesHRModerate(?tp, ?hr_mod), hasThrValue(?hr_mod, ?mod), 
+                appliesHRHigh(?tp, ?hr_high), hasThrValue(?hr_high, ?high), 
+                HR(?hr), hasNumericalValue(?hr, ?value), 
+                greaterThanOrEqual(?value, ?hr_mod),
+                lessThan(?value, ?hr_high), 
+                Moderate_HR(?m_hr)  -> HRis(hr_instance, ?m_hr) 
+                """
+            )
 
-                        ActorHasCharacteristics(driver, accessories_instance), 
-                        AccessoriesIncludeWearables(accessories_instance,?cloth_instance),
-                        DenotesTemperature(?cloth_instance, ?temp),
-                        {temp_group}(?temp),
-                        
-                        HR(hr_instance),
-                        hasNumericalValue(hr_instance, ?hr_value),
-                        greaterThan(?hr_value, 0),
-                        HR_THR({temp}_low_hr_{age}_{sex}), 
-                        hasThrValue({temp}_low_hr_{age}_{sex}, ?low_value),
-                        lessThan(?hr_value, ?low_value),
-
-                        Very_Low_HR(?very_low_hr) ->  HRis(hr_instance, ?very_low_hr)
-                        """)
-                    
-                    
-                    hr_rule_slightly_low = Imp()
-                    self.create_instances("Low_HR")
-                    hr_rule_slightly_low.set_as_rule(
-                        f"""
-                        Actor(?actor), 
-                        ActorHasCharacteristics(?actor, ?age_instance),
-                        AgeBelongsToGroup(?age_instance, ?group),
-                        {group}(?group),
-                        ActorHasCharacteristics(?actor, ?sex_instance),
-                        SexBelongsToPerson(?sex_instance, ?sex_group),
-                        {sex_group}(?sex_group),
-                        
-                        ActorHasCharacteristics(driver, accessories_instance), 
-                        AccessoriesIncludeWearables(accessories_instance,?cloth_instance),
-                        DenotesTemperature(?cloth_instance, ?temp),
-                        {temp_group}(?temp),
-                        
-                        HR(hr_instance),
-                        hasNumericalValue(hr_instance, ?hr_value),
-                        HR_THR({temp}_low_hr_{age}_{sex}), 
-                        hasThrValue({temp}_low_hr_{age}_{sex}, ?low_value),
-                        greaterThanOrEqual(?hr_value, ?low_value),
-                        HR_THR({temp}_moderate_hr_{age}_{sex}),
-                        hasThrValue({temp}_moderate_hr_{age}_{sex}, ?moderate_value),
-                        lessThan(?hr_value,?moderate_value),
-
-                        Low_HR(?low_instance) -> HRis(hr_instance, ?low_instance)
-                        """)
-            
-                    hr_rule_moderate = Imp()
-                    self.create_instances("Moderate_HR")
-                    hr_rule_moderate.set_as_rule(
-                        f"""
-                        Actor(?actor), 
-                        ActorHasCharacteristics(?actor, ?age),
-                        AgeBelongsToGroup(?age, ?group),
-                        {group}(?group),
-                        ActorHasCharacteristics(?actor, ?sex_instance),
-                        SexBelongsToPerson(?sex_instance, ?sex_group),
-                        {sex_group}(?sex_group),
-                        
-                        ActorHasCharacteristics(driver, accessories_instance), 
-                        AccessoriesIncludeWearables(accessories_instance,?cloth_instance),
-                        DenotesTemperature(?cloth_instance, ?temp),
-                        {temp_group}(?temp),
-
-                        HR(hr_instance),
-                        hasNumericalValue(hr_instance, ?hr_value),
-                        HR_THR({temp}_moderate_hr_{age}_{sex}),
-                        hasThrValue({temp}_moderate_hr_{age}_{sex}, ?moderate_value),
-                        greaterThanOrEqual(?hr_value, ?moderate_value),
-                        HR_THR({temp}_high_hr_{age}_{sex}),
-                        hasThrValue({temp}_high_hr_{age}_{sex}, ?high_value),
-                        lessThan(?hr_value,?high_value), 
-
-                        Moderate_HR(?moderate_hr) ->  HRis(hr_instance,?moderate_hr)
-                        """)
-                    
-                    hr_rule_high = Imp()
-                    self.create_instances("High_HR")
-                    hr_rule_high.set_as_rule(
-                        f"""
-                        Actor(driver), 
-                        ActorHasCharacteristics(driver, ?age),
-                        AgeBelongsToGroup(?age, ?group),
-                        {group}(?group),
-                        ActorHasCharacteristics(driver, ?sex_instance),
-                        SexBelongsToPerson(?sex_instance, ?sex_group),
-                        {sex_group}(?sex_group),
-                        
-                        ActorHasCharacteristics(driver, accessories_instance), 
-                        AccessoriesIncludeWearables(accessories_instance,?cloth_instance),
-                        DenotesTemperature(?cloth_instance, ?temp),
-                        {temp_group}(?temp),
-
-                        HR(hr_instance),
-                        hasNumericalValue(hr_instance, ?hr_value),
-                        HR_THR({temp}_high_hr_{age}_{sex}),
-                        hasThrValue({temp}_high_hr_{age}_{sex}, ?high_value),
-                        greaterThanOrEqual(?hr_value, ?high_value),
-
-                        High_HR(?high_hr) ->  HRis(hr_instance, ?high_hr)
-                        """)
-        
-        logger.debug("Determine HR | Rules Created successfully...")
+        if not self.ontology.search(iri="High_HR"): self.create_instances("High_HR") 
+        if not has_rule_named(onto=self.ontology, name="high_hr_rule"): 
+            Imp("high_hr_rule").set_as_rule(
+                f""" 
+                ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
+                appliesHRHigh(?tp, ?hr_high), hasThrValue(?hr_high, ?high), 
+                HR(?hr), hasNumericalValue(?hr, ?value), 
+                greaterThanOrEqual(?value, ?hr_high),
+                High_HR(?h_hr)  -> HRis(hr_instance, ?h_hr) 
+                """
+            )
 
                     
 
@@ -515,128 +456,56 @@ class RuleCreator:
         These threshold ranges change based on the Age group of the actor.
         """
       
-        for i,group in enumerate(self.age_group_names):     
-            age = self.age_groups[i]
-            for jj, sex_group in enumerate(self.sex_group_names):
-                sex = self.sex_groups[jj]
-                for ll, temp_group in enumerate(self.temp_group_names):
-                    temp = self.temp_groups[ll].split('temp')[0]
+        if not self.ontology.search(iri="Very_Low_HRV"): self.create_instances("Very_Low_HRV") 
+        if not has_rule_named(onto=self.ontology, name="very_low_hrv_rule"): 
+            Imp("very_low_hrv_rule").set_as_rule(
+                f"""
+                ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
+                appliesHRVLow(?tp, ?hrv_low), hasThrValue(?hrv_low, ?low), 
+                HRV(?hrv), hasNumericalValue(?hrv, ?value), 
+                lessThan(?value, ?low), 
+                Very_Low_HRV(?vrl_hrv) -> HRVis(hrv_instance, ?vrl_hrv) 
+                """
+            )
 
-                    hrv_rule_very_low = Imp()
-                    self.create_instances("Very_Low_HRV")
-                    hrv_rule_very_low.set_as_rule(
-                        f"""
-                        Actor(?actor), 
-                        ActorHasCharacteristics(?actor, ?age),
-                        AgeBelongsToGroup(?age, ?group),
-                        {group}(?group),
-                        ActorHasCharacteristics(?actor, ?sex_instance),
-                        SexBelongsToPerson(?sex_instance, ?sex_group),
-                        {sex_group}(?sex_group),
-                        
-                        ActorHasCharacteristics(driver, accessories_instance), 
-                        AccessoriesIncludeWearables(accessories_instance,?cloth_instance),
-                        DenotesTemperature(?cloth_instance, ?temp),
-                        {temp_group}(?temp),
 
-                        HRV(hrv_instance),
-                        hasNumericalValue(hrv_instance, ?hrv_value),
-                        greaterThan(?hrv_value, 0),
-                        HRV_THR({temp}_low_hrv_{age}_{sex}), 
-                        hasThrValue({temp}_low_hrv_{age}_{sex}, ?low_value),
-                        lessThan(?hrv_value,?low_value),
+        if not self.ontology.search(iri="Low_HRV"): self.create_instances("Low_HRV") 
+        if not has_rule_named(onto=self.ontology, name="low_hrv_rule"): 
+            Imp("low_hrv_rule").set_as_rule(
+                f"""
+                ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
+                appliesHRVLow(?tp, ?hrv_low), hasThrValue(?hrv_low, ?low), 
+                appliesHRVModerate(?tp, ?hrv_mod), hasThrValue(?hrv_mod, ?mod), 
+                HRV(?hrv), hasNumericalValue(?hrv, ?value), 
+                greaterThanOrEqual(?value, ?low), lessThan(?value, ?mod), 
+                Low_HRV(?l_hrv) -> HRVis(hrv_instance, ?l_hrv) 
+                """
+            )
 
-                        Very_Low_HRV(?very_low_hrv) -> HRVis(hrv_instance,?very_low_hrv)
-                        """)
-                    
-                    hrv_rule_low = Imp()
-                    self.create_instances("Low_HRV")
-                    hrv_rule_low.set_as_rule(
-                        f"""
-                        Actor(?actor), 
-                        ActorHasCharacteristics(?actor, ?age),
-                        AgeBelongsToGroup(?age, ?group),
-                        {group}(?group),
+        if not self.ontology.search(iri="Moderate_HRV"): self.create_instances("Moderate_HRV") 
+        if not has_rule_named(onto=self.ontology, name="moderate_hrv_rule"): 
+            Imp("moderate_hrv_rule").set_as_rule(
+                f"""
+                ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
+                appliesHRVModerate(?tp, ?hrv_mod), hasThrValue(?hrv_mod, ?mod), 
+                appliesHRVHigh(?tp, ?hrv_high), hasThrValue(?hrv_high, ?high), 
+                HRV(?hrv), hasNumericalValue(?hrv, ?value), 
+                greaterThanOrEqual(?value, ?mod), lessThan(?value, ?high), 
+                Moderate_HRV(?mod_hrv) -> HRVis(hrv_instance, ?mod_hrv) 
+                """
+            )
 
-                        ActorHasCharacteristics(?actor, ?sex_instance),
-                        SexBelongsToPerson(?sex_instance, ?sex_group),
-                        {sex_group}(?sex_group),
-                        
-                        ActorHasCharacteristics(driver, accessories_instance), 
-                        AccessoriesIncludeWearables(accessories_instance,?cloth_instance),
-                        DenotesTemperature(?cloth_instance, ?temp),
-                        {temp_group}(?temp),                     
-
-                        HRV(hrv_instance),
-                        hasNumericalValue(hrv_instance, ?hrv_value),
-                        HRV_THR({temp}_low_hrv_{age}_{sex}), 
-                        hasThrValue({temp}_low_hrv_{age}_{sex}, ?low_value),
-                        greaterThanOrEqual(?hrv_value, ?low_value),
-                        HRV_THR({temp}_moderate_hrv_{age}_{sex}),
-                        hasThrValue({temp}_moderate_hrv_{age}_{sex}, ?moderate_value),
-                        lessThan(?hrv_value,?moderate_value), 
-
-                        Low_HRV(?low_hrv) -> HRVis(hrv_instance,?low_hrv)
-                        """)
-                
-                    hrv_rule_moderate = Imp()
-                    self.create_instances("Moderate_HRV")
-                    hrv_rule_moderate.set_as_rule(
-                        f"""
-                        Actor(?actor), 
-                        ActorHasCharacteristics(?actor, ?age),
-                        AgeBelongsToGroup(?age, ?group),
-                        {group}(?group),
-
-                        ActorHasCharacteristics(?actor, ?sex_instance),
-                        SexBelongsToPerson(?sex_instance, ?sex_group),
-                        {sex_group}(?sex_group),
-
-                        ActorHasCharacteristics(driver, accessories_instance), 
-                        AccessoriesIncludeWearables(accessories_instance,?cloth_instance),
-                        DenotesTemperature(?cloth_instance, ?temp),
-                        {temp_group}(?temp),  
-                        
-                        HRV(hrv_instance),
-                        hasNumericalValue(hrv_instance, ?hrv_value),
-                        HRV_THR({temp}_moderate_hrv_{age}_{sex}),
-                        hasThrValue({temp}_moderate_hrv_{age}_{sex}, ?moderate_value),
-                        greaterThan(?hrv_value, ?moderate_value),
-                        HRV_THR({temp}_high_hrv_{age}_{sex}),
-                        hasThrValue({temp}_high_hrv_{age}_{sex}, ?high_value),
-                        lessThan(?hrv_value,?high_value),
-   
-                        Moderate_HRV(?moderate_hrv) -> HRVis(hrv_instance,?moderate_hrv)
-                        """)
-                    
-                    hrv_rule_high = Imp()
-                    self.create_instances("High_HRV")
-                    hrv_rule_high.set_as_rule(
-                        f"""
-                        Actor(?actor), 
-                        ActorHasCharacteristics(?actor, ?age),
-                        AgeBelongsToGroup(?age, ?group),
-                        {group}(?group),
-
-                        ActorHasCharacteristics(?actor, ?sex_instance),
-                        SexBelongsToPerson(?sex_instance, ?sex_group),
-                        {sex_group}(?sex_group),
-                        
-                        ActorHasCharacteristics(driver, accessories_instance), 
-                        AccessoriesIncludeWearables(accessories_instance,?cloth_instance),
-                        DenotesTemperature(?cloth_instance, ?temp),
-                        {temp_group}(?temp),  
-
-                        HRV(hrv_instance),
-                        hasNumericalValue(hrv_instance, ?hrv_value),
-                        HRV_THR({temp}_high_hrv_{age}_{sex}),
-                        hasThrValue({temp}_high_hrv_{age}_{sex}, ?high_value),
-                        greaterThanOrEqual(?hrv_value, ?high_value),
-
-                        High_HRV(?high_hrv) -> HRVis(hrv_instance,?high_hrv)
-                        """)
-        
-        logger.debug("Determine HRV | Rules Created successfully...")
+        if not self.ontology.search(iri="High_HRV"): self.create_instances("High_HRV")
+        if not has_rule_named(onto=self.ontology, name="high_hrv_rule"): 
+            Imp("high_hrv_rule").set_as_rule(
+                f"""
+                ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
+                appliesHRHigh(?tp, ?hrv_high), hasThrValue(?high_hrv, ?high), 
+                HRV(?hrv), hasNumericalValue(?hrv, ?value), 
+                greaterThanOrEqual(?value, ?high),
+                High_HRV(?high_hrv) -> HRVis(hrv_instance, ?high_hrv) 
+                """
+            )
 
 
     def determine_RR(self):
@@ -651,131 +520,58 @@ class RuleCreator:
         These threshold ranges change based on the Age group of the actor.
         """
 
-        for i,group in enumerate(self.age_group_names):
-            age = self.age_groups[i]
-            for jj, sex_group in enumerate(self.sex_group_names):
-                sex = self.sex_groups[jj]
-                for ll, temp_group in enumerate(self.temp_group_names):
-                    temp = self.temp_groups[ll].split('temp')[0]
-                    
-                    self.create_instances("Very_Low_RR")
-                    rr_rule_very_low = Imp() 
-                    rr_rule_very_low.set_as_rule(
-                        f"""
-                        Actor(?actor), 
-                        ActorHasCharacteristics(?actor, ?age),
-                        AgeBelongsToGroup(?age, ?group),
-                        {group}(?group),
 
-                        ActorHasCharacteristics(?actor, ?sex_instance),
-                        SexBelongsToPerson(?sex_instance, ?sex_group),
-                        {sex_group}(?sex_group),
+        if not self.ontology.search(iri="Very_Low_RR"):self.create_instances("Very_Low_RR") 
+        if not has_rule_named(onto=self.ontology, name="very_low_rr_rule"):
+            Imp("very_low_rr_rule").set_as_rule(
+                f"""
+                ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
+                appliesRRLow(?tp, ?rr_low), hasThrValue(?rr_low, ?low), 
+                RR(?rr), hasNumericalValue(?rr, ?value), 
+                lessThan(?value, ?low), 
+                Very_Low_RR(?vrl_rr) -> RRis(rr_instance, ?vrl_rr) 
+                """
+            )
 
-                        ActorHasCharacteristics(driver, accessories_instance), 
-                        AccessoriesIncludeWearables(accessories_instance,?cloth_instance),
-                        DenotesTemperature(?cloth_instance, ?temp),
-                        {temp_group}(?temp),
 
-                        RR(rr_instance),
-                        hasNumericalValue(rr_instance, ?rr_value),
-                        greaterThan(?rr_value, 0),
-                        RR_THR({temp}_low_rr_{age}_{sex}), 
-                        hasThrValue({temp}_low_rr_{age}_{sex}, ?low_value),
-                        lessThan(?rr_value, ?low_value), 
-
-                        Very_Low_RR(?very_low_rr)  -> RRis(rr_instance,?very_low_rr)
-                        """)
-                    
-                    rr_rule_low = Imp()
-                    self.create_instances("Low_RR")
-                    rr_rule_low.set_as_rule(
-                        f"""
-                        Actor(?actor), 
-                        ActorHasCharacteristics(?actor, ?age),
-                        AgeBelongsToGroup(?age, ?group),
-                        {group}(?group),
-
-                        ActorHasCharacteristics(?actor, ?sex_instance),
-                        SexBelongsToPerson(?sex_instance, ?sex_group),
-                        {sex_group}(?sex_group),
-
-                        ActorHasCharacteristics(driver, accessories_instance), 
-                        AccessoriesIncludeWearables(accessories_instance,?cloth_instance),
-                        DenotesTemperature(?cloth_instance, ?temp),
-                        {temp_group}(?temp),
-
-                        RR(rr_instance),
-                        hasNumericalValue(rr_instance, ?rr_value),
-                        RR_THR({temp}_low_rr_{age}_{sex}), 
-                        hasThrValue({temp}_low_rr_{age}_{sex}, ?low_value),
-                        greaterThanOrEqual(?rr_value, ?low_value),
-                        RR_THR({temp}_moderate_rr_{age}_{sex}),
-                        hasThrValue({temp}_moderate_rr_{age}_{sex}, ?moderate_value),
-                        lessThan(?rr_value,?moderate_value), 
-
-                        Low_RR(?low_rr) -> RRis(rr_instance,?low_rr)
-                        """)
-                
-                    rr_rule_moderate = Imp()
-                    self.create_instances("Moderate_RR")
-                    rr_rule_moderate.set_as_rule(
-                        f"""
-                        Actor(?actor), 
-                        ActorHasCharacteristics(?actor, ?age),
-                        AgeBelongsToGroup(?age, ?group),
-                        {group}(?group),
-
-                        ActorHasCharacteristics(?actor, ?sex_instance),
-                        SexBelongsToPerson(?sex_instance, ?sex_group),
-                        {sex_group}(?sex_group),
-
-                        ActorHasCharacteristics(driver, accessories_instance), 
-                        AccessoriesIncludeWearables(accessories_instance,?cloth_instance),
-                        DenotesTemperature(?cloth_instance, ?temp),
-                        {temp_group}(?temp),
-
-                        RR(rr_instance),
-                        hasNumericalValue(rr_instance, ?rr_value),
-                        RR_THR({temp}_moderate_rr_{age}_{sex}),
-                        hasThrValue({temp}_moderate_rr_{age}_{sex}, ?moderate_value),
-                        greaterThanOrEqual(?rr_value, ?moderate_value),
-                        RR_THR({temp}_high_rr_{age}_{sex}),
-                        hasThrValue({temp}_high_rr_{age}_{sex}, ?high_value),
-                        lessThan(?rr_value, ?high_value), 
-
-                        Moderate_RR(?moderate_rr) -> RRis(rr_instance,?moderate_rr)
-                        """)
-                
-                    rr_rule_high = Imp()
-                    self.create_instances("High_RR")
-                    rr_rule_high.set_as_rule(
-                        f"""
-                        Actor(?actor), 
-                        ActorHasCharacteristics(?actor, ?age),
-                        AgeBelongsToGroup(?age, ?group),
-                        {group}(?group),
-
-                        ActorHasCharacteristics(?actor, ?sex_instance),
-                        SexBelongsToPerson(?sex_instance, ?sex_group),
-                        {sex_group}(?sex_group), 
-
-                        ActorHasCharacteristics(driver, accessories_instance), 
-                        AccessoriesIncludeWearables(accessories_instance,?cloth_instance),
-                        DenotesTemperature(?cloth_instance, ?temp),
-                        {temp_group}(?temp),
-
-                        RR(rr_instance),
-                        hasNumericalValue(rr_instance, ?rr_value),
-                        RR_THR({temp}_high_rr_{age}_{sex}),
-                        hasThrValue({temp}_high_rr_{age}_{sex}, ?high_value),
-                        greaterThanOrEqual(?rr_value, ?high_value),
-
-                        High_RR(?high_rr) -> RRis(rr_instance,?high_rr)
-                        """)
-                    
-        logger.debug("Determine RR | Rules Created successfully...")
+        if not self.ontology.search(iri="Low_RR"):self.create_instances("Low_RR") 
+        if not has_rule_named(onto=self.ontology, name="low_rr_rule"): 
+             Imp("low_rr_rule").set_as_rule(
+                f"""
+                ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
+                appliesRRLow(?tp, ?rr_low), hasThrValue(?rr_low, ?low), 
+                appliesRRModerate(?tp, ?rr_mod), hasThrValue(?rr_mod, ?mod), 
+                RR(?rr), hasNumericalValue(?rr, ?value), 
+                greaterThanOrEqual(?value, ?low), lessThan(?value, ?mod), 
+                Low_RR(?l_rr) -> RRis(rr_instance, ?l_rr)
+                """
+             )
         
-    
+        if not self.ontology.search(iri="Moderate_RR"):self.create_instances("Moderate_RR") 
+        if not has_rule_named(onto=self.ontology, name="moderate_rr_rule"): 
+             Imp("moderate_rr_rule").set_as_rule(
+                f"""
+                ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
+                appliesRRModerate(?tp, ?rr_mod), hasThrValue(?rr_mod, ?mod), 
+                appliesRRHigh(?tp, ?rr_high), hasThrValue(?rr_high, ?high), 
+                RR(?rr), hasNumericalValue(?rr, ?value), 
+                greaterThanOrEqual(?value, ?mod), lessThan(?value, ?high), 
+                Moderate_RR(?mod_rr) -> RRis(rr_instance, ?mod_rr)
+                """
+             )
+
+        if not self.ontology.search(iri="High_RR"):self.create_instances("High_RR") 
+        if not has_rule_named(onto=self.ontology, name="high_rr_rule"): 
+             Imp("high_rr_rule").set_as_rule(
+                f"""
+                ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
+                appliesRRHigh(?tp, ?rr_high), hasThrValue(?rr_high, ?high), 
+                RR(?rr), hasNumericalValue(?rr, ?value), 
+                greaterThanOrEqual(?value, ?high),  
+                High_RR(?high_rr) -> RRis(rr_instance, ?high_rr)
+                """
+             )
+                   
 
     def determine_spo2(self): 
         """
@@ -788,97 +584,45 @@ class RuleCreator:
         These threshold ranges change based on the Age group of the actor.
         """
 
-        for i,group in enumerate(self.age_group_names): 
-            age = self.age_groups[i]
-            for jj, sex_group in enumerate(self.sex_group_names):
-                sex = self.sex_groups[jj]
-                for ll, temp_group in enumerate(self.temp_group_names):
-                    temp = self.temp_groups[ll].split('temp')[0]
-                    
-                    spo2_rule_normal = Imp()
-                    self.create_instances("Normal_SpO2")
-                    spo2_rule_normal.set_as_rule(
-                        f"""
-                        Actor(?actor), 
-                        ActorHasCharacteristics(?actor, ?age),
-                        AgeBelongsToGroup(?age, ?group),
-                        {group}(?group),
-                        ActorHasCharacteristics(?actor, ?sex_instance),
-                        SexBelongsToPerson(?sex_instance, ?sex_group),
-                        {sex_group}(?sex_group),
+        if not self.ontology.search(iri="Normal_SpO2"):self.create_instances("Normal_SpO2") 
+        if not has_rule_named(onto=self.ontology, name="normal_spo2_rule"): 
+             Imp("normal_spo2_rule").set_as_rule(
+                f"""
+                ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
+                appliesSPO2Moderate(?tp, ?spo2_mod), hasThrValue(?spo2_mod, ?mod), 
+                appliesSPO2High(?tp, ?spo2_high), hasThrValue(?spo2_high, ?high), 
+                SpO2(?spo2), hasNumericalValue(?spo2, ?value), 
+                greaterThanOrEqual(?value, ?mod), lessThanOrEqual(?value, ?high), 
+                Normal_SpO2(?nrm_spo2) -> SpO2is(spo2_instance, ?nrm_spo2)
+                """
+             )
 
-                        ActorHasCharacteristics(driver, accessories_instance), 
-                        AccessoriesIncludeWearables(accessories_instance,?cloth_instance),
-                        DenotesTemperature(?cloth_instance, ?temp),
-                        {temp_group}(?temp),
+        if not self.ontology.search(iri="Low_SpO2"):self.create_instances("Low_SpO2") 
+        if not has_rule_named(onto=self.ontology, name="low_spo2_rule"): 
+             Imp("low_spo2_rule").set_as_rule(
+                f"""
+                ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
+                appliesSPO2Low(?tp, ?spo2_low), hasThrValue(?spo2_low, ?low), 
+                appliesSPO2Moderate(?tp, ?spo2_mod), hasThrValue(?spo2_mod, ?mod), 
+                SpO2(?spo2), hasNumericalValue(?spo2, ?value), 
+                greaterThanOrEqual(?value, ?low), lessThan(?value, ?mod), 
+                Low_SpO2(?l_spo2) -> SpO2is(spo2_instance, ?l_spo2)
+                """
+             )
 
-                        SpO2(spo2_instance),
-                        hasNumericalValue(spo2_instance, ?spo2_value),
-                        SpO2_THR({temp}_moderate_spo2_{age}_{sex}), 
-                        hasThrValue({temp}_moderate_spo2_{age}_{sex}, ?moderate_value),
-                        greaterThanOrEqual(?spo2_value, ?moderate_value), 
-                        SpO2_THR({temp}_high_spo2_{age}_{sex}),
-                        hasThrValue({temp}_high_spo2_{age}_{sex}, ?high_value),
-                        lessThanOrEqual(?spo2_value, ?high_value), 
 
-                        Normal_SpO2(?normal_spo2) -> SpO2is(spo2_instance, ?normal_spo2)
-                        """)
-            
-                    spo2_rule_low = Imp()
-                    self.create_instances("Low_SpO2")
-                    spo2_rule_low.set_as_rule(
-                        f"""
-                        Actor(?actor), 
-                        ActorHasCharacteristics(?actor, ?age),
-                        AgeBelongsToGroup(?age, ?group),
-                        {group}(?group),
-                        ActorHasCharacteristics(?actor, ?sex_instance),
-                        SexBelongsToPerson(?sex_instance, ?sex_group),
-                        {sex_group}(?sex_group),
-                        
-                        ActorHasCharacteristics(driver, accessories_instance), 
-                        AccessoriesIncludeWearables(accessories_instance,?cloth_instance),
-                        DenotesTemperature(?cloth_instance, ?temp),
-                        {temp_group}(?temp),
-
-                        SpO2(spo2_instance),
-                        hasNumericalValue(spo2_instance, ?spo2_value),
-                        SpO2_THR({temp}_low_spo2_{age}_{sex}), 
-                        hasThrValue({temp}_low_spo2_{age}_{sex}, ?low_value),
-                        greaterThanOrEqual(?spo2_value, ?low_value),
-                        SpO2_THR({temp}_moderate_spo2_{age}_{sex}),
-                        hasThrValue({temp}_moderate_spo2_{age}_{sex}, ?moderate_value),
-                        lessThan(?spo2_value,?moderate_value),
-
-                        Low_SpO2(?low_spo2) -> SpO2is(spo2_instance, ?low_spo2)
-                        """)
-                
-                    spo2_rule_critical = Imp()
-                    self.create_instances("Critical_SpO2")
-                    spo2_rule_critical.set_as_rule(
-                        f"""
-                        Actor(?actor), 
-                        ActorHasCharacteristics(?actor, ?age),
-                        AgeBelongsToGroup(?age, ?group),
-                        {group}(?group),
-                        ActorHasCharacteristics(?actor, ?sex_instance),
-                        SexBelongsToPerson(?sex_instance, ?sex_group),
-                        {sex_group}(?sex_group),
-                        ActorHasCharacteristics(driver, accessories_instance), 
-                        AccessoriesIncludeWearables(accessories_instance,?cloth_instance),
-                        DenotesTemperature(?cloth_instance, ?temp),
-                        {temp_group}(?temp),
-
-                        SpO2(spo2_instance),
-                        hasNumericalValue(spo2_instance, ?spo2_value),
-                        SpO2_THR({temp}_low_spo2_{age}_{sex}),
-                        hasThrValue({temp}_low_spo2_{age}_{sex}, ?low_value),
-                        lessThan(?spo2_value, ?low_value),
-
-                        Critical_SpO2(?critical_spo2) -> SpO2is(spo2_instance, ?critical_spo2)
-                        """)
-        logger.debug("Determine SPo2 | Rules Created successfully...")
-            
+        if not self.ontology.search(iri="Critical_SpO2"):self.create_instances("Critical_SpO2") 
+        if not has_rule_named(onto=self.ontology, name="critical_spo2_rule"): 
+             Imp("critical_spo2_rule").set_as_rule(
+                f"""
+                ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
+                appliesSPO2Low(?tp, ?spo2_low), hasThrValue(?spo2_low, ?low), 
+                SpO2(?spo2), hasNumericalValue(?spo2, ?value), 
+                lessThan(?value, ?low),  
+                Critical_SpO2(?critical_spo2) -> SpO2is(spo2_instance, ?critical_spo2)
+                """
+             )
+          
                 
     def determine_drowsiness(self): 
         """
@@ -937,7 +681,6 @@ class RuleCreator:
             Level_9_KSS(?level_9_kss) -> DrowsinessIs(drowsiness_instance, ?level_9_kss)
             """
         )
-    logger.debug("Determine Drowsiness | Rules Created successfully... ")
 
 
     def set_up_trends(self):  
@@ -960,7 +703,6 @@ class RuleCreator:
                     """
                 )
             
-        logger.debug("Trends set up successfully... ")
                 
 
     def connect_actor_to_values(self): 
@@ -973,50 +715,21 @@ class RuleCreator:
         If an instance is deleted or non existent the reasoner will detect an inconsistency error in this 
         class. 
         """
-        phs_state = Imp() 
-        phs_state.set_as_rule(
-            """
-            Actor(driver), 
-            HR(hr_instance), 
-            HRV(hrv_instance),
-            RR(rr_instance),
-            SpO2(spo2_instance),
-            Drowsiness(drowsiness_instance)
-                -> ActorHasPhysiologicalState(driver,hr_instance), 
-                ActorHasPhysiologicalState(driver,hrv_instance),
-                ActorHasPhysiologicalState(driver,rr_instance),
-                ActorHasPhysiologicalState(driver,spo2_instance),
-                ActorHasPhysiologicalState(driver,drowsiness_instance) 
-            """
-        )
-
-        actor_chars = Imp() 
-        actor_chars.set_as_rule(
-            """
-            Actor(driver),
-            Accessories(accessories_instance),
-            Age(age_instance),
-            Demographic(demographic_instance),
-            FaceCharacteristics(facecharacteristics_instance),
-            Sex(sex_instance)
-                -> ActorHasCharacteristics(driver,age_instance),
-                ActorHasCharacteristics(driver,accessories_instance),
-                ActorHasCharacteristics(driver,facecharacteristics_instance),
-                ActorHasCharacteristics(driver,demographic_instance),
-                ActorHasCharacteristics(driver,sex_instance)
-            """
-        )
-
-        logger.debug("Connect Actor to Individuals | Rules Created Successfully...")
+        Imp().set_as_rule("""ActorState(?act_state), HR(?hr_instance)->ActorStateHasPhysiologicalState(?act_state, ?hr_instance)""") 
+        Imp().set_as_rule("""ActorState(?act_state), HRV(?hrv_instance)->ActorStateHasPhysiologicalState(?act_state, ?hrv_instance)""") 
+        Imp().set_as_rule("""ActorState(?act_state), RR(?rr_instance)->ActorStateHasPhysiologicalState(?act_state, ?rr_instance)""") 
+        Imp().set_as_rule("""ActorState(?act_state), SpO2(?spo2_instance)->ActorStateHasPhysiologicalState(?act_state, ?spo2_instance)""") 
+        Imp().set_as_rule("""ActorState(?act_state), Drowsiness(?drowsiness_instance)->ActorStateHasPhysiologicalState(?act_state, ?drowsiness_instance)""") 
+        Imp().set_as_rule("""ActorState(?act_state), FaceCharacteristics(?facecharacteristics_instance)->ActorStateHasCharacteristics(?act_state, ?facecharacteristics_instance)""") 
+        Imp().set_as_rule("""ActorState(?act_state), Sex(?sex_instance)->ActorStateHasCharacteristics(?act_state, ?sex_instance)""") 
+        Imp().set_as_rule("""ActorState(?act_state), Age(?age_instance)->ActorStateHasCharacteristics(?act_state, ?age_instance)""") 
+        Imp().set_as_rule("""ActorState(?act_state), Demographic(?demographic_instance)->ActorStateHasCharacteristics(?act_state, ?demographic_instance)""") 
+        Imp().set_as_rule("""ActorState(?act_state), Accessories(?accessories_instance)->ActorStateHasCharacteristics(?act_state, ?accessories_instance)""")
 
 
-        
+
     def determine_fatigue(self): 
-        """
-        This function is used to create the rules to categorize the fatigue of the actor into
-        threshold ranges based on the previous physiological values.
-        * Awake 
-        * Sleeping 
+        """ This function is used to create the rules to categorize the fatigue of the actor into threshold ranges based on the previous physiological values. * Awake * Sleeping 
         * Microsleep
         * Drowsy 
         * Drowsiness Suspected 
@@ -1337,12 +1050,23 @@ class RuleCreator:
         Args: 
             index: The index of the iteration.
         """
+
         try: 
             if index == 0:
 
                 with self.ontology: 
                     self.connect_actor_to_values()
                     self.denote_temperature()
+                    self.determine_age()
+                    self.determine_gender()
+                    self.determine_acc_and_temp()
+                    self.determine_thresholds_profile()
+                    self.determine_HR()
+                    self.determine_HRV() 
+                    self.determine_RR() 
+                    self.determine_spo2() 
+                    print("Set Up rules for PHY Params")
+                    import pdb;pdb.set_trace()
                     self.determine_age()
                     self.determine_gender()
                     self.determine_acc_and_temp()
@@ -1527,6 +1251,15 @@ class RuleCreator:
 
 
 
+
+    def save_onto(self, index, file_path="/ontologies/trial_onto_1.owl"): 
+
+        if index == 0 or index % 10 == 0: 
+            parent_directory = os.getcwd() 
+            save_path = f"{parent_directory}/{file_path}" 
+            self.ontology.save(file=save_path)
+            logger.info(f"[checked] Ontology Saved at {index}.")
+            time.sleep(5) 
 
 
 

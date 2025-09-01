@@ -1,8 +1,12 @@
-from owlready2 import *
-from designs.rule_creator import RuleCreator
+from tools.appraisal import StepContext
 from tools.logger import logger
+from tools.common import *
+from designs.rule_creator import RuleCreator
+
+import uuid
 import pandas as pd
 
+from owlready2 import *
 
 class OntologyParser: 
     """
@@ -46,105 +50,102 @@ class OntologyParser:
         return target_class
     
     
-    def parse_observations(self, dataset_path):
+    def parse_observations(self, dataset_path, batching=True, reasoning_thr=10):
         """
         This method parses the observations from the given dataset and creates instances of the Observation class.
         Then translates the rules established in the ontology with the reasoner and saves the results.
         
         Args:
           - dataset_path: The path to the dataset file.
+          - batching: If we want to opt for batching multiple rows together and calling the reasoner once 
+          - reasoning_thr: The multitude of objects to reason
         """
 
         dataset = pd.read_csv(dataset_path)
         dataset = dataset[:5]
         filepath = os.getcwd() + "/labels"
-        
-        try: 
+        created = 0 
+
+        with StepContext(name='Parse Data to Ont', catch=(Exception, )): 
             # Create instances for the Label and the Sensor
             with self.ontology: 
-                
                 self.rule_parser.create_instances("Label")
                 self.rule_parser.create_instances("MonitoringSensor")
 
+                # Create the main instance of the Observations class
+                if not self.ontology.Observations.instances(): 
+                    obs = self.ontology.Observations(f"observation_{0}")
+                else: 
+                    obs = self.ontology.Observations.instances()[0]
+
+                if not self.ontology.Actor.instances(): 
+                    actor = self.ontology.Actor(f"actor_{uuid.uuid4().hex}")
+                else: 
+                    actor = self.ontology.Actor.instances()[0] 
+
+                phy_vocab = create_Physiological_inds(self.ontology) 
+                actor_vocab = create_Actor_inds(self.ontology) 
+
             # Check if the Observations class exists in the ontology
-            for cls in self.ontology.classes():
-                if cls.name == "Observations":
-                    logger.debug(f"Class {cls.name} found.")
-                    break
-            else:
-                logger.error(f"Class Observation not found in the ontology.")
-                raise ValueError("Class Observation not found in the ontology.")
-            
-            # Create the main instance of the Observations class
-            obs = self.ontology.Observations(f"observation_{0}")
             for index, row in dataset.iterrows():
-                
+                ts_iso = iso_format(row['TIME'])
+                actor_state = new_state(self.ontology, actor, ts_iso)
+                actor.ActorhasState.append(actor_state)
+
                 # Connect the sensor to the observations 
                 # self.rule_parser.connect_sensor_to_observations(obs)
+                obs_state = attach_values_to_observations(
+                    onto=self.ontology, 
+                    obs_state=obs,
+                    cols=dataset.columns, 
+                    row=row, 
+                    idx=index
+                )
 
-                #Pass health factors 
-                obs.hasHR.append(row['HR'] if "HR" in dataset.columns and isinstance(row['HR'],int) else [-1])
-                obs.hasHRV.append(row['HRV'] if "HRV" in dataset.columns and isinstance(row['HRV'],int) else [-1])
-                obs.hasRR.append(row['RR'] if "RR" in dataset.columns and isinstance(row['RR'],int) else [-1])
-                obs.hasSpO2.append(row["SPO2"] if "SPO2" in dataset.columns and isinstance(row['SPO2'],int) else [-1])
-                obs.hasDROWSY.append(row['DROWSY'] if "DROWSY" in dataset.columns and isinstance(row['DROWSY'],int) else [-1])
-                
-                # Pass Actor's Characteristics
-                obs.hasAccessories.append(row['Accessories'] if "Accessories" in dataset.columns and isinstance(row['Accessories'],str)  else [-1])
-                obs.hasAge.append(row['Age'] if "Age" in dataset.columns and isinstance(row['Age'],int) else [-1])
-                obs.hasSex.append(row['Sex'] if "Sex" in dataset.columns and isinstance(row['Sex'],str) else [-1])
-                obs.hasFaceCharacteristics.append(row["Characteristics"] if "Characteristics" in dataset.columns and isinstance(row['Characteristics'],str) else [-1])
-                obs.hasDemographic.append(row["Demographic"] if "Demographic" in dataset.columns and isinstance(row['Demographic'],str)  else [-1])
+                #self.rule_parser.observations_to_classes(obs_state, "PhysiologicalState", "ObsIsDividedIntoPhS")
+                #self.rule_parser.observations_to_classes(obs_state, "ActorState", "ObsIsDividedIntoActor")
+                obs_state = attach_obs_to_phy_state(obs_state,phy_vocab) 
+                obs_state = attach_obs_to_actor_state(obs_state, actor_vocab) 
+                created += 1 
 
-                # Connect the observation to the corresponding subclasses inside the ontology, based on the super class they belong to. 
-            
-                self.rule_parser.observations_to_classes(obs, "PhysiologicalState", "ObsIsDividedIntoPhS")
-                self.rule_parser.observations_to_classes(obs, "Actor", "ObsIsDividedIntoActor")
-
-                # Run the reasoner for each updated observation
-                self.rule_parser.synchronize_ontology()
-                
-                for obs in self.ontology.Observations.instances():
-                    # Assign values to the subclasses instances based on the observations
-                    self.rule_parser.assign_values(obs,"ObsIsDividedIntoPhS","hasNumericalValue")
-                    self.rule_parser.assign_values(obs,"ObsIsDividedIntoActor","hasStringValue")
+                #for obs in self.ontology.Observations.instances():
+                # Assign values to the subclasses instances based on the observations
+                self.rule_parser.assign_values(obs_state,"ObsIsDividedIntoPhS","hasNumericalValue")
+                self.rule_parser.assign_values(obs_state,"ObsIsDividedIntoActor","hasStringValue")
 
                 # Create the rules (once) for numerical comparison and health assessment
                 self.rule_parser.set_up_rules(index)
                 
+                import pdb;pdb.set_trace()
                 # Run the reasoner to update the ontology with the new values
                 self.rule_parser.synchronize_ontology()
                                 
                 # Create the description of the actor and save it in JSON format
-                self.rule_parser.create_label(filepath, index)
+                #self.rule_parser.create_label(filepath, index)
 
                 # Save the parsed ontology to a file for vizualization of the rules' results. 
-                if index==0 or index == 3: 
-                    ontology_save_path =  os.getcwd() + "/ontologies/updated_ontology.owl"
-                    self.ontology.save(file=ontology_save_path) 
-                    logger.info("Ontology saved.")
+                self.save_onto(index=index)    
+                #self.rule_parser.determine_trends() 
 
-                    time.sleep(5)
-                    
-
-                self.rule_parser.determine_trends() 
-
+                import pdb;pdb.set_trace()
                 # Remove the previous values from the ontology to avoid conflicts
-                self.rule_parser.remove_prev_values(obs)
+                #self.rule_parser.remove_prev_values(obs)
                 
-
             return f"Ontology finished processing dataset observations."
         
-        except Exception as e:
-                logger.exception(f"Error parsing the ontology: {e}")
-                exit(1)
 
 
 
 
 
+    def save_onto(self, index, file_path="/ontologies/trial_onto_1.owl"): 
 
-
+        if index == 0 or index % 10 == 0: 
+            parent_directory = os.getcwd() 
+            save_path = f"{parent_directory}/{file_path}" 
+            self.ontology.save(file=save_path)
+            logger.info(f"[checked] Ontology Saved at {index}.")
+            time.sleep(5) 
 
 
     

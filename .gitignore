@@ -1,4 +1,5 @@
 labels/*
+*.owl
 labels
 data
 scripts/__pycache__

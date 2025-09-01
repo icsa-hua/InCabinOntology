@@ -79,7 +79,7 @@
 
     <owl:ObjectProperty rdf:about="http://test.org.org/in_cabin_domain#ActorIsTargetedByLabel">
         <owl:inverseOf rdf:resource="http://test.org.org/in_cabin_domain#LabelTargetsActor"/>
-        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Actor"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#ActorState"/>
         <rdfs:range rdf:resource="http://test.org/in_cabin_domain#Label"/>
         <rdfs:comment>The driver is described by the label. As an example: 
 middle-aged afghan man with glasses_eyes_closed_mouth_open</rdfs:comment>
@@ -91,7 +91,7 @@ middle-aged afghan man with glasses_eyes_closed_mouth_open</rdfs:comment>
 
     <owl:ObjectProperty rdf:about="http://test.org.org/in_cabin_domain#LabelTargetsActor">
         <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Label"/>
-        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#Actor"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#ActorState"/>
         <rdfs:comment>This property indicates that the alert is meant for a particular target. This show that each alert is directed at one or more specific targes.
 Since the alert is a message it only regards the occupants of the vehicle.</rdfs:comment>
     </owl:ObjectProperty>
@@ -131,32 +131,12 @@ Since the alert is a message it only regards the occupants of the vehicle.</rdfs
     
 
 
-    <!-- http://test.org/in_cabin_domain#ActorHasCharacteristics -->
-
-    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#ActorHasCharacteristics">
-        <owl:inverseOf rdf:resource="http://test.org/in_cabin_domain#CharacteristicsDescribeActor"/>
-        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Actor"/>
-        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#Actor"/>
-    </owl:ObjectProperty>
-    
-
-
     <!-- http://test.org/in_cabin_domain#ActorHasEyeState -->
 
     <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#ActorHasEyeState">
         <owl:inverseOf rdf:resource="http://test.org/in_cabin_domain#EyeStateForActor"/>
-        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Actor"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#ActorState"/>
         <rdfs:range rdf:resource="http://test.org/in_cabin_domain#EyeState"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#ActorHasPhysiologicalState -->
-
-    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#ActorHasPhysiologicalState">
-        <owl:inverseOf rdf:resource="http://test.org/in_cabin_domain#PhysiologicalStateDescribesActor"/>
-        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Actor"/>
-        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#PhysiologicalState"/>
     </owl:ObjectProperty>
     
 
@@ -166,7 +146,7 @@ Since the alert is a message it only regards the occupants of the vehicle.</rdfs
     <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#ActorIsAffectedByTemp">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
         <owl:inverseOf rdf:resource="http://test.org/in_cabin_domain#TempAffectActor"/>
-        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Actor"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#ActorState"/>
         <rdfs:range rdf:resource="http://test.org/in_cabin_domain#WeatherCondition"/>
     </owl:ObjectProperty>
     
@@ -176,9 +156,62 @@ Since the alert is a message it only regards the occupants of the vehicle.</rdfs
 
     <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#ActorIsMonitoredBySensor">
         <owl:inverseOf rdf:resource="http://test.org/in_cabin_domain#SensorMonitorsActor"/>
-        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Actor"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#ActorState"/>
         <rdfs:range rdf:resource="http://test.org/in_cabin_domain#MonitoringSensor"/>
         <rdfs:comment>The driver is monitored in some way and with some external gudgets from sensors. This implies that the time series values are regarding the driver&apos;s health.</rdfs:comment>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#ActorStateHasCharacteristics -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#ActorStateHasCharacteristics">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#ActorState"/>
+        <rdfs:range>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://test.org/in_cabin_domain#Accessories"/>
+                    <rdf:Description rdf:about="http://test.org/in_cabin_domain#Age"/>
+                    <rdf:Description rdf:about="http://test.org/in_cabin_domain#Demographic"/>
+                    <rdf:Description rdf:about="http://test.org/in_cabin_domain#EyeState"/>
+                    <rdf:Description rdf:about="http://test.org/in_cabin_domain#FaceCharacteristics"/>
+                    <rdf:Description rdf:about="http://test.org/in_cabin_domain#MouthState"/>
+                    <rdf:Description rdf:about="http://test.org/in_cabin_domain#Sex"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:range>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#ActorStateHasPhysiologicalState -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#ActorStateHasPhysiologicalState">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#ActorState"/>
+        <rdfs:range>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://test.org/in_cabin_domain#AttentionLevels"/>
+                    <rdf:Description rdf:about="http://test.org/in_cabin_domain#Drowsiness"/>
+                    <rdf:Description rdf:about="http://test.org/in_cabin_domain#Fatigue"/>
+                    <rdf:Description rdf:about="http://test.org/in_cabin_domain#HR"/>
+                    <rdf:Description rdf:about="http://test.org/in_cabin_domain#HRV"/>
+                    <rdf:Description rdf:about="http://test.org/in_cabin_domain#RR"/>
+                    <rdf:Description rdf:about="http://test.org/in_cabin_domain#SpO2"/>
+                    <rdf:Description rdf:about="http://test.org/in_cabin_domain#Unresponsiveness"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:range>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#ActorhasState -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#ActorhasState">
+        <owl:inverseOf rdf:resource="http://test.org/in_cabin_domain#StateOfActor"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Actor"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#ActorState"/>
     </owl:ObjectProperty>
     
 
@@ -190,15 +223,6 @@ Since the alert is a message it only regards the occupants of the vehicle.</rdfs
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
         <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Age"/>
         <rdfs:range rdf:resource="http://test.org/in_cabin_domain#Age"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#CharacteristicsDescribeActor -->
-
-    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#CharacteristicsDescribeActor">
-        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Actor"/>
-        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#Actor"/>
     </owl:ObjectProperty>
     
 
@@ -278,7 +302,7 @@ Since the alert is a message it only regards the occupants of the vehicle.</rdfs
 
     <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#EyeStateForActor">
         <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#EyeState"/>
-        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#Actor"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#ActorState"/>
     </owl:ObjectProperty>
     
 
@@ -393,15 +417,6 @@ Since the alert is a message it only regards the occupants of the vehicle.</rdfs
     
 
 
-    <!-- http://test.org/in_cabin_domain#PhysiologicalStateDescribesActor -->
-
-    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#PhysiologicalStateDescribesActor">
-        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#PhysiologicalState"/>
-        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#Actor"/>
-    </owl:ObjectProperty>
-    
-
-
     <!-- http://test.org/in_cabin_domain#PhysiologicalStatehasCurrentReading -->
 
     <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#PhysiologicalStatehasCurrentReading">
@@ -467,7 +482,7 @@ Since the alert is a message it only regards the occupants of the vehicle.</rdfs
 
     <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#SensorMonitorsActor">
         <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#MonitoringSensor"/>
-        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#Actor"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#ActorState"/>
         <rdfs:comment>The sensor monitors the driver, to capture health moniroting information</rdfs:comment>
     </owl:ObjectProperty>
     
@@ -495,12 +510,30 @@ Since the alert is a message it only regards the occupants of the vehicle.</rdfs
     
 
 
+    <!-- http://test.org/in_cabin_domain#StateHasThresholdProfile -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#StateHasThresholdProfile">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#ActorState"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#ThresholdProfile"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#StateOfActor -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#StateOfActor">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#ActorState"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#Actor"/>
+    </owl:ObjectProperty>
+    
+
+
     <!-- http://test.org/in_cabin_domain#TempAffectActor -->
 
     <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#TempAffectActor">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
         <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#WeatherCondition"/>
-        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#Actor"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#ActorState"/>
     </owl:ObjectProperty>
     
 
@@ -520,6 +553,126 @@ Since the alert is a message it only regards the occupants of the vehicle.</rdfs
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
         <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Accessories"/>
         <rdfs:range rdf:resource="http://test.org/in_cabin_domain#Accessories"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#appliesHRHigh -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#appliesHRHigh">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#ThresholdProfile"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#appliesHRLow -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#appliesHRLow">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#ThresholdProfile"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#appliesHRModerate -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#appliesHRModerate">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#ThresholdProfile"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#HR_THR"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#appliesHRVHigh -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#appliesHRVHigh">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#ThresholdProfile"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#appliesHRVLow -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#appliesHRVLow">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#ThresholdProfile"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#appliesHRVModerate -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#appliesHRVModerate">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#ThresholdProfile"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#HRV_THR"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#appliesRRHigh -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#appliesRRHigh">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#ThresholdProfile"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#appliesRRLow -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#appliesRRLow">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#ThresholdProfile"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#appliesRRModerate -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#appliesRRModerate">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#ThresholdProfile"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#RR_THR"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#appliesSPO2High -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#appliesSPO2High">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#ThresholdProfile"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#appliesSPO2Low -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#appliesSPO2Low">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#ThresholdProfile"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#appliesSPO2Moderate -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#appliesSPO2Moderate">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#ThresholdProfile"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#SpO2_THR"/>
     </owl:ObjectProperty>
     
 
@@ -672,16 +825,6 @@ Since the alert is a message it only regards the occupants of the vehicle.</rdfs
     
 
 
-    <!-- http://test.org/in_cabin_domain#hasDROWSY -->
-
-    <owl:DatatypeProperty rdf:about="http://test.org/in_cabin_domain#hasDROWSY">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Observations"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
-    </owl:DatatypeProperty>
-    
-
-
     <!-- http://test.org/in_cabin_domain#hasDemographic -->
 
     <owl:DatatypeProperty rdf:about="http://test.org/in_cabin_domain#hasDemographic">
@@ -696,6 +839,16 @@ Since the alert is a message it only regards the occupants of the vehicle.</rdfs
     <owl:DatatypeProperty rdf:about="http://test.org/in_cabin_domain#hasDescription">
         <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Label"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#hasDrowsy -->
+
+    <owl:DatatypeProperty rdf:about="http://test.org/in_cabin_domain#hasDrowsy">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#Observations"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
     </owl:DatatypeProperty>
     
 
@@ -971,6 +1124,15 @@ Unchanged gaze.</rdfs:comment>
     
 
 
+    <!-- http://test.org/in_cabin_domain#validAt -->
+
+    <owl:DatatypeProperty rdf:about="http://test.org/in_cabin_domain#validAt">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#ActorState"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
     <!-- 
     ///////////////////////////////////////////////////////////////////////////////////////
     //
@@ -1022,6 +1184,15 @@ It holds the data created after processing the observations captured by the sens
 
     <owl:Class rdf:about="http://test.org/in_cabin_domain#Actor">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <owl:disjointWith rdf:resource="http://test.org/in_cabin_domain#PhysiologicalState"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#ActorState -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#ActorState">
+        <rdfs:subClassOf rdf:resource="http://test.org.org/in_cabin_domain#DataContainer"/>
     </owl:Class>
     
 
@@ -1758,6 +1929,14 @@ It holds the data created after processing the observations captured by the sens
 
     <owl:Class rdf:about="http://test.org/in_cabin_domain#TemporalContext">
         <rdfs:subClassOf rdf:resource="http://test.org.org/in_cabin_domain#MetaData"/>
+    </owl:Class>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#ThresholdProfile -->
+
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#ThresholdProfile">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Thresholds"/>
     </owl:Class>
     
 
@@ -3865,6 +4044,18 @@ It holds the data created after processing the observations captured by the sens
     ///////////////////////////////////////////////////////////////////////////////////////
      -->
 
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Accessories"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Age"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Demographic"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#EyeState"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#FaceCharacteristics"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#MouthState"/>
+            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Sex"/>
+        </owl:members>
+    </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
