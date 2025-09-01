@@ -745,6 +745,16 @@ Since the alert is a message it only regards the occupants of the vehicle.</rdfs
     
 
 
+    <!-- http://test.org/in_cabin_domain#prevState -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#prevState">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#ActorState"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#ActorState"/>
+    </owl:ObjectProperty>
+    
+
+
     <!-- 
     ///////////////////////////////////////////////////////////////////////////////////////
     //
