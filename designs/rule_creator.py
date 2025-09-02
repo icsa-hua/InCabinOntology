@@ -394,9 +394,9 @@ class RuleCreator:
                 f""" 
                 ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
                 appliesHRLow(?tp, ?hr_low), hasThrValue(?hr_low, ?low), 
-                HR(?hr), hasNumericalValue(?hr, ?value), 
+                HR(hr_instance), hasNumericalValue(hr_instance, ?value), 
                 lessThan(?value, ?low), 
-                Very_Low_HR(?vrl_hr)  -> HRis(hr_instance, ?vrl_hr) 
+                Very_Low_HR(?vrl_hr)  -> ActorStateHasPhysiologicalState(?act_st, hr_instance), HRis(hr_instance, ?vrl_hr) 
                 """
             )
 
@@ -407,10 +407,10 @@ class RuleCreator:
                 ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
                 appliesHRLow(?tp, ?hr_low), hasThrValue(?hr_low, ?low), 
                 appliesHRModerate(?tp, ?hr_mod), hasThrValue(?hr_mod, ?mod), 
-                HR(?hr), hasNumericalValue(?hr, ?value), 
-                greaterThanOrEqual(?value, ?hr_low),
-                lessThan(?value, ?hr_mod), 
-                Low_HR(?l_hr)  -> HRis(hr_instance, ?l_hr) 
+                HR(hr_instance), hasNumericalValue(hr_instance, ?value), 
+                greaterThanOrEqual(?value, ?low),
+                lessThan(?value, ?mod), 
+                Low_HR(?l_hr)  -> ActorStateHasPhysiologicalState(?act_st, hr_instance), HRis(hr_instance, ?l_hr) 
                 """
             )
 
@@ -421,10 +421,10 @@ class RuleCreator:
                 ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
                 appliesHRModerate(?tp, ?hr_mod), hasThrValue(?hr_mod, ?mod), 
                 appliesHRHigh(?tp, ?hr_high), hasThrValue(?hr_high, ?high), 
-                HR(?hr), hasNumericalValue(?hr, ?value), 
-                greaterThanOrEqual(?value, ?hr_mod),
-                lessThan(?value, ?hr_high), 
-                Moderate_HR(?m_hr)  -> HRis(hr_instance, ?m_hr) 
+                HR(hr_instance), hasNumericalValue(hr_instance, ?value), 
+                greaterThanOrEqual(?value, ?mod),
+                lessThan(?value, ?high), 
+                Moderate_HR(?m_hr)  -> ActorStateHasPhysiologicalState(?act_st, hr_instance), HRis(hr_instance, ?m_hr) 
                 """
             )
 
@@ -434,9 +434,9 @@ class RuleCreator:
                 f""" 
                 ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
                 appliesHRHigh(?tp, ?hr_high), hasThrValue(?hr_high, ?high), 
-                HR(?hr), hasNumericalValue(?hr, ?value), 
-                greaterThanOrEqual(?value, ?hr_high),
-                High_HR(?h_hr)  -> HRis(hr_instance, ?h_hr) 
+                HR(hr_instance), hasNumericalValue(hr_instance, ?value), 
+                greaterThanOrEqual(?value, ?high),
+                High_HR(?h_hr)  -> ActorStateHasPhysiologicalState(?act_st,hr_instance), HRis(hr_instance, ?h_hr) 
                 """
             )
 
@@ -460,12 +460,11 @@ class RuleCreator:
                 f"""
                 ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
                 appliesHRVLow(?tp, ?hrv_low), hasThrValue(?hrv_low, ?low), 
-                HRV(?hrv), hasNumericalValue(?hrv, ?value), 
+                HRV(hrv_instance), hasNumericalValue(hrv_instance, ?value), 
                 lessThan(?value, ?low), 
-                Very_Low_HRV(?vrl_hrv) -> HRVis(hrv_instance, ?vrl_hrv) 
+                Very_Low_HRV(?vrl_hrv) -> ActorStateHasPhysiologicalState(?act_st, hrv_instance), HRVis(hrv_instance, ?vrl_hrv) 
                 """
             )
-
 
         if not self.ontology.search(iri="Low_HRV"): self.create_instances("Low_HRV") 
         if not has_rule_named(onto=self.ontology, name="low_hrv_rule"): 
@@ -474,9 +473,9 @@ class RuleCreator:
                 ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
                 appliesHRVLow(?tp, ?hrv_low), hasThrValue(?hrv_low, ?low), 
                 appliesHRVModerate(?tp, ?hrv_mod), hasThrValue(?hrv_mod, ?mod), 
-                HRV(?hrv), hasNumericalValue(?hrv, ?value), 
+                HRV(hrv_instance), hasNumericalValue(hrv_instance, ?value), 
                 greaterThanOrEqual(?value, ?low), lessThan(?value, ?mod), 
-                Low_HRV(?l_hrv) -> HRVis(hrv_instance, ?l_hrv) 
+                Low_HRV(?l_hrv) -> ActorStateHasPhysiologicalState(?act_st, hrv_instance), HRVis(hrv_instance, ?l_hrv) 
                 """
             )
 
@@ -487,9 +486,9 @@ class RuleCreator:
                 ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
                 appliesHRVModerate(?tp, ?hrv_mod), hasThrValue(?hrv_mod, ?mod), 
                 appliesHRVHigh(?tp, ?hrv_high), hasThrValue(?hrv_high, ?high), 
-                HRV(?hrv), hasNumericalValue(?hrv, ?value), 
+                HRV(hrv_instance), hasNumericalValue(hrv_instance, ?value), 
                 greaterThanOrEqual(?value, ?mod), lessThan(?value, ?high), 
-                Moderate_HRV(?mod_hrv) -> HRVis(hrv_instance, ?mod_hrv) 
+                Moderate_HRV(?mod_hrv) -> ActorStateHasPhysiologicalState(?act_st, hrv_instance), HRVis(hrv_instance, ?mod_hrv) 
                 """
             )
 
@@ -499,9 +498,9 @@ class RuleCreator:
                 f"""
                 ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
                 appliesHRHigh(?tp, ?hrv_high), hasThrValue(?high_hrv, ?high), 
-                HRV(?hrv), hasNumericalValue(?hrv, ?value), 
+                HRV(hrv_instance), hasNumericalValue(hrv_instance, ?value), 
                 greaterThanOrEqual(?value, ?high),
-                High_HRV(?high_hrv) -> HRVis(hrv_instance, ?high_hrv) 
+                High_HRV(?high_hrv) -> ActorStateHasPhysiologicalState(?act_st, hrv_instance), HRVis(hrv_instance, ?high_hrv) 
                 """
             )
 
@@ -525,12 +524,11 @@ class RuleCreator:
                 f"""
                 ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
                 appliesRRLow(?tp, ?rr_low), hasThrValue(?rr_low, ?low), 
-                RR(?rr), hasNumericalValue(?rr, ?value), 
+                RR(rr_instance), hasNumericalValue(rr_instance, ?value), 
                 lessThan(?value, ?low), 
-                Very_Low_RR(?vrl_rr) -> RRis(rr_instance, ?vrl_rr) 
+                Very_Low_RR(?vrl_rr) -> ActorStateHasPhysiologicalState(?act_st, rr_instance), RRis(rr_instance, ?vrl_rr) 
                 """
             )
-
 
         if not self.ontology.search(iri="Low_RR"):self.create_instances("Low_RR") 
         if not has_rule_named(onto=self.ontology, name="low_rr_rule"): 
@@ -539,9 +537,9 @@ class RuleCreator:
                 ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
                 appliesRRLow(?tp, ?rr_low), hasThrValue(?rr_low, ?low), 
                 appliesRRModerate(?tp, ?rr_mod), hasThrValue(?rr_mod, ?mod), 
-                RR(?rr), hasNumericalValue(?rr, ?value), 
+                RR(rr_instance), hasNumericalValue(rr_instance, ?value), 
                 greaterThanOrEqual(?value, ?low), lessThan(?value, ?mod), 
-                Low_RR(?l_rr) -> RRis(rr_instance, ?l_rr)
+                Low_RR(?l_rr) -> ActorStateHasPhysiologicalState(?act_st, rr_instance), RRis(rr_instance, ?l_rr)
                 """
              )
         
@@ -552,9 +550,9 @@ class RuleCreator:
                 ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
                 appliesRRModerate(?tp, ?rr_mod), hasThrValue(?rr_mod, ?mod), 
                 appliesRRHigh(?tp, ?rr_high), hasThrValue(?rr_high, ?high), 
-                RR(?rr), hasNumericalValue(?rr, ?value), 
+                RR(rr_instance), hasNumericalValue(rr_instance, ?value), 
                 greaterThanOrEqual(?value, ?mod), lessThan(?value, ?high), 
-                Moderate_RR(?mod_rr) -> RRis(rr_instance, ?mod_rr)
+                Moderate_RR(?mod_rr) -> ActorStateHasPhysiologicalState(?act_st, rr_instance), RRis(rr_instance, ?mod_rr)
                 """
              )
 
@@ -564,9 +562,9 @@ class RuleCreator:
                 f"""
                 ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
                 appliesRRHigh(?tp, ?rr_high), hasThrValue(?rr_high, ?high), 
-                RR(?rr), hasNumericalValue(?rr, ?value), 
+                RR(rr_instance), hasNumericalValue(rr_instance, ?value), 
                 greaterThanOrEqual(?value, ?high),  
-                High_RR(?high_rr) -> RRis(rr_instance, ?high_rr)
+                High_RR(?high_rr) -> ActorStateHasPhysiologicalState(?act_st, rr_instance), RRis(rr_instance, ?high_rr)
                 """
              )
                    
@@ -589,9 +587,9 @@ class RuleCreator:
                 ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
                 appliesSPO2Moderate(?tp, ?spo2_mod), hasThrValue(?spo2_mod, ?mod), 
                 appliesSPO2High(?tp, ?spo2_high), hasThrValue(?spo2_high, ?high), 
-                SpO2(?spo2), hasNumericalValue(?spo2, ?value), 
+                SpO2(spo2_instance), hasNumericalValue(spo2_instance, ?value), 
                 greaterThanOrEqual(?value, ?mod), lessThanOrEqual(?value, ?high), 
-                Normal_SpO2(?nrm_spo2) -> SpO2is(spo2_instance, ?nrm_spo2)
+                Normal_SpO2(?nrm_spo2) -> ActorStateHasPhysiologicalState(?act_st, spo2_instance), SpO2is(spo2_instance, ?nrm_spo2)
                 """
              )
 
@@ -602,9 +600,9 @@ class RuleCreator:
                 ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
                 appliesSPO2Low(?tp, ?spo2_low), hasThrValue(?spo2_low, ?low), 
                 appliesSPO2Moderate(?tp, ?spo2_mod), hasThrValue(?spo2_mod, ?mod), 
-                SpO2(?spo2), hasNumericalValue(?spo2, ?value), 
+                SpO2(spo2_instance), hasNumericalValue(spo2_instance, ?value), 
                 greaterThanOrEqual(?value, ?low), lessThan(?value, ?mod), 
-                Low_SpO2(?l_spo2) -> SpO2is(spo2_instance, ?l_spo2)
+                Low_SpO2(?l_spo2) -> ActorStateHasPhysiologicalState(?act_st, spo2_instance), SpO2is(spo2_instance, ?l_spo2)
                 """
              )
 
@@ -615,9 +613,9 @@ class RuleCreator:
                 f"""
                 ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
                 appliesSPO2Low(?tp, ?spo2_low), hasThrValue(?spo2_low, ?low), 
-                SpO2(?spo2), hasNumericalValue(?spo2, ?value), 
+                SpO2(spo2_instance), hasNumericalValue(spo2_instance, ?value), 
                 lessThan(?value, ?low),  
-                Critical_SpO2(?critical_spo2) -> SpO2is(spo2_instance, ?critical_spo2)
+                Critical_SpO2(?critical_spo2) -> ActorStateHasPhysiologicalState(?act_st, spo2_instance), SpO2is(spo2_instance, ?critical_spo2)
                 """
              )
           
@@ -632,6 +630,9 @@ class RuleCreator:
         * Level_9 (actor is asleep with effort of waking up)
         """
 
+        if not self.ontology.search(iri='Level_3_KSS'): 
+            self.create_instances('Level_3_KSS')
+
         rule_name = "level_3_kss_rule" 
         if not has_rule_named(onto=self.ontology, name=rule_name): 
             Imp(rule_name).set_as_rule(
@@ -642,6 +643,9 @@ class RuleCreator:
                 -> ActorStateHasPhysiologicalState(?act_state, ?dr_instance), DrowsinessIs(?dr_instance, ?l3kss) 
                 """
             )
+
+        if not self.ontology.search(iri='Level_5_KSS'): 
+            self.create_instances('Level_5_KSS')
 
         rule_name = "level_5_kss_rule" 
         if not has_rule_named(onto=self.ontology, name=rule_name): 
@@ -654,6 +658,8 @@ class RuleCreator:
                 """
             )
 
+        if not self.ontology.search(iri='Level_7_KSS'): 
+            self.create_instances('Level_7_KSS')
 
         rule_name = "level_7_kss_rule" 
         if not has_rule_named(onto=self.ontology, name=rule_name): 
@@ -665,6 +671,9 @@ class RuleCreator:
                 -> ActorStateHasPhysiologicalState(?act_state, ?dr_instance), DrowsinessIs(?dr_instance, ?l7kss) 
                 """
             )
+
+        if not self.ontology.search(iri='Level_9_KSS'): 
+            self.create_instances('Level_9_KSS')
 
         rule_name = "level_9_kss_rule" 
         if not has_rule_named(onto=self.ontology, name=rule_name): 
@@ -719,16 +728,16 @@ class RuleCreator:
         If an instance is deleted or non existent the reasoner will detect an inconsistency error in this 
         class. 
         """
-        Imp().set_as_rule("""ActorState(?act_state), HR(?hr_instance)->ActorStateHasPhysiologicalState(?act_state, ?hr_instance)""") 
-        Imp().set_as_rule("""ActorState(?act_state), HRV(?hrv_instance)->ActorStateHasPhysiologicalState(?act_state, ?hrv_instance)""") 
-        Imp().set_as_rule("""ActorState(?act_state), RR(?rr_instance)->ActorStateHasPhysiologicalState(?act_state, ?rr_instance)""") 
-        Imp().set_as_rule("""ActorState(?act_state), SpO2(?spo2_instance)->ActorStateHasPhysiologicalState(?act_state, ?spo2_instance)""") 
-        Imp().set_as_rule("""ActorState(?act_state), Drowsiness(?drowsiness_instance)->ActorStateHasPhysiologicalState(?act_state, ?drowsiness_instance)""") 
-        Imp().set_as_rule("""ActorState(?act_state), FaceCharacteristics(?facecharacteristics_instance)->ActorStateHasCharacteristics(?act_state, ?facecharacteristics_instance)""") 
-        Imp().set_as_rule("""ActorState(?act_state), Sex(?sex_instance)->ActorStateHasCharacteristics(?act_state, ?sex_instance)""") 
-        Imp().set_as_rule("""ActorState(?act_state), Age(?age_instance)->ActorStateHasCharacteristics(?act_state, ?age_instance)""") 
-        Imp().set_as_rule("""ActorState(?act_state), Demographic(?demographic_instance)->ActorStateHasCharacteristics(?act_state, ?demographic_instance)""") 
-        Imp().set_as_rule("""ActorState(?act_state), Accessories(?accessories_instance)->ActorStateHasCharacteristics(?act_state, ?accessories_instance)""")
+        Imp().set_as_rule("""ActorState(?act_state), HR(hr_instance)->ActorStateHasPhysiologicalState(?act_state, hr_instance)""") 
+        Imp().set_as_rule("""ActorState(?act_state), HRV(hrv_instance)->ActorStateHasPhysiologicalState(?act_state, hrv_instance)""") 
+        Imp().set_as_rule("""ActorState(?act_state), RR(rr_instance)->ActorStateHasPhysiologicalState(?act_state, rr_instance)""") 
+        Imp().set_as_rule("""ActorState(?act_state), SpO2(spo2_instance)->ActorStateHasPhysiologicalState(?act_state, spo2_instance)""") 
+        Imp().set_as_rule("""ActorState(?act_state), Drowsiness(drowsiness_instance)->ActorStateHasPhysiologicalState(?act_state, drowsiness_instance)""") 
+        Imp().set_as_rule("""ActorState(?act_state), FaceCharacteristics(facecharacteristics_instance)->ActorStateHasCharacteristics(?act_state, facecharacteristics_instance)""") 
+        Imp().set_as_rule("""ActorState(?act_state), Sex(sex_instance)->ActorStateHasCharacteristics(?act_state, sex_instance)""") 
+        Imp().set_as_rule("""ActorState(?act_state), Age(age_instance)->ActorStateHasCharacteristics(?act_state, age_instance)""") 
+        Imp().set_as_rule("""ActorState(?act_state), Demographic(demographic_instance)->ActorStateHasCharacteristics(?act_state, demographic_instance)""") 
+        Imp().set_as_rule("""ActorState(?act_state), Accessories(accessories_instance)->ActorStateHasCharacteristics(?act_state, accessories_instance)""")
 
 
 
@@ -753,7 +762,6 @@ class RuleCreator:
         if not self.ontology.Drowsiness_Suspected.instances(): 
             self.create_instances("Drowsiness_Suspected")
 
-        import pdb;pdb.set_trace()
         rule_name = "sleep_rule_1" 
         if not has_rule_named(onto=self.ontology, name=rule_name): 
             Imp(rule_name).set_as_rule(
@@ -763,23 +771,22 @@ class RuleCreator:
                 appliesHRVLow(?tp, ?hrv_instance), ActorStateHasPhysiologicalState(?act_state, ?hrv), HRVis(?hrv, ?hrv_instance), 
                 appliesRRLow(?tp, ?rr_instance), ActorStateHasPhysiologicalState(?act_state, ?rr), RRis(?rr, ?rr_instance), 
                 appliesSPO2Low(?tp, ?spo2_instance), ActorStateHasPhysiologicalState(?act_state, ?spo2), SpO2is(?spo2, ?spo2_instance), 
-                
+                ActorStateHasPhysiologicalState(?act_state, ?drowsiness_instance), DrowsinessIs(?drowsiness_instance, ?dr), Level_7_KSS(?dr), 
+                Sleep(?verdict) -> ActorStateHasPhysiologicalState(?act_state, fatigue_instance), FatigueIs(fatigue_instance, ?verdict)
                 """
             )
-
-        return
 
         rule_name = "sleep_rule_2" 
         if not has_rule_named(onto=self.ontology, name=rule_name): 
             Imp(rule_name).set_as_rule(
                 """
-                ActorState(?act_state), 
-                ActorStateHasPhysiologicalState(?act_state, ?hr), HRis(?hr, ?hr_instance), High_HR(?hr_instance),  
-                ActorStateHasPhysiologicalState(?act_state, ?hrv), HRVis(?hrv, ?hrv_instance), Low_HRV(?hrv_instance),  
-                ActorStateHasPhysiologicalState(?act_state, ?rr), RRis(?rr, ?rr_instance), High_RR(?rr_instance), 
-                ActorStateHasPhysiologicalState(?act_state, ?ds), DrowsinessIs(?ds, ?dr_instance), Level_7_KSS(?dr_instance), 
-                ActorStateHasPhysiologicalState(?act_state, ?spo2), SpO2is(?spo2, ?spo2_instance), Low_SpO2(?spo2_instance),  
-                Sleep(?sleep) -> ActorStateHasPhysiologicalState(?act_state, fatigue_instance), FatigueIs(fatigue_instance, ?sleep) 
+                ActorState(?act_state), StateHasThresholdProfile(?act_state, ?tp), 
+                appliesHRHigh(?tp, ?hr_instance), ActorStateHasPhysiologicalState(?act_state, ?hr), HRis(?hr, ?hr_instance),  
+                appliesHRVLow(?tp, ?hrv_instance), ActorStateHasPhysiologicalState(?act_state, ?hrv), HRVis(?hrv, ?hrv_instance), 
+                appliesRRHigh(?tp, ?rr_instance), ActorStateHasPhysiologicalState(?act_state, ?rr), RRis(?rr, ?rr_instance), 
+                appliesSPO2Low(?tp, ?spo2_instance), ActorStateHasPhysiologicalState(?act_state, ?spo2), SpO2is(?spo2, ?spo2_instance), 
+                ActorStateHasPhysiologicalState(?act_state, ?drowsiness_instance), DrowsinessIs(?drowsiness_instance, ?dr), Level_7_KSS(?dr), 
+                Sleep(?verdict) -> ActorStateHasPhysiologicalState(?act_state, fatigue_instance), FatigueIs(fatigue_instance, ?verdict)
                 """
             )
         
@@ -787,13 +794,13 @@ class RuleCreator:
         if not has_rule_named(onto=self.ontology, name=rule_name): 
             Imp(rule_name).set_as_rule(
                 """
-                ActorState(?act_state), 
-                ActorStateHasPhysiologicalState(?act_state, ?hr), HRis(?hr, ?hr_instance), High_HR(?hr_instance),  
-                ActorStateHasPhysiologicalState(?act_state, ?hrv), HRVis(?hrv, ?hrv_instance), Low_HRV(?hrv_instance),  
-                ActorStateHasPhysiologicalState(?act_state, ?rr), RRis(?rr, ?rr_instance), Low_RR(?rr_instance), 
-                ActorStateHasPhysiologicalState(?act_state, ?ds), DrowsinessIs(?ds, ?dr_instance), Level_7_KSS(?dr_instance), 
-                ActorStateHasPhysiologicalState(?act_state, ?spo2), SpO2is(?spo2, ?spo2_instance), Low_SpO2(?spo2_instance),  
-                Sleep(?sleep) -> ActorStateHasPhysiologicalState(?act_state, fatigue_instance), FatigueIs(fatigue_instance, ?sleep) 
+                ActorState(?act_state), StateHasThresholdProfile(?act_state, ?tp), 
+                appliesHRHigh(?tp, ?hr_instance), ActorStateHasPhysiologicalState(?act_state, ?hr), HRis(?hr, ?hr_instance),  
+                appliesHRVLow(?tp, ?hrv_instance), ActorStateHasPhysiologicalState(?act_state, ?hrv), HRVis(?hrv, ?hrv_instance), 
+                appliesRRLow(?tp, ?rr_instance), ActorStateHasPhysiologicalState(?act_state, ?rr), RRis(?rr, ?rr_instance), 
+                appliesSPO2Low(?tp, ?spo2_instance), ActorStateHasPhysiologicalState(?act_state, ?spo2), SpO2is(?spo2, ?spo2_instance), 
+                ActorStateHasPhysiologicalState(?act_state, ?drowsiness_instance), DrowsinessIs(?drowsiness_instance, ?dr), Level_7_KSS(?dr), 
+                Sleep(?verdict) -> ActorStateHasPhysiologicalState(?act_state, fatigue_instance), FatigueIs(fatigue_instance, ?verdict)
                 """
             )
 
@@ -801,6 +808,15 @@ class RuleCreator:
         if not has_rule_named(onto=self.ontology, name=rule_name): 
             Imp(rule_name).set_as_rule(
                 """
+                ActorState(?act_state), StateHasThresholdProfile(?act_state, ?tp), 
+                appliesHRHigh(?tp, ?hr_instance), ActorStateHasPhysiologicalState(?act_state, ?hr), HRis(?hr, ?hr_instance),  
+                appliesHRVLow(?tp, ?hrv_instance), ActorStateHasPhysiologicalState(?act_state, ?hrv), HRVis(?hrv, ?hrv_instance), 
+                appliesRRLow(?tp, ?rr_instance), ActorStateHasPhysiologicalState(?act_state, ?rr), RRis(?rr, ?rr_instance), 
+                appliesSPO2Low(?tp, ?spo2_instance), ActorStateHasPhysiologicalState(?act_state, ?spo2), SpO2is(?spo2, ?spo2_instance), 
+                ActorStateHasPhysiologicalState(?act_state, ?drowsiness_instance), DrowsinessIs(?drowsiness_instance, ?dr), Level_7_KSS(?dr), 
+                Sleep(?verdict) -> ActorStateHasPhysiologicalState(?act_state, fatigue_instance), FatigueIs(fatigue_instance, ?verdict)
+ 
+
                 ActorState(?act_state), 
                 ActorStateHasPhysiologicalState(?act_state, ?hr), HRis(?hr, ?hr_instance), Very_Low_HR(?hr_instance),  
                 ActorStateHasPhysiologicalState(?act_state, ?hrv), HRVis(?hrv, ?hrv_instance), Low_HRV(?hrv_instance),  
@@ -1044,7 +1060,8 @@ class RuleCreator:
                     self.determine_RR() 
                     self.determine_spo2() 
                     self.determine_drowsiness()
-                    import pdb; pdb.set_trace()
+
+                    import pdb;pdb.set_trace()
                     self.determine_fatigue()
                     import pdb;pdb.set_trace()
                     self.determine_age()
