@@ -3,6 +3,7 @@ from tools.appraisal import StepContext
 from tools.logger import logger 
 
 import os 
+import pdb
 import uuid 
 import json 
 import random
@@ -59,7 +60,7 @@ class RuleCreator:
         self.age_group_names = None 
         self.sex_group_names = None
         self.temp_groups = None 
-        self.temp_groups_names = None 
+        self.temp_group_names = None 
 
 
     def save_rules_into_ontology(self, filename, format_save="rdfxml", format="xml"):
@@ -225,7 +226,6 @@ class RuleCreator:
                     )
 
 
-
     def determine_age(self): 
         """
         This funciton creates the rules to categorize the age of the actor into 
@@ -265,7 +265,6 @@ class RuleCreator:
             self.age_group_names = [age.name for age in self.ontology.Age.subclasses() ]
 
         
-
     def determine_gender(self): 
 
         with self.ontology:
@@ -326,7 +325,6 @@ class RuleCreator:
         self.temp_group_names = [gen.name for gen in self.ontology.WeatherCondition.subclasses()]
 
 
-
     def determine_acc_and_temp(self): 
         
         rule_name = "scarf_cold_rule" 
@@ -347,8 +345,22 @@ class RuleCreator:
                 
 
     def find_threshold_profile_rules(self): 
+
+        if not self.age_group_names or not self.age_groups: 
+            logger.debug("Age Groups are not Defined") 
+            return 
+
+        if not self.sex_group_names or not self.sex_groups: 
+            logger.debug("Sex Groups are not Defined") 
+            return 
+
+        if not self.temp_group_names or not self.temp_groups:
+            logger.debug("Temp Groups are not Defined") 
+            return 
+
         for i, age_group in enumerate(self.age_group_names): 
             age = self.age_groups[i] 
+
             for jj, sex_group in enumerate(self.sex_group_names): 
                 sex = self.sex_groups[jj] 
                 for tt, temp_group in enumerate(self.temp_group_names): 
@@ -375,7 +387,6 @@ class RuleCreator:
         self.find_threshold_profile_rules()
         
 
-
     def determine_HR(self):
         """
         This function creates the rules to categorize the HR of the actor into
@@ -388,60 +399,65 @@ class RuleCreator:
         These threshold ranges change based on the Age group of the actor.
         """
 
-        if not self.ontology.search(iri="Very_Low_HR"): self.create_instances("Very_Low_HR") 
+        self.create_instances("Very_Low_HR") 
         if not has_rule_named(onto=self.ontology, name="very_low_hr_rule"): 
             Imp("very_low_hr_rule").set_as_rule(
                 f""" 
                 ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
-                appliesHRLow(?tp, ?hr_low), hasThrValue(?hr_low, ?low), 
+                ActorStateHasPhysiologicalState(?act_st, hr_instance), 
                 HR(hr_instance), hasNumericalValue(hr_instance, ?value), 
+                appliesHRLow(?tp, ?hr_low), hasThrValue(?hr_low, ?low), 
+                greaterThanOrEqual(?value, 0), 
                 lessThan(?value, ?low), 
-                Very_Low_HR(?vrl_hr)  -> ActorStateHasPhysiologicalState(?act_st, hr_instance), HRis(hr_instance, ?vrl_hr) 
+                Very_Low_HR(?vrl_hr)  ->  HRis(hr_instance, ?vrl_hr) 
                 """
             )
 
-        if not self.ontology.search(iri="Low_HR"): self.create_instances("Low_HR") 
+        self.create_instances("Low_HR") 
         if not has_rule_named(onto=self.ontology, name="low_hr_rule"): 
             Imp("low_hr_rule").set_as_rule(
                  f""" 
                 ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
+                ActorStateHasPhysiologicalState(?act_st, hr_instance), 
+                HR(hr_instance), hasNumericalValue(hr_instance, ?value), 
                 appliesHRLow(?tp, ?hr_low), hasThrValue(?hr_low, ?low), 
                 appliesHRModerate(?tp, ?hr_mod), hasThrValue(?hr_mod, ?mod), 
-                HR(hr_instance), hasNumericalValue(hr_instance, ?value), 
                 greaterThanOrEqual(?value, ?low),
                 lessThan(?value, ?mod), 
-                Low_HR(?l_hr)  -> ActorStateHasPhysiologicalState(?act_st, hr_instance), HRis(hr_instance, ?l_hr) 
+                Low_HR(?l_hr)  -> HRis(hr_instance, ?l_hr) 
                 """
             )
 
-        if not self.ontology.search(iri="Moderate_HR"): self.create_instances("Moderate_HR") 
+        self.create_instances("Moderate_HR") 
         if not has_rule_named(onto=self.ontology, name="moderate_hr_rule"): 
             Imp("moderate_hr_rule").set_as_rule(
                 f""" 
                 ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
+                ActorStateHasPhysiologicalState(?act_st, hr_instance),
+                HR(hr_instance), hasNumericalValue(hr_instance, ?value), 
                 appliesHRModerate(?tp, ?hr_mod), hasThrValue(?hr_mod, ?mod), 
                 appliesHRHigh(?tp, ?hr_high), hasThrValue(?hr_high, ?high), 
-                HR(hr_instance), hasNumericalValue(hr_instance, ?value), 
                 greaterThanOrEqual(?value, ?mod),
                 lessThan(?value, ?high), 
-                Moderate_HR(?m_hr)  -> ActorStateHasPhysiologicalState(?act_st, hr_instance), HRis(hr_instance, ?m_hr) 
+                Moderate_HR(?m_hr)  ->  HRis(hr_instance, ?m_hr) 
                 """
             )
 
-        if not self.ontology.search(iri="High_HR"): self.create_instances("High_HR") 
+        self.create_instances("High_HR") 
         if not has_rule_named(onto=self.ontology, name="high_hr_rule"): 
             Imp("high_hr_rule").set_as_rule(
                 f""" 
                 ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
-                appliesHRHigh(?tp, ?hr_high), hasThrValue(?hr_high, ?high), 
+                ActorStateHasPhysiologicalState(?act_st,hr_instance),
                 HR(hr_instance), hasNumericalValue(hr_instance, ?value), 
+                appliesHRHigh(?tp, ?hr_high), hasThrValue(?hr_high, ?high), 
                 greaterThanOrEqual(?value, ?high),
-                High_HR(?h_hr)  -> ActorStateHasPhysiologicalState(?act_st,hr_instance), HRis(hr_instance, ?h_hr) 
+                lessThan(?value, 250), 
+                High_HR(?h_hr)  ->  HRis(hr_instance, ?h_hr) 
                 """
             )
 
-                    
-
+        
     def determine_HRV(self): 
         """
         This function creates the rules to categorize the HRV of the actor into
@@ -454,53 +470,61 @@ class RuleCreator:
         These threshold ranges change based on the Age group of the actor.
         """
       
-        if not self.ontology.search(iri="Very_Low_HRV"): self.create_instances("Very_Low_HRV") 
+        self.create_instances("Very_Low_HRV") 
         if not has_rule_named(onto=self.ontology, name="very_low_hrv_rule"): 
             Imp("very_low_hrv_rule").set_as_rule(
                 f"""
                 ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
-                appliesHRVLow(?tp, ?hrv_low), hasThrValue(?hrv_low, ?low), 
+                ActorStateHasPhysiologicalState(?act_st, hrv_instance),
                 HRV(hrv_instance), hasNumericalValue(hrv_instance, ?value), 
+                appliesHRVLow(?tp, ?hrv_low), hasThrValue(?hrv_low, ?low), 
+                greaterThanOrEqual(?value, 0), 
                 lessThan(?value, ?low), 
-                Very_Low_HRV(?vrl_hrv) -> ActorStateHasPhysiologicalState(?act_st, hrv_instance), HRVis(hrv_instance, ?vrl_hrv) 
+                Very_Low_HRV(?vrl_hrv) ->  HRVis(hrv_instance, ?vrl_hrv)
                 """
             )
 
-        if not self.ontology.search(iri="Low_HRV"): self.create_instances("Low_HRV") 
+        self.create_instances("Low_HRV") 
         if not has_rule_named(onto=self.ontology, name="low_hrv_rule"): 
             Imp("low_hrv_rule").set_as_rule(
                 f"""
                 ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
+                ActorStateHasPhysiologicalState(?act_st,hrv_instance),
+                HRV(hrv_instance), hasNumericalValue(hrv_instance, ?value), 
                 appliesHRVLow(?tp, ?hrv_low), hasThrValue(?hrv_low, ?low), 
                 appliesHRVModerate(?tp, ?hrv_mod), hasThrValue(?hrv_mod, ?mod), 
-                HRV(hrv_instance), hasNumericalValue(hrv_instance, ?value), 
-                greaterThanOrEqual(?value, ?low), lessThan(?value, ?mod), 
-                Low_HRV(?l_hrv) -> ActorStateHasPhysiologicalState(?act_st, hrv_instance), HRVis(hrv_instance, ?l_hrv) 
+                greaterThanOrEqual(?value, ?low), 
+                lessThan(?value, ?mod), 
+                Low_HRV(?l_hrv) ->  HRVis(hrv_instance, ?l_hrv)
                 """
             )
 
-        if not self.ontology.search(iri="Moderate_HRV"): self.create_instances("Moderate_HRV") 
+        self.create_instances("Moderate_HRV") 
         if not has_rule_named(onto=self.ontology, name="moderate_hrv_rule"): 
             Imp("moderate_hrv_rule").set_as_rule(
-                f"""
+                """
                 ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
+                ActorStateHasPhysiologicalState(?act_st, hrv_instance),
+                HRV(hrv_instance), hasNumericalValue(hrv_instance, ?value), 
                 appliesHRVModerate(?tp, ?hrv_mod), hasThrValue(?hrv_mod, ?mod), 
                 appliesHRVHigh(?tp, ?hrv_high), hasThrValue(?hrv_high, ?high), 
-                HRV(hrv_instance), hasNumericalValue(hrv_instance, ?value), 
-                greaterThanOrEqual(?value, ?mod), lessThan(?value, ?high), 
-                Moderate_HRV(?mod_hrv) -> ActorStateHasPhysiologicalState(?act_st, hrv_instance), HRVis(hrv_instance, ?mod_hrv) 
+                greaterThanOrEqual(?value, ?mod), 
+                lessThan(?value, ?high), 
+                Moderate_HRV(?mod_hrv) -> HRVis(hrv_instance, ?mod_hrv)
                 """
             )
 
-        if not self.ontology.search(iri="High_HRV"): self.create_instances("High_HRV")
+        self.create_instances("High_HRV")
         if not has_rule_named(onto=self.ontology, name="high_hrv_rule"): 
             Imp("high_hrv_rule").set_as_rule(
                 f"""
                 ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
-                appliesHRHigh(?tp, ?hrv_high), hasThrValue(?high_hrv, ?high), 
+                ActorStateHasPhysiologicalState(?act_st, hrv_instance),
                 HRV(hrv_instance), hasNumericalValue(hrv_instance, ?value), 
+                appliesHRVHigh(?tp, ?hrv_high), hasThrValue(?hrv_high, ?high), 
                 greaterThanOrEqual(?value, ?high),
-                High_HRV(?high_hrv) -> ActorStateHasPhysiologicalState(?act_st, hrv_instance), HRVis(hrv_instance, ?high_hrv) 
+                lessThan(?value, 250), 
+                High_HRV(?high_hrv) -> HRVis(hrv_instance, ?high_hrv)
                 """
             )
 
@@ -517,54 +541,61 @@ class RuleCreator:
         These threshold ranges change based on the Age group of the actor.
         """
 
-
-        if not self.ontology.search(iri="Very_Low_RR"):self.create_instances("Very_Low_RR") 
+        self.create_instances("Very_Low_RR") 
         if not has_rule_named(onto=self.ontology, name="very_low_rr_rule"):
             Imp("very_low_rr_rule").set_as_rule(
                 f"""
                 ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
-                appliesRRLow(?tp, ?rr_low), hasThrValue(?rr_low, ?low), 
+                ActorStateHasPhysiologicalState(?act_st, rr_instance),
                 RR(rr_instance), hasNumericalValue(rr_instance, ?value), 
+                appliesRRLow(?tp, ?rr_low), hasThrValue(?rr_low, ?low), 
+                greaterThanOrEqual(?value, 0), 
                 lessThan(?value, ?low), 
-                Very_Low_RR(?vrl_rr) -> ActorStateHasPhysiologicalState(?act_st, rr_instance), RRis(rr_instance, ?vrl_rr) 
+                Very_Low_RR(?vrl_rr) ->  RRis(rr_instance, ?vrl_rr) 
                 """
             )
 
-        if not self.ontology.search(iri="Low_RR"):self.create_instances("Low_RR") 
+        self.create_instances("Low_RR") 
         if not has_rule_named(onto=self.ontology, name="low_rr_rule"): 
              Imp("low_rr_rule").set_as_rule(
                 f"""
                 ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
+                ActorStateHasPhysiologicalState(?act_st, rr_instance),
+                RR(rr_instance), hasNumericalValue(rr_instance, ?value), 
                 appliesRRLow(?tp, ?rr_low), hasThrValue(?rr_low, ?low), 
                 appliesRRModerate(?tp, ?rr_mod), hasThrValue(?rr_mod, ?mod), 
-                RR(rr_instance), hasNumericalValue(rr_instance, ?value), 
-                greaterThanOrEqual(?value, ?low), lessThan(?value, ?mod), 
-                Low_RR(?l_rr) -> ActorStateHasPhysiologicalState(?act_st, rr_instance), RRis(rr_instance, ?l_rr)
+                greaterThanOrEqual(?value, ?low),
+                lessThan(?value, ?mod), 
+                Low_RR(?l_rr) ->  RRis(rr_instance, ?l_rr)
                 """
              )
         
-        if not self.ontology.search(iri="Moderate_RR"):self.create_instances("Moderate_RR") 
+        self.create_instances("Moderate_RR") 
         if not has_rule_named(onto=self.ontology, name="moderate_rr_rule"): 
              Imp("moderate_rr_rule").set_as_rule(
                 f"""
                 ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
+                ActorStateHasPhysiologicalState(?act_st, rr_instance),
+                RR(rr_instance), hasNumericalValue(rr_instance, ?value), 
                 appliesRRModerate(?tp, ?rr_mod), hasThrValue(?rr_mod, ?mod), 
                 appliesRRHigh(?tp, ?rr_high), hasThrValue(?rr_high, ?high), 
-                RR(rr_instance), hasNumericalValue(rr_instance, ?value), 
-                greaterThanOrEqual(?value, ?mod), lessThan(?value, ?high), 
-                Moderate_RR(?mod_rr) -> ActorStateHasPhysiologicalState(?act_st, rr_instance), RRis(rr_instance, ?mod_rr)
+                greaterThanOrEqual(?value, ?mod),
+                lessThan(?value, ?high), 
+                Moderate_RR(?mod_rr) ->  RRis(rr_instance, ?mod_rr)
                 """
              )
 
-        if not self.ontology.search(iri="High_RR"):self.create_instances("High_RR") 
+        self.create_instances("High_RR") 
         if not has_rule_named(onto=self.ontology, name="high_rr_rule"): 
              Imp("high_rr_rule").set_as_rule(
                 f"""
                 ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
-                appliesRRHigh(?tp, ?rr_high), hasThrValue(?rr_high, ?high), 
+                ActorStateHasPhysiologicalState(?act_st, rr_instance),
                 RR(rr_instance), hasNumericalValue(rr_instance, ?value), 
+                appliesRRHigh(?tp, ?rr_high), hasThrValue(?rr_high, ?high), 
                 greaterThanOrEqual(?value, ?high),  
-                High_RR(?high_rr) -> ActorStateHasPhysiologicalState(?act_st, rr_instance), RRis(rr_instance, ?high_rr)
+                lessThan(?value, 50), 
+                High_RR(?high_rr) ->  RRis(rr_instance, ?high_rr)
                 """
              )
                    
@@ -580,42 +611,46 @@ class RuleCreator:
         These threshold ranges change based on the Age group of the actor.
         """
 
-        if not self.ontology.search(iri="Normal_SpO2"):self.create_instances("Normal_SpO2") 
+        self.create_instances("Normal_SpO2") 
         if not has_rule_named(onto=self.ontology, name="normal_spo2_rule"): 
              Imp("normal_spo2_rule").set_as_rule(
                 f"""
                 ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
+                ActorStateHasPhysiologicalState(?act_st, spo2_instance),
+                SpO2(spo2_instance), hasNumericalValue(spo2_instance, ?value), 
                 appliesSPO2Moderate(?tp, ?spo2_mod), hasThrValue(?spo2_mod, ?mod), 
                 appliesSPO2High(?tp, ?spo2_high), hasThrValue(?spo2_high, ?high), 
-                SpO2(spo2_instance), hasNumericalValue(spo2_instance, ?value), 
-                greaterThanOrEqual(?value, ?mod), lessThanOrEqual(?value, ?high), 
-                Normal_SpO2(?nrm_spo2) -> ActorStateHasPhysiologicalState(?act_st, spo2_instance), SpO2is(spo2_instance, ?nrm_spo2)
+                greaterThanOrEqual(?value, ?mod),
+                lessThanOrEqual(?value, ?high), 
+                Normal_SpO2(?nrm_spo2) ->  SpO2is(spo2_instance, ?nrm_spo2)
                 """
              )
 
-        if not self.ontology.search(iri="Low_SpO2"):self.create_instances("Low_SpO2") 
+        self.create_instances("Low_SpO2") 
         if not has_rule_named(onto=self.ontology, name="low_spo2_rule"): 
              Imp("low_spo2_rule").set_as_rule(
                 f"""
                 ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
+                ActorStateHasPhysiologicalState(?act_st, spo2_instance),
+                SpO2(spo2_instance), hasNumericalValue(spo2_instance, ?value), 
                 appliesSPO2Low(?tp, ?spo2_low), hasThrValue(?spo2_low, ?low), 
                 appliesSPO2Moderate(?tp, ?spo2_mod), hasThrValue(?spo2_mod, ?mod), 
-                SpO2(spo2_instance), hasNumericalValue(spo2_instance, ?value), 
                 greaterThanOrEqual(?value, ?low), lessThan(?value, ?mod), 
-                Low_SpO2(?l_spo2) -> ActorStateHasPhysiologicalState(?act_st, spo2_instance), SpO2is(spo2_instance, ?l_spo2)
+                Low_SpO2(?l_spo2) ->  SpO2is(spo2_instance, ?l_spo2)
                 """
              )
 
 
-        if not self.ontology.search(iri="Critical_SpO2"):self.create_instances("Critical_SpO2") 
+        self.create_instances("Critical_SpO2") 
         if not has_rule_named(onto=self.ontology, name="critical_spo2_rule"): 
              Imp("critical_spo2_rule").set_as_rule(
                 f"""
                 ActorState(?act_st), StateHasThresholdProfile(?act_st, ?tp), 
+                ActorStateHasPhysiologicalState(?act_st, spo2_instance), 
                 appliesSPO2Low(?tp, ?spo2_low), hasThrValue(?spo2_low, ?low), 
                 SpO2(spo2_instance), hasNumericalValue(spo2_instance, ?value), 
                 lessThan(?value, ?low),  
-                Critical_SpO2(?critical_spo2) -> ActorStateHasPhysiologicalState(?act_st, spo2_instance), SpO2is(spo2_instance, ?critical_spo2)
+                Critical_SpO2(?critical_spo2) -> SpO2is(spo2_instance, ?critical_spo2)
                 """
              )
           
@@ -630,64 +665,57 @@ class RuleCreator:
         * Level_9 (actor is asleep with effort of waking up)
         """
 
-        if not self.ontology.search(iri='Level_3_KSS'): 
-            self.create_instances('Level_3_KSS')
+        self.create_instances('Level_3_KSS')
 
         rule_name = "level_3_kss_rule" 
         if not has_rule_named(onto=self.ontology, name=rule_name): 
             Imp(rule_name).set_as_rule(
                 """
-                ActorState(?act_state), 
-                Drowsiness(?dr_instance), hasNumericalValue(?dr_instance, ?v), 
+                ActorState(?act_state), ActorStateHasPhysiologicalState(?act_state, drowsiness_instance),
+                Drowsiness(drowsiness_instance), hasNumericalValue(drowsiness_instance, ?v), 
                 lessThanOrEqual(?v, 1), greaterThan(?v, 0), Level_3_KSS(?l3kss) 
-                -> ActorStateHasPhysiologicalState(?act_state, ?dr_instance), DrowsinessIs(?dr_instance, ?l3kss) 
+                -> DrowsinessIs(drowsiness_instance, ?l3kss) 
                 """
             )
 
-        if not self.ontology.search(iri='Level_5_KSS'): 
-            self.create_instances('Level_5_KSS')
+        self.create_instances('Level_5_KSS')
 
         rule_name = "level_5_kss_rule" 
         if not has_rule_named(onto=self.ontology, name=rule_name): 
             Imp(rule_name).set_as_rule(
                 """
-                ActorState(?act_state), 
-                Drowsiness(?dr_instance), hasNumericalValue(?dr_instance, ?v), 
+                ActorState(?act_state), ActorStateHasPhysiologicalState(?act_state, drowsiness_instance),
+                Drowsiness(drowsiness_instance), hasNumericalValue(drowsiness_instance, ?v), 
                 lessThanOrEqual(?v, 2), greaterThan(?v, 1), Level_5_KSS(?l5kss) 
-                -> ActorStateHasPhysiologicalState(?act_state, ?dr_instance), DrowsinessIs(?dr_instance, ?l5kss) 
+                ->  DrowsinessIs(drowsiness_instance, ?l5kss) 
                 """
             )
 
-        if not self.ontology.search(iri='Level_7_KSS'): 
-            self.create_instances('Level_7_KSS')
+        self.create_instances('Level_7_KSS')
 
         rule_name = "level_7_kss_rule" 
         if not has_rule_named(onto=self.ontology, name=rule_name): 
             Imp(rule_name).set_as_rule(
                 """
-                ActorState(?act_state), 
-                Drowsiness(?dr_instance), hasNumericalValue(?dr_instance, ?v), 
+                ActorState(?act_state), ActorStateHasPhysiologicalState(?act_state, drowsiness_instance),
+                Drowsiness(drowsiness_instance), hasNumericalValue(drowsiness_instance, ?v), 
                 lessThanOrEqual(?v, 3), greaterThan(?v, 2), Level_7_KSS(?l7kss) 
-                -> ActorStateHasPhysiologicalState(?act_state, ?dr_instance), DrowsinessIs(?dr_instance, ?l7kss) 
+                -> DrowsinessIs(drowsiness_instance, ?l7kss) 
                 """
             )
 
-        if not self.ontology.search(iri='Level_9_KSS'): 
-            self.create_instances('Level_9_KSS')
+        self.create_instances('Level_9_KSS')
 
         rule_name = "level_9_kss_rule" 
         if not has_rule_named(onto=self.ontology, name=rule_name): 
             Imp(rule_name).set_as_rule(
                 """
-                ActorState(?act_state), 
-                Drowsiness(?dr_instance), hasNumericalValue(?dr_instance, ?v), 
+                ActorState(?act_state), ActorStateHasPhysiologicalState(?act_state, drowsiness_instance), 
+                Drowsiness(drowsiness_instance), hasNumericalValue(?dr_instance, ?v), 
                 lessThanOrEqual(?v, 4), greaterThan(?v, 3), Level_9_KSS(?l9kss) 
-                -> ActorStateHasPhysiologicalState(?act_state, ?dr_instance), DrowsinessIs(?dr_instance, ?l9kss) 
+                ->  DrowsinessIs(drowsiness_instance, ?l9kss) 
                 """
             )
-
-
-
 
 
     def set_up_trends(self):  
@@ -711,11 +739,11 @@ class RuleCreator:
                 )
             
     
-    def trend_analysis(self): 
-        rule_name = "trend_analysis" 
-        if not  has_rule_named(self.ontology, name=rule_name): 
-            Imp(rule_name).set_as_rule()
-
+    # def trend_analysis(self): 
+    #     rule_name = "trend_analysis" 
+    #     if not  has_rule_named(self.ontology, name=rule_name): 
+    #         Imp(rule_name).set_as_rule()
+    #
                 
 
     def connect_actor_to_values(self): 
@@ -749,179 +777,1071 @@ class RuleCreator:
         * Undefined State
         """
     
-        if not self.ontology.search(iri="fatigue_instance"): 
-            self.create_instances("Fatigue")
-
+        self.create_instances("Fatigue")
         # First Option where HR is Low and RR is High with corresponding KSS
-        if not self.ontology.Sleep.instances(): 
-            self.create_instances("Sleep") 
+        self.create_instances("Sleep") 
 
-        if not self.ontology.Awake.instances(): 
-            self.create_instances("Awake") 
+        self.create_instances("Awake") 
 
-        if not self.ontology.Drowsiness_Suspected.instances(): 
-            self.create_instances("Drowsiness_Suspected")
+        self.create_instances("DrowsinessSuspected")
 
-        rule_name = "sleep_rule_1" 
+        self.create_instances("UndefinedState")
+
+        rule_name = "undefined_critical_spo2"
         if not has_rule_named(onto=self.ontology, name=rule_name): 
             Imp(rule_name).set_as_rule(
                 """
-                ActorState(?act_state), StateHasThresholdProfile(?act_state, ?tp), 
-                appliesHRLow(?tp, ?hr_instance), ActorStateHasPhysiologicalState(?act_state, ?hr), HRis(?hr, ?hr_instance), 
-                appliesHRVLow(?tp, ?hrv_instance), ActorStateHasPhysiologicalState(?act_state, ?hrv), HRVis(?hrv, ?hrv_instance), 
-                appliesRRLow(?tp, ?rr_instance), ActorStateHasPhysiologicalState(?act_state, ?rr), RRis(?rr, ?rr_instance), 
-                appliesSPO2Low(?tp, ?spo2_instance), ActorStateHasPhysiologicalState(?act_state, ?spo2), SpO2is(?spo2, ?spo2_instance), 
-                ActorStateHasPhysiologicalState(?act_state, ?drowsiness_instance), DrowsinessIs(?drowsiness_instance, ?dr), Level_7_KSS(?dr), 
-                Sleep(?verdict) -> ActorStateHasPhysiologicalState(?act_state, fatigue_instance), FatigueIs(fatigue_instance, ?verdict)
-                """
-            )
-
-        rule_name = "sleep_rule_2" 
-        if not has_rule_named(onto=self.ontology, name=rule_name): 
-            Imp(rule_name).set_as_rule(
-                """
-                ActorState(?act_state), StateHasThresholdProfile(?act_state, ?tp), 
-                appliesHRHigh(?tp, ?hr_instance), ActorStateHasPhysiologicalState(?act_state, ?hr), HRis(?hr, ?hr_instance),  
-                appliesHRVLow(?tp, ?hrv_instance), ActorStateHasPhysiologicalState(?act_state, ?hrv), HRVis(?hrv, ?hrv_instance), 
-                appliesRRHigh(?tp, ?rr_instance), ActorStateHasPhysiologicalState(?act_state, ?rr), RRis(?rr, ?rr_instance), 
-                appliesSPO2Low(?tp, ?spo2_instance), ActorStateHasPhysiologicalState(?act_state, ?spo2), SpO2is(?spo2, ?spo2_instance), 
-                ActorStateHasPhysiologicalState(?act_state, ?drowsiness_instance), DrowsinessIs(?drowsiness_instance, ?dr), Level_7_KSS(?dr), 
-                Sleep(?verdict) -> ActorStateHasPhysiologicalState(?act_state, fatigue_instance), FatigueIs(fatigue_instance, ?verdict)
+                ActorState(?act_st), ActorStateHasPhysiologicalState(?act_st, ?spo2), 
+                SpO2(?spo2), SpO2is(?spo2, ?critical), Critical_SpO2(?critical), 
+                Fatigue(fatigue_instance), UndefinedState(?und)-> ActorStateHasPhysiologicalState(?act_st, fatigue_instance), FatigueIs(fatigue_instance, ?und)
                 """
             )
         
-        rule_name = "sleep_rule_3" 
-        if not has_rule_named(onto=self.ontology, name=rule_name): 
-            Imp(rule_name).set_as_rule(
-                """
-                ActorState(?act_state), StateHasThresholdProfile(?act_state, ?tp), 
-                appliesHRHigh(?tp, ?hr_instance), ActorStateHasPhysiologicalState(?act_state, ?hr), HRis(?hr, ?hr_instance),  
-                appliesHRVLow(?tp, ?hrv_instance), ActorStateHasPhysiologicalState(?act_state, ?hrv), HRVis(?hrv, ?hrv_instance), 
-                appliesRRLow(?tp, ?rr_instance), ActorStateHasPhysiologicalState(?act_state, ?rr), RRis(?rr, ?rr_instance), 
-                appliesSPO2Low(?tp, ?spo2_instance), ActorStateHasPhysiologicalState(?act_state, ?spo2), SpO2is(?spo2, ?spo2_instance), 
-                ActorStateHasPhysiologicalState(?act_state, ?drowsiness_instance), DrowsinessIs(?drowsiness_instance, ?dr), Level_7_KSS(?dr), 
-                Sleep(?verdict) -> ActorStateHasPhysiologicalState(?act_state, fatigue_instance), FatigueIs(fatigue_instance, ?verdict)
-                """
-            )
-
-        rule_name = "sleep_rule_4" 
-        if not has_rule_named(onto=self.ontology, name=rule_name): 
-            Imp(rule_name).set_as_rule(
-                """
-                ActorState(?act_state), StateHasThresholdProfile(?act_state, ?tp), 
-                appliesHRHigh(?tp, ?hr_instance), ActorStateHasPhysiologicalState(?act_state, ?hr), HRis(?hr, ?hr_instance),  
-                appliesHRVLow(?tp, ?hrv_instance), ActorStateHasPhysiologicalState(?act_state, ?hrv), HRVis(?hrv, ?hrv_instance), 
-                appliesRRLow(?tp, ?rr_instance), ActorStateHasPhysiologicalState(?act_state, ?rr), RRis(?rr, ?rr_instance), 
-                appliesSPO2Low(?tp, ?spo2_instance), ActorStateHasPhysiologicalState(?act_state, ?spo2), SpO2is(?spo2, ?spo2_instance), 
-                ActorStateHasPhysiologicalState(?act_state, ?drowsiness_instance), DrowsinessIs(?drowsiness_instance, ?dr), Level_7_KSS(?dr), 
-                Sleep(?verdict) -> ActorStateHasPhysiologicalState(?act_state, fatigue_instance), FatigueIs(fatigue_instance, ?verdict)
- 
-
-                ActorState(?act_state), 
-                ActorStateHasPhysiologicalState(?act_state, ?hr), HRis(?hr, ?hr_instance), Very_Low_HR(?hr_instance),  
-                ActorStateHasPhysiologicalState(?act_state, ?hrv), HRVis(?hrv, ?hrv_instance), Low_HRV(?hrv_instance),  
-                ActorStateHasPhysiologicalState(?act_state, ?rr), RRis(?rr, ?rr_instance), High_RR(?rr_instance), 
-                ActorStateHasPhysiologicalState(?act_state, ?ds), DrowsinessIs(?ds, ?dr_instance), Level_7_KSS(?dr_instance), 
-                ActorStateHasPhysiologicalState(?act_state, ?spo2), SpO2is(?spo2, ?spo2_instance), Low_SpO2(?spo2_instance),  
-                Sleep(?sleep) -> ActorStateHasPhysiologicalState(?act_state, fatigue_instance), FatigueIs(fatigue_instance, ?sleep) 
-                """
-            )
-
         rule_name = "awake_rule_1" 
         if not has_rule_named(onto=self.ontology, name=rule_name): 
             Imp(rule_name).set_as_rule(
                 """
-                ActorState(?act_state), 
-                ActorStateHasPhysiologicalState(?act_state, ?hr), HRis(?hr, ?hr_instance), Moderate_HR(?hr_instance),  
-                ActorStateHasPhysiologicalState(?act_state, ?hrv), HRVis(?hrv, ?hrv_instance), Moderate_HRV(?hrv_instance),  
-                ActorStateHasPhysiologicalState(?act_state, ?rr), RRis(?rr, ?rr_instance), Moderate_RR(?rr_instance), 
-                ActorStateHasPhysiologicalState(?act_state, ?ds), DrowsinessIs(?ds, ?dr_instance), Level_3_KSS(?dr_instance), 
-                ActorStateHasPhysiologicalState(?act_state, ?spo2), SpO2is(?spo2, ?spo2_instance), Normal_SpO2(?spo2_instance),  
-                Awake(?awake) -> ActorStateHasPhysiologicalState(?act_state, fatigue_instance), FatigueIs(fatigue_instance, ?awake) 
+                ActorState(?act_st), ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?mod_hr), Moderate_HR(?mod_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?mod_hrv), Moderate_HRV(?mod_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?mod_rr), Moderate_RR(?mod_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
+                Fatigue(fatigue_instance), Awake(?awake) -> ActorStateHasPhysiologicalState(?act_st, fatigue_instance), FatigueIs(fatigue_instance, ?awake) 
                 """
             )
 
-        rule_name = "drowsiness_suspected_rule_1" 
+
+        rule_name = "awake_rule_2" 
         if not has_rule_named(onto=self.ontology, name=rule_name): 
             Imp(rule_name).set_as_rule(
                 """
-                ActorState(?act_state), 
-                ActorStateHasPhysiologicalState(?act_state, ?hr), HRis(?hr, ?hr_instance), Moderate_HR(?hr_instance),  
-                ActorStateHasPhysiologicalState(?act_state, ?hrv), HRVis(?hrv, ?hrv_instance), High_HRV(?hrv_instance),  
-                ActorStateHasPhysiologicalState(?act_state, ?rr), RRis(?rr, ?rr_instance), Moderate_RR(?rr_instance), 
-                ActorStateHasPhysiologicalState(?act_state, ?ds), DrowsinessIs(?ds, ?dr_instance), Level_3_KSS(?dr_instance), 
-                ActorStateHasPhysiologicalState(?act_state, ?spo2), SpO2is(?spo2, ?spo2_instance), Normal_SpO2(?spo2_instance),  
-                Drowsiness_Suspected(?drowsy_sus) -> ActorStateHasPhysiologicalState(?act_state, fatigue_instance), FatigueIs(fatigue_instance, ?drowsy_sus) 
+                ActorState(?act_st), ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?l_hr), Low_HR(?l_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?mod_hrv), Moderate_HRV(?mod_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?mod_rr), Moderate_RR(?mod_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
+                Fatigue(fatigue_instance), Awake(?awake) -> ActorStateHasPhysiologicalState(?act_st, fatigue_instance), FatigueIs(fatigue_instance, ?awake) 
                 """
             )
 
-        return  
-        
+        rule_name = "awake_rule_3" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st), ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?l_hr), Low_HR(?l_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?high_hrv), High_HRV(?high_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?mod_rr), Moderate_RR(?mod_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
+                Fatigue(fatigue_instance), Awake(?awake) -> ActorStateHasPhysiologicalState(?act_st, fatigue_instance), FatigueIs(fatigue_instance, ?awake) 
+                """
+            )
 
-        # Second Option for sleeping where HR is High and RR is High with Low KSS              
-        fatigue_awake_state_2 = Imp()
-        self.create_instances("Drowsiness_Suspected")
-        fatigue_awake_state_2.set_as_rule(
-            """
-            Actor(?actor), 
-            ActorHasPhysiologicalState(?actor, ?hr),
-            ActorHasPhysiologicalState(?actor, ?hrv),
-            ActorHasPhysiologicalState(?actor, ?rr),
-            ActorHasPhysiologicalState(?actor, ?spo2),
-            ActorHasPhysiologicalState(?actor, ?ds),
-            HRis(?hr, ?low_hr), Moderate_HR(?low_hr),
-            HRVis(?hrv, ?low_hrv), High_HRV(?low_hrv),
-            RRis(?rr, ?low_rr), Moderate_RR(?low_rr),
-            SpO2is(?spo2, ?low_spo2), Normal_SpO2(?low_spo2),
-            DrowsinessIs(?ds, ?low_ds), Level_3_KSS(?low_ds),
-            Fatigue(fatigue_instance),
-            Drowsiness_Suspected(?fatigue) 
-            ->  ActorHasPhysiologicalState(?actor, fatigue_instance),
-                FatigueIs(fatigue_instance, ?fatigue), 
-            """)
-        
-        fatigue_awake_state_3 = Imp()
-        fatigue_awake_state_3.set_as_rule(
-            """
-            Actor(?actor), 
-            ActorHasPhysiologicalState(?actor, ?hr),
-            ActorHasPhysiologicalState(?actor, ?hrv),
-            ActorHasPhysiologicalState(?actor, ?rr),
-            ActorHasPhysiologicalState(?actor, ?spo2),
-            ActorHasPhysiologicalState(?actor, ?ds),
-            HRis(?hr, ?low_hr), High_HR(?low_hr),
-            HRVis(?hrv, ?low_hrv), Low_HRV(?low_hrv),
-            RRis(?rr, ?low_rr), High_RR(?low_rr),
-            SpO2is(?spo2, ?low_spo2), Normal_SpO2(?low_spo2),
-            DrowsinessIs(?ds, ?low_ds), Level_3_KSS(?low_ds),
-            Fatigue(fatigue_instance),
-            Awake(?fatigue)
-            ->  ActorHasPhysiologicalState(?actor, fatigue_instance), 
-            FatigueIs(fatigue_instance, ?fatigue),
-            """)    
+        rule_name = "awake_rule_4" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st), ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?l_hr), Low_HR(?l_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv),HRV(?hrv), HRVis(?hrv, ?mod_hrv), Moderate_HRV(?mod_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?l_rr), Low_RR(?l_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
+                Fatigue(fatigue_instance), Awake(?awake) -> ActorStateHasPhysiologicalState(?act_st, fatigue_instance), FatigueIs(fatigue_instance, ?awake) 
+                """
+            )
 
-        fatigue_awake_state_3 = Imp()
-        fatigue_awake_state_3.set_as_rule(
-            """
-            Actor(?actor), 
-            ActorHasPhysiologicalState(?actor, ?hr),
-            ActorHasPhysiologicalState(?actor, ?hrv),
-            ActorHasPhysiologicalState(?actor, ?rr),
-            ActorHasPhysiologicalState(?actor, ?spo2),
-            ActorHasPhysiologicalState(?actor, ?ds),
-            HRis(?hr, ?low_hr), Moderate_HR(?low_hr),
-            HRVis(?hrv, ?low_hrv), Low_HRV(?low_hrv),
-            RRis(?rr, ?low_rr), High_RR(?low_rr),
-            SpO2is(?spo2, ?low_spo2), Normal_SpO2(?low_spo2),
-            DrowsinessIs(?ds, ?low_ds), Level_3_KSS(?low_ds),
-            Fatigue(fatigue_instance),
-            Awake(?fatigue)
-            ->  ActorHasPhysiologicalState(?actor, fatigue_instance),
-                FatigueIs(fatigue_instance, ?fatigue),
-            """)       
+        rule_name = "awake_rule_5" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st), ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?l_hr), Low_HR(?l_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?high_hrv), High_HRV(?high_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?l_rr), Low_RR(?l_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
+                Fatigue(fatigue_instance), Awake(?awake) -> ActorStateHasPhysiologicalState(?act_st, fatigue_instance), FatigueIs(fatigue_instance, ?awake) 
+                """
+            )
         
-    logger.debug("Determining Fatigue State | Rules Created Successfully...")
-        
+        rule_name = "awake_rule_6" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                # """
+                # ActorState(?act_st),
+                # ActorStateHasPhysiologicalState(?act_st, drowsiness_instance), Drowsiness(drowsiness_instance),DrowsinessIs(drowsiness_instance, ?lvl3), Level_3_KSS(?lvl3), 
+                # ActorStateHasPhysiologicalState(?act_st, hr_instance), HR(hr_instance), HRis(hr_instance, ?mod_hr), Moderate_HR(?mod_hr), 
+                # ActorStateHasPhysiologicalState(?act_st, hrv_instance), HRV(hrv_instance), HRVis(hrv_instance, ?high_hrv), High_HRV(?high_hrv), 
+                # ActorStateHasPhysiologicalState(?act_st, rr_instance), RR(rr_instance), RRis(rr_instance, ?mod_rr), Moderate_RR(?mod_rr), 
+                # ActorStateHasPhysiologicalState(?act_st, spo2_instance), SpO2(spo2_instance), SpO2is(spo2_instance, ?nor), Normal_SpO2(?nor), 
+                # Fatigue(fatigue_instance), Awake(?awake) -> ActorStateHasPhysiologicalState(?act_st, fatigue_instance), FatigueIs(fatigue_instance, ?awake) 
+                # """
+                """
+                ActorState(?act_st), ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?mod_hr), Moderate_HR(?mod_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?high_hrv), High_HRV(?high_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?mod_rr), Moderate_RR(?mod_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
+                Fatigue(fatigue_instance), Awake(?awake) -> ActorStateHasPhysiologicalState(?act_st, fatigue_instance), FatigueIs(fatigue_instance, ?awake)
+
+                """
+            )
+
+        rule_name = "awake_rule_7" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st), ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr),HR(?hr), HRis(?hr, ?mod_hr), Moderate_HR(?mod_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hr), HRVis(?hrv, ?high_hrv), High_HRV(?high_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?l_rr), Low_RR(?l_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
+                Fatigue(fatigue_instance), Awake(?awake) -> ActorStateHasPhysiologicalState(?act_st, fatigue_instance), FatigueIs(fatigue_instance, ?awake) 
+                """
+            )
+
+        rule_name = "awake_rule_8" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st), ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?mod_hr), Moderate_HR(?mod_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?mod_hrv), Moderate_HRV(?mod_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?l_rr), Low_RR(?l_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
+                Fatigue(fatigue_instance), Awake(?awake) -> ActorStateHasPhysiologicalState(?act_st, fatigue_instance), FatigueIs(fatigue_instance, ?awake) 
+                """
+            )
+
+        rule_name = "drowsy_awake_rule_1" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st), ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl5), Level_5_KSS(?lvl5), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?mod_hr), Moderate_HR(?mod_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?mod_hrv), Moderate_HRV(?mod_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?mod_rr), Moderate_RR(?mod_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
+                Fatigue(fatigue_instance), Awake(?awake), Level_3_KSS(?lvl3) -> ActorStateHasPhysiologicalState(?act_st, fatigue_instance), FatigueIs(fatigue_instance, ?awake), DrowsinessIs(?dr, ?lvl3) 
+                """
+            )
+
+
+        rule_name = "drowsy_awake_rule_2" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st), ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl5), Level_5_KSS(?lvl5), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?mod_hr), Moderate_HR(?mod_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?l_hrv), High_HRV(?high_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?mod_rr), Moderate_RR(?mod_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
+                Fatigue(fatigue_instance), Awake(?awake), Level_3_KSS(?lvl3) -> ActorStateHasPhysiologicalState(?act_st, fatigue_instance), FatigueIs(fatigue_instance, ?awake), DrowsinessIs(?dr, ?lvl3) 
+                """
+            )
+
+        rule_name = "sleep_rule_1"
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl7), Level_7_KSS(?lvl7), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?vrl_hr), Very_Low_HR(?vrl_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?l_hrv), Low_HRV(?l_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?vlr_rr), Very_Low_RR(?vrl_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
+                Fatigue(fatigue_instance), Sleep(?sleep), Level_9_KSS(?lvl9) -> ActorStateHasPhysiologicalState(?act_st, fatigue_instance), FatigueIs(fatigue_instance, ?sleep), DrowsinessIs(?dr, ?lvl9) 
+                """
+            )
+
+        rule_name = "sleep_rule_2"
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl7), Level_7_KSS(?lvl7), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?vrl_hr), Very_Low_HR(?vrl_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?l_hrv), Low_HRV(?l_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?high_rr), High_RR(?high_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
+                Fatigue(fatigue_instance), Sleep(?sleep), Level_9_KSS(?lvl9) -> ActorStateHasPhysiologicalState(?act_st, fatigue_instance), FatigueIs(fatigue_instance, ?sleep), DrowsinessIs(?dr, ?lvl9) 
+                """
+            )
+
+        rule_name = "sleep_rule_3"
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl7), Level_7_KSS(?lvl7), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?high_hr), High_HR(?high_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?l_hrv), Low_HRV(?l_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?high_rr), High_RR(?high_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
+                Fatigue(fatigue_instance), Sleep(?sleep), Level_9_KSS(?lvl9) -> ActorStateHasPhysiologicalState(?act_st, fatigue_instance), FatigueIs(fatigue_instance, ?sleep), DrowsinessIs(?dr, ?lvl9) 
+                """
+            )
+
+        rule_name = "sleep_rule_4"
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl7), Level_7_KSS(?lvl7), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?high_hr), High_HR(?high_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?l_hrv), Low_HRV(?l_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
+                Fatigue(fatigue_instance), Sleep(?sleep), Level_9_KSS(?lvl9) -> ActorStateHasPhysiologicalState(?act_st, fatigue_instance), FatigueIs(fatigue_instance, ?sleep), DrowsinessIs(?dr, ?lvl9) 
+                """
+            )
+
+        rule_name = "sleep_rule_5"
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl7), Level_7_KSS(?lvl7), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?high_hr), High_HR(?high_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?high_rr), High_RR(?high_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
+                Fatigue(fatigue_instance), Sleep(?sleep), Level_9_KSS(?lvl9) -> ActorStateHasPhysiologicalState(?act_st, fatigue_instance), FatigueIs(fatigue_instance, ?sleep), DrowsinessIs(?dr, ?lvl9) 
+                """
+            )
+
+        rule_name = "sleep_rule_6"
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl7), Level_7_KSS(?lvl7), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?high_hr), High_HR(?high_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
+                Fatigue(fatigue_instance), Sleep(?sleep), Level_9_KSS(?lvl9) -> ActorStateHasPhysiologicalState(?act_st, fatigue_instance), FatigueIs(fatigue_instance, ?sleep), DrowsinessIs(?dr, ?lvl9) 
+                """
+            )
+
+        rule_name = "sleep_rule_7"
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl7), Level_7_KSS(?lvl7), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?vrl_hr), Very_Low_HR(?vrl_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?high_rr), High_RR(?high_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
+                Fatigue(fatigue_instance), Sleep(?sleep), Level_9_KSS(?lvl9) -> ActorStateHasPhysiologicalState(?act_st, fatigue_instance), FatigueIs(fatigue_instance, ?sleep), DrowsinessIs(?dr, ?lvl9) 
+                """
+            )
+
+        rule_name = "sleep_rule_8"
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl7), Level_7_KSS(?lvl7), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?vrl_hr), Very_Low_HR(?vrl_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
+                Fatigue(fatigue_instance), Sleep(?sleep), Level_9_KSS(?lvl9) -> ActorStateHasPhysiologicalState(?act_st, fatigue_instance), FatigueIs(fatigue_instance, ?sleep), DrowsinessIs(?dr, ?lvl9) 
+                """
+            )
+ 
+        rule_name = "drowsiness_suspected_1"
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?vrl_hr), Very_Low_HR(?vrl_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?l_hrv), Low_HRV(?l_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?high_rr), High_RR(?high_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
+                Fatigue(fatigue_instance), DrowsinessSuspected(?dr_sus), Level_5_KSS(?lvl5) -> ActorStateHasPhysiologicalState(?act_st, fatigue_instance), FatigueIs(fatigue_instance, ?dr_sus), DrowsinessIs(?dr, ?lvl5) 
+                """
+            ) 
+
+        rule_name = "drowsiness_suspected_2"
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?vrl_hr), Very_Low_HR(?vrl_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?l_hrv), Low_HRV(?l_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
+                Fatigue(fatigue_instance), DrowsinessSuspected(?dr_sus), Level_5_KSS(?lvl5) -> ActorStateHasPhysiologicalState(?act_st, fatigue_instance), FatigueIs(fatigue_instance, ?dr_sus), DrowsinessIs(?dr, ?lvl5) 
+                """
+            ) 
+
+        rule_name = "drowsiness_suspected_3"
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?high_rr), High_HR(?high_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?l_hrv), Low_HRV(?l_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?high_rr), High_RR(?high_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
+                Fatigue(fatigue_instance), DrowsinessSuspected(?dr_sus), Level_5_KSS(?lvl5) -> ActorStateHasPhysiologicalState(?act_st, fatigue_instance), FatigueIs(fatigue_instance, ?dr_sus), DrowsinessIs(?dr, ?lvl5) 
+                """
+            ) 
+
+        rule_name = "drowsiness_suspected_4"
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?high_rr), High_HR(?high_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?l_hrv), Low_HRV(?l_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
+                Fatigue(fatigue_instance), DrowsinessSuspected(?dr_sus), Level_5_KSS(?lvl5) -> ActorStateHasPhysiologicalState(?act_st, fatigue_instance), FatigueIs(fatigue_instance, ?dr_sus), DrowsinessIs(?dr, ?lvl5) 
+                """
+            ) 
+
+        rule_name = "drowsiness_suspected_5"
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?high_rr), High_HR(?high_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?high_rr), High_RR(?high_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
+                Fatigue(fatigue_instance), DrowsinessSuspected(?dr_sus), Level_5_KSS(?lvl5) -> ActorStateHasPhysiologicalState(?act_st, fatigue_instance), FatigueIs(fatigue_instance, ?dr_sus), DrowsinessIs(?dr, ?lvl5) 
+                """
+            )
+
+        rule_name = "drowsiness_suspected_6"
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?high_rr), High_HR(?high_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
+                Fatigue(fatigue_instance), DrowsinessSuspected(?dr_sus), Level_5_KSS(?lvl5) -> ActorStateHasPhysiologicalState(?act_st, fatigue_instance), FatigueIs(fatigue_instance, ?dr_sus), DrowsinessIs(?dr, ?lvl5) 
+                """
+            )
+
+        rule_name = "drowsiness_suspected_7"
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?vrl_hr), Very_Low_HR(?vrl_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
+                Fatigue(fatigue_instance), DrowsinessSuspected(?dr_sus), Level_5_KSS(?lvl5) -> ActorStateHasPhysiologicalState(?act_st, fatigue_instance), FatigueIs(fatigue_instance, ?dr_sus), DrowsinessIs(?dr, ?lvl5) 
+                """
+            )
+
+        rule_name = "drowsiness_suspected_8"
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?vrl_hr), Very_Low_HR(?vrl_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?high_rr), High_RR(?high_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
+                Fatigue(fatigue_instance), DrowsinessSuspected(?dr_sus), Level_5_KSS(?lvl5) -> ActorStateHasPhysiologicalState(?act_st, fatigue_instance), FatigueIs(fatigue_instance, ?dr_sus), DrowsinessIs(?dr, ?lvl5) 
+                """
+            )
+
+        rule_name = "drowsy_low_spo2_1" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr,?lvl5), Level_5_KSS(?lvl5), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?mod_hr), Moderate_HR(?mod_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?mod_hrv), Moderate_HRV(?mod_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?mod_rr), Moderate_RR(?mod_rr), 
+                Fatigue(fatigue_instance), DrowsinessSuspected(?dr_sus), Level_7_KSS(?lvl7) -> ActorStateHasPhysiologicalState(?act_st, fatigue_instance), FatigueIs(fatigue_instance, ?dr_sus), DrowsinessIs(?dr, ?lvl7)
+                """
+            )
+
+        rule_name = "drowsy_low_spo2_2" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr,?lvl5), Level_5_KSS(?lvl5), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?mod_hr), Moderate_HR(?mod_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?high_hrv), High_HRV(?high_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?mod_rr), Moderate_RR(?mod_rr), 
+                Fatigue(fatigue_instance), DrowsinessSuspected(?dr_sus), Level_7_KSS(?lvl7) -> ActorStateHasPhysiologicalState(?act_st, fatigue_instance), FatigueIs(fatigue_instance, ?dr_sus), DrowsinessIs(?dr, ?lvl7)
+                """
+            )
+
+        rule_name = "drowsy_low_spo2_3" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr,?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?mod_hr), Moderate_HR(?mod_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?high_hrv), High_HRV(?high_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?mod_rr), Moderate_RR(?mod_rr), 
+                Fatigue(fatigue_instance), DrowsinessSuspected(?dr_sus), Level_5_KSS(?lvl5) -> ActorStateHasPhysiologicalState(?act_st, fatigue_instance), FatigueIs(fatigue_instance, ?dr_sus), DrowsinessIs(?dr, ?lvl5)
+                """
+            )
+
+
+        rule_name = "drowsy_low_spo2_3" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr,?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?mod_hr), Moderate_HR(?mod_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?mod_hrv), Moderate_HRV(?mod_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?mod_rr), Moderate_RR(?mod_rr), 
+                Fatigue(fatigue_instance), DrowsinessSuspected(?dr_sus), Level_5_KSS(?lvl5) -> ActorStateHasPhysiologicalState(?act_st, fatigue_instance), FatigueIs(fatigue_instance, ?dr_sus), DrowsinessIs(?dr, ?lvl5)
+                """
+            )
+
+
+    def determine_attention(self): 
+        self.create_instances("AttentionLevels")
+        # First Option where HR is Low and RR is High with corresponding KSS
+        self.create_instances("Attentive") 
+
+        self.create_instances("Inattentive") 
+
+        self.create_instances("UndefinedState")
+
+        rule_name = "undefined_att_1" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st), ActorStateHasPhysiologicalState(?act_st, ?spo2), 
+                SpO2(?spo2), SpO2is(?spo2, ?crit), Critical_SpO2(?crit), 
+                AttentionLevels(?att), UndefinedState(?dnf) -> ActorStateHasPhysiologicalState(?act_st, ?att), AttentionIs(?att, ?dnf)
+                """
+            )
+
+        rule_name = "attentive_1" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr,?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?mod_hr), Moderate_HR(?mod_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?mod_hrv), Moderate_HRV(?mod_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?mod_rr), Moderate_RR(?mod_rr), 
+                AttentionLevels(attention_instance), Attentive(?mod_att), Level_5_KSS(?lvl5) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?mod_att), DrowsinessIs(?dr, ?lvl7)
+                """
+            )
+
+        rule_name = "attentive_1_5" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr,?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?mod_hr), Moderate_HR(?mod_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?high_hrv), High_HRV(?high_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?mod_rr), Moderate_RR(?mod_rr), 
+                AttentionLevels(attention_instance), Attentive(?mod_att), Level_5_KSS(?lvl5) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?mod_att), DrowsinessIs(?dr, ?lvl7)
+                """
+            )
+
+        rule_name = "attentive_2" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr,?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor_spo2), Normal_SpO2(?nor_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?mod_hr), Moderate_HR(?mod_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?mod_hrv), Moderate_HRV(?mod_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?mod_rr), Moderate_RR(?mod_rr), 
+                AttentionLevels(attention_instance), Attentive(?high_att) -
+                > ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?high_att), )
+                """
+            )
+
+        rule_name = "attentive_3" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr,?lvl5), Level_5_KSS(?lvl5), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor_spo2), Normal_SpO2(?nor_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?mod_hr), Moderate_HR(?mod_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?mod_hrv), Moderate_HRV(?mod_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?mod_rr), Moderate_RR(?mod_rr), 
+                AttentionLevels(attention_instance), Attentive(?high_att), Level_3_KSS(?lvl3) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?high_att), DrowsinessIs(?dr, ?lvl3)
+                """
+            )
+
+        rule_name = "attentive_4" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr,?lvl5), Level_5_KSS(?lvl5), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor_spo2), Normal_SpO2(?nor_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?mod_hr), Moderate_HR(?mod_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?high_hrv), High_HRV(?high_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?mod_rr), Moderate_RR(?mod_rr), 
+                AttentionLevels(attention_instance), Attentive(?high_att), Level_3_KSS(?lvl3) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?high_att), DrowsinessIs(?dr, ?lvl3)
+                """
+            )
+
+        rule_name = "attentive_5" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr,?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor_spo2), Normal_SpO2(?nor_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?mod_hr), Moderate_HR(?mod_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?high_hrv), High_HRV(?high_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?mod_rr), Moderate_RR(?mod_rr), 
+                AttentionLevels(attention_instance), Attentive(?mod_att) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?mod_att) 
+                """
+            )
+
+        rule_name = "attentive_6" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr,?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor_spo2), Normal_SpO2(?nor_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?high_hr), High_HR(?high_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?l_hrv), Low_HRV(?l_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?high_rr), High_RR(?high_rr), 
+                AttentionLevels(attention_instance), Attentive(?mod_att), Level_5_KSS(?lvl5) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?mod_att), DrowsinessIs(?dr, ?lvl5)
+                """
+            )
+
+        rule_name = "attentive_7" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr,?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor_spo2), Normal_SpO2(?nor_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?vrl_hr), Very_Low_HR(?vrl_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?l_hrv), Low_HRV(?l_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?high_rr), High_RR(?high_rr), 
+                AttentionLevels(attention_instance), Attentive(?mod_att), Level_5_KSS(?lvl5) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?mod_att), DrowsinessIs(?dr, ?lvl5)
+                """
+            )
+
+        rule_name = "attentive_8" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr,?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor_spo2), Normal_SpO2(?nor_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?vrl_hr), Very_Low_HR(?vrl_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?l_hrv), Low_HRV(?l_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
+                AttentionLevels(attention_instance), Attentive(?mod_att), Level_5_KSS(?lvl5) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?mod_att), DrowsinessIs(?dr, ?lvl5)
+                """
+            )
+
+        rule_name = "attentive_9" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr,?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor_spo2), Normal_SpO2(?nor_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?high_hr), High_HR(?high_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?l_hrv), Low_HRV(?l_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
+                AttentionLevels(attention_instance), Attentive(?mod_att), Level_5_KSS(?lvl5) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?mod_att), DrowsinessIs(?dr, ?lvl5)
+                """
+            )
+
+
+        rule_name = "attentive_10" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr,?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor_spo2), Normal_SpO2(?nor_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?high_hr), High_HR(?high_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?high_rr), High_RR(?high_rr), 
+                AttentionLevels(attention_instance), Attentive(?mod_att), Level_5_KSS(?lvl5) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?mod_att), DrowsinessIs(?dr, ?lvl5)
+                """
+            )
+
+        rule_name = "attentive_11" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr,?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor_spo2), Normal_SpO2(?nor_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?vrl_hr), Very_Low_HR(?vrl_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?high_rr), High_RR(?high_rr), 
+                AttentionLevels(attention_instance), Attentive(?mod_att), Level_5_KSS(?lvl5) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?mod_att), DrowsinessIs(?dr, ?lvl5)
+                """
+            )
+
+        rule_name = "attentive_12" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr,?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor_spo2), Normal_SpO2(?nor_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?vrl_hr), Very_Low_HR(?vrl_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
+                AttentionLevels(attention_instance), Attentive(?mod_att), Level_5_KSS(?lvl5) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?mod_att), DrowsinessIs(?dr, ?lvl5)
+                """
+            )
+
+        rule_name = "attentive_13" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr,?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor_spo2), Normal_SpO2(?nor_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?high_hr), High_HR(?high_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
+                AttentionLevels(attention_instance), Attentive(?mod_att), Level_5_KSS(?lvl5) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?mod_att), DrowsinessIs(?dr, ?lvl5)
+                """
+            )
+
+
+        rule_name = "inattentive_1" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st), ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl9), 
+                Level_9_KSS(?lvl9), AttentionLevels(attention_instance), Inattentive(?inatt) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?inatt)
+                """
+            )
+
+        rule_name = "inattentive_2" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl7), Level_7_KSS(?lvl7),
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor_spo2), Normal_SpO2(?nor_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?mod_hr), Moderate_HR(?mod_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?mod_hrv), Moderate_HRV(?mod_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?mod_rr), Moderate_RR(?mod_rr), 
+                AttentionLevels(attention_instance), Inattentive(?inatt) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?inatt)
+                """
+            )
+
+        rule_name = "inattentive_3" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl7), Level_7_KSS(?lvl7),
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?mod_hr), Moderate_HR(?mod_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?mod_hrv), Moderate_HRV(?mod_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?mod_rr), Moderate_RR(?mod_rr), 
+                AttentionLevels(attention_instance), Inattentive(?inatt), Level_9_KSS(?lvl9) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?inatt), DrowsinessIs(?dr, ?lvl9)
+                """
+            )
+
+        rule_name = "inattentive_4" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl7), Level_7_KSS(?lvl7),
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?mod_hr), Moderate_HR(?mod_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?high_hrv), High_HRV(?high_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?mod_rr), Moderate_RR(?mod_rr), 
+                AttentionLevels(attention_instance), Inattentive(?inatt), Level_9_KSS(?lvl9) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?inatt), DrowsinessIs(?dr, ?lvl9)
+                """
+            )
+
+        rule_name = "inattentive_5" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl7), Level_7_KSS(?lvl7),
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor_spo2), Normal_SpO2(?nor_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?high_hr), High_HR(?high_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?l_hrv), Low_HRV(?l_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?high_rr), High_RR(?high_rr), 
+                AttentionLevels(attention_instance), Inattentive(?inatt), Level_9_KSS(?lvl9) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?inatt), DrowsinessIs(?dr, ?lvl9)
+                """
+            )
+
+        rule_name = "inattentive_6" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl7), Level_7_KSS(?lvl7),
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor_spo2), Normal_SpO2(?nor_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?vrl_hr), Very_Low_HR(?vrl_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?l_hrv), Low_HRV(?l_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?high_rr), High_RR(?high_rr), 
+                AttentionLevels(attention_instance), Inattentive(?inatt), Level_9_KSS(?lvl9) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?inatt), DrowsinessIs(?dr, ?lvl9)
+                """
+            )
+
+        rule_name = "inattentive_7" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl7), Level_7_KSS(?lvl7),
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor_spo2), Normal_SpO2(?nor_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?vrl_hr), Very_Low_HR(?vrl_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?l_hrv), Low_HRV(?l_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
+                AttentionLevels(attention_instance), Inattentive(?inatt), Level_9_KSS(?lvl9) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?inatt), DrowsinessIs(?dr, ?lvl9)
+                """
+            )
+
+        rule_name = "inattentive_8" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl7), Level_7_KSS(?lvl7),
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor_spo2), Normal_SpO2(?nor_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?high_hr), High_HR(?high_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?l_hrv), Low_HRV(?l_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
+                AttentionLevels(attention_instance), Inattentive(?inatt), Level_9_KSS(?lvl9) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?inatt), DrowsinessIs(?dr, ?lvl9)
+                """
+            )
+
+        rule_name = "inattentive_9" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl7), Level_7_KSS(?lvl7),
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor_spo2), Normal_SpO2(?nor_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?high_hr), High_HR(?high_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?high_rr), High_RR(?high_rr), 
+                AttentionLevels(attention_instance), Inattentive(?inatt), Level_9_KSS(?lvl9) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?inatt), DrowsinessIs(?dr, ?lvl9)
+                """
+            )
+
+        rule_name = "inattentive_10" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl7), Level_7_KSS(?lvl7),
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor_spo2), Normal_SpO2(?nor_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?vrl_hr), Very_Low_HR(?vrl_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?high_rr), High_RR(?high_rr), 
+                AttentionLevels(attention_instance), Inattentive(?inatt), Level_9_KSS(?lvl9) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?inatt), DrowsinessIs(?dr, ?lvl9)
+                """
+            )
+
+        rule_name = "inattentive_11" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl7), Level_7_KSS(?lvl7),
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor_spo2), Normal_SpO2(?nor_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?vrl_hr), Very_Low_HR(?vrl_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
+                AttentionLevels(attention_instance), Inattentive(?inatt), Level_9_KSS(?lvl9) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?inatt), DrowsinessIs(?dr, ?lvl9)
+                """
+            )
+
+        rule_name = "inattentive_12" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl7), Level_7_KSS(?lvl7),
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor_spo2), Normal_SpO2(?nor_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?high_hr), High_HR(?high_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
+                AttentionLevels(attention_instance), Inattentive(?inatt), Level_9_KSS(?lvl9) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?inatt), DrowsinessIs(?dr, ?lvl9)
+                """
+            )
+
+        rule_name = "inattentive_13" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl5), Level_5_KSS(?lvl5),
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor_spo2), Normal_SpO2(?nor_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?high_hr), High_HR(?high_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
+                AttentionLevels(attention_instance), Inattentive(?inatt), Level_7_KSS(?lvl7) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?inatt), DrowsinessIs(?dr, ?lvl7)
+                """
+            )
+
+        rule_name = "inattentive_14" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl5), Level_5_KSS(?lvl5),
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor_spo2), Normal_SpO2(?nor_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?vrl_hr), Very_Low_HR(?vrl_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
+                AttentionLevels(attention_instance), Inattentive(?inatt), Level_7_KSS(?lvl7) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?inatt), DrowsinessIs(?dr, ?lvl7)
+                """
+            )
+
+        rule_name = "inattentive_15" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl5), Level_5_KSS(?lvl5),
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor_spo2), Normal_SpO2(?nor_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?vrl_hr), Very_Low_HR(?vrl_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?high_rr), High_RR(?high_rr), 
+                AttentionLevels(attention_instance), Inattentive(?inatt), Level_7_KSS(?lvl7) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?inatt), DrowsinessIs(?dr, ?lvl7)
+                """
+            )
+
+        rule_name = "inattentive_16" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl5), Level_5_KSS(?lvl5),
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor_spo2), Normal_SpO2(?nor_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?high_hr), High_HR(?high_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?high_rr), High_RR(?high_rr), 
+                AttentionLevels(attention_instance), Inattentive(?inatt), Level_7_KSS(?lvl7) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?inatt), DrowsinessIs(?dr, ?lvl7)
+                """
+            )
+
+        rule_name = "inattentive_17" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl5), Level_5_KSS(?lvl5),
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?mod_hr), Moderate_HR(?mod_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?mod_hrv), Moderate_HRV(?mod_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?mod_rr), Moderate_RR(?mod_rr), 
+                AttentionLevels(attention_instance), Inattentive(?inatt), Level_7_KSS(?lvl7) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?inatt), DrowsinessIs(?dr, ?lvl7)
+                """
+            )
+
+        rule_name = "inattentive_18" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl5), Level_5_KSS(?lvl5),
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?mod_hr), Moderate_HR(?mod_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?high_hrv), High_HR(?high_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?mod_rr), Moderate_RR(?mod_rr), 
+                AttentionLevels(attention_instance), Inattentive(?inatt), Level_7_KSS(?lvl7) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?inatt), DrowsinessIs(?dr, ?lvl7)
+                """
+            )
+
+        rule_name = "inattentive_19" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl5), Level_5_KSS(?lvl5),
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?high_hr), High_HR(?high_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?l_hrv), Low_HRV(?l_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?high_rr), High_RR(?high_rr), 
+                AttentionLevels(attention_instance), Inattentive(?inatt), Level_9_KSS(?lvl9) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?inatt), DrowsinessIs(?dr, ?lvl9)
+                """
+            )
+
+        rule_name = "inattentive_20" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl5), Level_5_KSS(?lvl5),
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?vrl_hr), Very_Low_HR(?vrl_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?l_hrv), Low_HRV(?l_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?high_rr), High_RR(?high_rr), 
+                AttentionLevels(attention_instance), Inattentive(?inatt), Level_9_KSS(?lvl9) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?inatt), DrowsinessIs(?dr, ?lvl9)
+                """
+            )
+
+        rule_name = "inattentive_21" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl5), Level_5_KSS(?lvl5),
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?vrl_hr), Very_Low_HR(?vrl_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?l_hrv), Low_HRV(?l_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
+                AttentionLevels(attention_instance), Inattentive(?inatt), Level_9_KSS(?lvl9) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?inatt), DrowsinessIs(?dr, ?lvl9)
+                """
+            )
+
+        rule_name = "inattentive_22" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl5), Level_5_KSS(?lvl5),
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?high_hr), High_HR(?high_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?l_hrv), Low_HRV(?l_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
+                AttentionLevels(attention_instance), Inattentive(?inatt), Level_9_KSS(?lvl9) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?inatt), DrowsinessIs(?dr, ?lvl9)
+                """
+            )
+
+        rule_name = "inattentive_23" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl5), Level_5_KSS(?lvl5),
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?vrl_hr), Very_Low_HR(?vrl_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?high_rr), High_RR(?high_rr), 
+                AttentionLevels(attention_instance), Inattentive(?inatt), Level_9_KSS(?lvl9) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?inatt), DrowsinessIs(?dr, ?lvl9)
+                """
+            )
+
+        rule_name = "inattentive_24" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl5), Level_5_KSS(?lvl5),
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?vrl_hr), Very_Low_HR(?vrl_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
+                AttentionLevels(attention_instance), Inattentive(?inatt), Level_9_KSS(?lvl9) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?inatt), DrowsinessIs(?dr, ?lvl9)
+                """
+            )
+
+        rule_name = "inattentive_25" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl5), Level_5_KSS(?lvl5),
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?high_hr), High_HR(?high_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
+                AttentionLevels(attention_instance), Inattentive(?inatt), Level_9_KSS(?lvl9) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?inatt), DrowsinessIs(?dr, ?lvl9)
+                """
+            )
+
+        rule_name = "inattentive_26" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl5), Level_5_KSS(?lvl5),
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?high_hr), High_HR(?high_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?high_rr), High_RR(?high_rr), 
+                AttentionLevels(attention_instance), Inattentive(?inatt), Level_9_KSS(?lvl9) ->
+                ActorStateHasPhysiologicalState(?act_st, attention_instance), AttentionIs(attention_instance, ?inatt), DrowsinessIs(?dr, ?lvl9)
+                """
+            )
+
+
+
+
+
+
 
     def determine_eye_state(self): 
         """
@@ -935,22 +1855,26 @@ class RuleCreator:
         NOTE: In later stages the eye state will be determined by the fatigue, attention 
         and unresponsiveness state of the actor based on the physiological values. 
         """
-
       
-        rule = Imp() 
+        rule_name = "blinking_awake_1"
         self.create_instances("Blinking")
-        rule.set_as_rule(
-            """
-            Actor(?actor),
-            ActorHasPhysiologicalState(?actor, fatigue_instance),
-            FatigueIs(fatigue_instance, ?fatigue),
-            Awake(?fatigue),
-            Blinking(?eye_state)-> EyeStateForActor(?eye_state, ?actor)
-            """
-        )
+        if has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+               """
+               ActorState(?act_st), ActorHasPhysiologicalState(?actor, fatigue_instance),
+               FatigueIs(fatigue_instance, ?awake), Awake(?awake),
+               Blinking(?eye_state)-> EyeStateForActor(?eye_state, ?act_st)
+               """
+            )
 
-        rule = Imp()
+        
         self.create_instances("Sleeping")
+        rule_name = "closed_sleep_1" 
+        if has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                
+            )
+        rule = Imp()
         rule.set_as_rule(
             """
             Actor(?actor),
@@ -980,11 +1904,19 @@ class RuleCreator:
             Actor(?actor),
             ActorHasPhysiologicalState(?actor, fatigue_instance),
             FatigueIs(fatigue_instance, ?fatigue),
-            Drowsiness_Suspected(?fatigue), 
+            DrowsinessSuspected(?fatigue), 
             Slow_Closure(?eye_state)-> EyeStateForActor(?eye_state, ?actor)
             """
         )
     logger.debug("Determine Eye State | Rules Created successfully...")
+
+
+
+
+
+
+
+
 
 
     def determine_trends(self):
@@ -1049,29 +1981,33 @@ class RuleCreator:
             if index == 0:
 
                 with self.ontology: 
-                    self.connect_actor_to_values()
-                    self.denote_temperature()
-                    self.determine_age()
-                    self.determine_gender()
-                    self.determine_acc_and_temp()
-                    self.determine_thresholds_profile()
-                    self.determine_HR()
-                    self.determine_HRV() 
-                    self.determine_RR() 
-                    self.determine_spo2() 
-                    self.determine_drowsiness()
 
-                    import pdb;pdb.set_trace()
-                    self.determine_fatigue()
-                    import pdb;pdb.set_trace()
-                    self.determine_age()
-                    self.determine_gender()
-                    self.determine_acc_and_temp()
-                    self.determine_HR()
-                    self.determine_HRV()
-                    self.determine_RR()
-                    self.determine_spo2()
-                    self.determine_drowsiness() 
+                    with StepContext(name="Connect_State_To_Values", catch=(RuntimeError,)):
+                        self.connect_actor_to_values()
+
+                    with StepContext(name="Preprocess_Temp_Age_Gender", catch=(RuntimeError,)):
+                        self.denote_temperature()
+                        self.determine_age()
+                        self.determine_gender()
+                        self.determine_acc_and_temp()
+
+                    with StepContext(name="Threshold_Profiles", catch=(RuntimeError,)): 
+                        self.determine_thresholds_profile()
+
+                    with StepContext(name="HR|HRV|RR|SPO2|Drowsiness", catch=(RuntimeError, )): 
+                        self.determine_HR()
+                        self.determine_HRV() 
+                        self.determine_RR() 
+                        self.determine_spo2() 
+                        self.determine_drowsiness()
+
+                    with StepContext(name="Define Fatigue Rules", catch=(RuntimeError,)):
+                        self.determine_fatigue()
+
+                    with StepContext(name="Define Attention Rules", catch=(RuntimeError,)): 
+                        pdb.set_trace()
+                        self.determine_attention()
+
                     self.set_up_trends()
                     self.determine_fatigue()
                     self.determine_eye_state() 

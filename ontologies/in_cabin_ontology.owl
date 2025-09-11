@@ -227,6 +227,17 @@ Since the alert is a message it only regards the occupants of the vehicle.</rdfs
     
 
 
+    <!-- http://test.org/in_cabin_domain#AttentionIs -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#AttentionIs">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://test.org/in_cabin_domain#IsOfAttention"/>
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#AttentionLevels"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#AttentionLevels"/>
+    </owl:ObjectProperty>
+    
+
+
     <!-- http://test.org/in_cabin_domain#CurrentHasHRTrend -->
 
     <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#CurrentHasHRTrend">
@@ -355,6 +366,15 @@ Since the alert is a message it only regards the occupants of the vehicle.</rdfs
         <owl:inverseOf rdf:resource="http://test.org/in_cabin_domain#isThreshold"/>
         <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#PhysiologicalState"/>
         <rdfs:range rdf:resource="http://test.org/in_cabin_domain#Thresholds"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://test.org/in_cabin_domain#IsOfAttention -->
+
+    <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#IsOfAttention">
+        <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#AttentionLevels"/>
+        <rdfs:range rdf:resource="http://test.org/in_cabin_domain#AttentionLevels"/>
     </owl:ObjectProperty>
     
 
@@ -749,6 +769,7 @@ Since the alert is a message it only regards the occupants of the vehicle.</rdfs
 
     <owl:ObjectProperty rdf:about="http://test.org/in_cabin_domain#prevState">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
         <rdfs:domain rdf:resource="http://test.org/in_cabin_domain#ActorState"/>
         <rdfs:range rdf:resource="http://test.org/in_cabin_domain#ActorState"/>
     </owl:ObjectProperty>
@@ -1223,22 +1244,6 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#Attention_Decreasing -->
-
-    <owl:Class rdf:about="http://test.org/in_cabin_domain#Attention_Decreasing">
-        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#AttentionLevels"/>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#Attention_Increasing -->
-
-    <owl:Class rdf:about="http://test.org/in_cabin_domain#Attention_Increasing">
-        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#AttentionLevels"/>
-    </owl:Class>
-    
-
-
     <!-- http://test.org/in_cabin_domain#Attentive -->
 
     <owl:Class rdf:about="http://test.org/in_cabin_domain#Attentive">
@@ -1362,17 +1367,9 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#Drowsiness_Suspected -->
+    <!-- http://test.org/in_cabin_domain#DrowsinessSuspected -->
 
-    <owl:Class rdf:about="http://test.org/in_cabin_domain#Drowsiness_Suspected">
-        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Fatigue"/>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#Drowsy -->
-
-    <owl:Class rdf:about="http://test.org/in_cabin_domain#Drowsy">
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#DrowsinessSuspected">
         <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Fatigue"/>
     </owl:Class>
     
@@ -1646,14 +1643,6 @@ It holds the data created after processing the observations captured by the sens
 
     <owl:Class rdf:about="http://test.org/in_cabin_domain#MicroSleeping">
         <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#EyeState"/>
-    </owl:Class>
-    
-
-
-    <!-- http://test.org/in_cabin_domain#Microsleep -->
-
-    <owl:Class rdf:about="http://test.org/in_cabin_domain#Microsleep">
-        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Fatigue"/>
     </owl:Class>
     
 
@@ -1959,18 +1948,18 @@ It holds the data created after processing the observations captured by the sens
     
 
 
-    <!-- http://test.org/in_cabin_domain#Undefined_Attention -->
+    <!-- http://test.org/in_cabin_domain#UndefinedState -->
 
-    <owl:Class rdf:about="http://test.org/in_cabin_domain#Undefined_Attention">
-        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#AttentionLevels"/>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#UndefinedState">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Fatigue"/>
     </owl:Class>
     
 
 
-    <!-- http://test.org/in_cabin_domain#Undefined_State -->
+    <!-- http://test.org/in_cabin_domain#Undefined_Attention -->
 
-    <owl:Class rdf:about="http://test.org/in_cabin_domain#Undefined_State">
-        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#Fatigue"/>
+    <owl:Class rdf:about="http://test.org/in_cabin_domain#Undefined_Attention">
+        <rdfs:subClassOf rdf:resource="http://test.org/in_cabin_domain#AttentionLevels"/>
     </owl:Class>
     
 
@@ -4077,16 +4066,6 @@ It holds the data created after processing the observations captured by the sens
             <rdf:Description rdf:about="http://test.org/in_cabin_domain#RR"/>
             <rdf:Description rdf:about="http://test.org/in_cabin_domain#SpO2"/>
             <rdf:Description rdf:about="http://test.org/in_cabin_domain#Unresponsiveness"/>
-        </owl:members>
-    </rdf:Description>
-    <rdf:Description>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
-        <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Attention_Decreasing"/>
-            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Attention_Increasing"/>
-            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Attentive"/>
-            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Inattentive"/>
-            <rdf:Description rdf:about="http://test.org/in_cabin_domain#Undefined_Attention"/>
         </owl:members>
     </rdf:Description>
     <rdf:Description>
