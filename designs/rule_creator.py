@@ -3012,18 +3012,11 @@ class RuleCreator:
         
 
 
-    def remove_prev_values(self, obs): 
-        """
-        This function deletes all previously established relationships between 
-        class' instances and also removes all the numerical values originating 
-        from the Observation class instance. 
+    def remove_prev_values(self, obs, actor): 
 
-        NOTE: This is necessary to acoid the creation of duplicate relationships 
-        and to minimize the number of instances that have to be created in this 
-        iterative way of operation. Otherwise the length of the dataset will 
-        determine the number of instances that will be created for each class. 
-        """
         with self.ontology: 
+
+            # Remove the values from the observations
             obs.hasAge = [] 
             obs.hasAccessories = [] 
             obs.hasSex = [] 
@@ -3031,54 +3024,59 @@ class RuleCreator:
             obs.hasFaceCharacteristics = []
             obs.ObsIsDividedIntoActor = [] 
             obs.ObsIsDividedIntoPhS = []
+
+            # Remove the values from the main instances for the physical properties
             numerical_indi = ['hr_instance', 'hrv_instance', 'rr_instance', 'spo2_instance', 'drowsiness_instance'] 
-            numerical_dict = {}
             for indi in numerical_indi: 
                 individual = getattr(self.ontology, indi) 
-                individual.hasNumericalValue = [] 
-                numerical_dict[indi] = individual
                 individual.PhysiologicalStateDescribesActor = []
                 individual.PhSFromObservations = [] 
                 
+                if "hr_instance" == indi: 
+                    individual.HRis = [] 
+                elif "hrv_instance" == indi: 
+                    individual.HRVis = [] 
+                elif "rr_instance" == indi: 
+                    individual.RRis = [] 
+                elif "spo2_instance" == indi: 
+                    individual.SpO2is = [] 
+                elif "drowsiness_instance" == indi: 
+                    individual.DrowsinessIs = [] 
+
+
+
             string_indi = ['accessories_instance', 'demographic_instance', 'sex_instance', 'facecharacteristics_instance']
-            string_dict = {} 
             for indi in string_indi:
                 individual = getattr(self.ontology, indi)
                 individual.hasStringValue = []
-                string_dict[indi] = individual 
 
             age_indi = getattr(self.ontology, "age_instance")
             age_indi.hasAgeValue = []
             for group in self.ontology.Age.instances(): 
-                if group.name == "age_instance": 
-                    continue 
-                group.GroupHasAge = [] 
-            driver = self.ontology.Actor.instances()[0]
-            driver.ActorHasEyeState = []
-            driver.ActorHasPhysiologicalState = []
-            driver.ActorHasCharacteristics = []
-            driver.ActorFromObservations = []
-            driver.hasUniqueIdentifier = []
+                if group.name != "age_instance": 
+                    group.GroupHasAge = [] 
+            
+            sex_indi = getattr(self.ontology, "sex_instance") 
+            for group in self.ontology.Sex.instances(): 
+                if group.name != sex_indi.name: 
+                    group.SexBelongsToPerson = [] 
+
+            actor.ActorHasState = []
+
             fatigue_indi = getattr(self.ontology, "fatigue_instance") 
             fatigue_indi.FatigueIs = [] 
-            fatigue_indi.PhysiologicalStateDescribesActor = []
 
-            for state in self.ontology.EyeState.instances(): 
-                state.EyeStateForActor = [] 
+            attention = getattr(self.ontology, "attention_instance") 
+            attention.AttentionIs = [] 
 
-            for num, indi in numerical_dict.items():
-                if num == 'hr_instance': 
-                    indi.HRis = [] 
-                elif num == 'hrv_instance':
-                    indi.HRVis = []
-                elif num == 'rr_instance':
-                    indi.RRis = []
-                elif num == 'spo2_instance':
-                    for spo2 in self.ontology.SpO2.instances(): 
-                        if spo2.name != num: 
-                            spo2.isForSpO2 = []
-                elif num == 'drowsiness_instance':
-                    indi.DrowsinessIs = []
+            unresponsive = getattr(self.ontology, "unresponsiveness") 
+            unresponsive.UnresponsiveIs = [] 
+
+            eyestate = getattr(self.ontology, "eye_state") 
+            eyestate.EyeStateIs = [] 
+
+            mouthstate = getattr(self.ontology, "mouth_state")
+            mouthstate.MouthStateIs = [] 
 
             label = self.ontology.Label.instances()[0]
             label.hasDescription = [] 

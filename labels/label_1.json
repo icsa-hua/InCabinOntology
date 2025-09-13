@@ -1,7 +1,7 @@
 {
     "prompt_details": {
-        "seed": 85763,
-        "steps": 48,
+        "seed": 276418,
+        "steps": 50,
         "prompt": "Lorem ipsum...",
         "response": "Lorem ipsum...",
         "view_point": "front",
@@ -11,13 +11,17 @@
         "weather_condition": "sunny"
     },
     "label": {
-        "actor_id": "b5938b0b-8dc7-4fb2-b9e3-21212f80d844",
-        "eye_state": "Undefined",
-        "age": 60,
-        "face": "Grey_hair",
-        "sex": "Woman",
+        "actor_id": "DriverState_68453cfc800b40788e1803a2ff9475cd",
+        "eye_state": "open",
+        "mouth_state": "open",
+        "age": 25,
+        "face": "Short_hair",
+        "sex": "Man",
         "demographic": "Mexican",
-        "accessories": "Glasses",
+        "accessories": "Scarf",
+        "fatigue": "awake",
+        "attention": "attentive",
+        "unresponsive": "responsive",
         "bounding_box": "...",
         "bounding_polygon": "..."
     }

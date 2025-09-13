@@ -1,7 +1,7 @@
 {
     "prompt_details": {
-        "seed": 353347,
-        "steps": 91,
+        "seed": 929823,
+        "steps": 39,
         "prompt": "Lorem ipsum...",
         "response": "Lorem ipsum...",
         "view_point": "front",
@@ -11,13 +11,17 @@
         "weather_condition": "sunny"
     },
     "label": {
-        "actor_id": "6f48a445-c522-45c9-897d-79164b354e23",
-        "eye_state": "slow",
-        "age": 85,
-        "face": "Long_hair",
+        "actor_id": "DriverState_68453cfc800b40788e1803a2ff9475cd",
+        "eye_state": "open",
+        "mouth_state": "open",
+        "age": 25,
+        "face": "Short_hair",
         "sex": "Man",
-        "demographic": "Canadian",
+        "demographic": "Mexican",
         "accessories": "Scarf",
+        "fatigue": "awake",
+        "attention": "attentive",
+        "unresponsive": "responsive",
         "bounding_box": "...",
         "bounding_polygon": "..."
     }

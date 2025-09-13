@@ -2,10 +2,13 @@ from tools.appraisal import StepContext
 from tools.logger import logger
 from tools.common import *
 from designs.rule_creator import RuleCreator
+from tools.metrics import OntologyEvaluator
 
 import uuid
 import pdb
+import gc
 import pandas as pd
+import tracemalloc
 
 from owlready2 import *
 
@@ -24,6 +27,7 @@ class OntologyParser:
         self.ontology = self.load_ontology()
         self.graph = None 
         self.rule_parser = RuleCreator(self)
+        self.ev = OntologyEvaluator(self.ontology)
 
 
     def load_ontology(self): 
@@ -51,7 +55,7 @@ class OntologyParser:
         return target_class
     
     
-    def parse_observations(self, dataset_path, batching=True, reasoning_thr=10):
+    def parse_observations(self, dataset_path, batching=True, reasoning_thr=10, save=False):
         """
         This method parses the observations from the given dataset and creates instances of the Observation class.
         Then translates the rules established in the ontology with the reasoner and saves the results.
@@ -65,9 +69,12 @@ class OntologyParser:
         dataset = pd.read_csv(dataset_path)
         dataset = dataset[:5]
         filepath = os.getcwd() + "/labels"
-        created = 0 
+        tracemalloc.start()
+        save_path = os.path.join(os.getcwd(),"ontologies/snapshot.owl") if save else None
+        last_state = None
+        batch_states = []
 
-        with StepContext(name='Parse Data to Ont', catch=(Exception, )): 
+        with StepContext(name='Initialize Onto', catch=(Exception, )): 
             # Create instances for the Label and the Sensor
             with self.ontology: 
                 self.rule_parser.create_instances("Label")
@@ -87,15 +94,19 @@ class OntologyParser:
                 phy_vocab = create_Physiological_inds(self.ontology) 
                 actor_vocab = create_Actor_inds(self.ontology) 
 
-            
-            # Check if the Observations class exists in the ontology
+        with self.ontology:       
+
             for index, row in dataset.iterrows():
-                ts_iso = iso_format(row['TIME'])
-                actor_state = new_state(self.ontology, actor, ts_iso)
-                actor.ActorhasState.append(actor_state)
+
+                ts_iso = str(iso_format(row['TIME']))
+                actor_state = new_actor_state(
+                    onto = self.ontology, 
+                    actor = actor, 
+                    last_state = last_state, 
+                    ts_iso=ts_iso
+                )
 
                 # Connect the sensor to the observations 
-                # self.rule_parser.connect_sensor_to_observations(obs)
                 obs_state = attach_values_to_observations(
                     onto=self.ontology, 
                     obs_state=obs,
@@ -104,36 +115,52 @@ class OntologyParser:
                     idx=index
                 )
 
-                #self.rule_parser.observations_to_classes(obs_state, "PhysiologicalState", "ObsIsDividedIntoPhS")
-                #self.rule_parser.observations_to_classes(obs_state, "ActorState", "ObsIsDividedIntoActor")
                 obs_state = attach_obs_to_phy_state(obs_state,phy_vocab) 
                 obs_state = attach_obs_to_actor_state(obs_state, actor_vocab) 
-                created += 1 
 
-                #for obs in self.ontology.Observations.instances():
                 # Assign values to the subclasses instances based on the observations
                 self.rule_parser.assign_values(obs_state,"ObsIsDividedIntoPhS","hasNumericalValue")
                 self.rule_parser.assign_values(obs_state,"ObsIsDividedIntoActor","hasStringValue")
 
                 # Create the rules (once) for numerical comparison and health assessment
-                self.rule_parser.set_up_rules(index)
+                with StepContext(name="Setting up Rules", catch=(RuntimeError,)):
+                    self.rule_parser.set_up_rules(index)
                 
+                
+
+
+                batch_states.append(actor_state)
+
                 # Run the reasoner to update the ontology with the new values
-                self.rule_parser.synchronize_ontology()
+                if len(batch_states) >= reasoning_thr or (index == len(dataset)-1) or (index == 0):
+                    with StepContext(name="Synchronize Ontology", catch=(RuntimeError,)): 
+                        gc.collect()
+                        self.rule_parser.synchronize_ontology()
                                 
                 # Create the description of the actor and save it in JSON format
                 with StepContext(name="Crate Label", catch=(RuntimeError,)):
-                    self.rule_parser.create_label(actor, filepath, index)
+                    for s in batch_states:
+                        self.rule_parser.create_label(actor, filepath, index)
 
-                # Save the parsed ontology to a file for vizualization of the rules' results. 
-                self.save_onto(index=index)    
-                #self.rule_parser.determine_trends() 
 
-                pdb.set_trace()
-                # Remove the previous values from the ontology to avoid conflicts
-                #self.rule_parser.remove_prev_values(obs)
+                # Get Metrics for the ontology. 
                 
-            return f"Ontology finished processing dataset observations."
+                last_state = batch_states[-1]
+                batch_states.clear()
+
+            
+            # Remove the previous values from the ontology to avoid conflicts
+            # self.rule_parser.remove_prev_values(obs, actor)
+                
+                if index == 10: 
+                    pdb.set_trace()
+
+
+        # Save the parsed ontology to a file for vizualization of the rules' results. 
+        self.save_onto(0)    
+        #self.rule_parser.determine_trends() 
+
+        return f"Ontology finished processing dataset observations."
         
 
 

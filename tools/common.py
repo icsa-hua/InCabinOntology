@@ -41,6 +41,7 @@ def new_state(onto, actor, ts_iso):
         state = onto.ActorState(state_iri) 
         state.StateOfActor = [actor] 
         state.validAt = [ts_iso] 
+        state.prevState = []
 
     return state 
 
@@ -289,12 +290,6 @@ def parse_thr_profiles(onto,thr_values):
                 if spo2_high: onto.appliesSPO2High[tp].append(spo2_high) 
 
 
-
-
-
-   
-
-
 def pick_appropriate_profile_state(onto, actor_state, age_group, sex_group, temp_group): 
 
     tp_name = f"tp_{age_group}_{sex_group}_{temp_group}"
@@ -304,7 +299,15 @@ def pick_appropriate_profile_state(onto, actor_state, age_group, sex_group, temp
     actor_state.StateHasThresholdProfile = [tp]
 
 
+def new_actor_state(onto, actor, last_state, ts_iso:str): 
+    actor_state = new_state(onto, actor, ts_iso) 
 
+    if last_state is not None: 
+        actor_state.prevState = [last_state]
+
+    actor.ActorhasState.append(actor_state)
+
+    return actor_state
 
 
 
