@@ -166,15 +166,15 @@ def attach_obs_to_phy_state(obs_state, phy_vocab):
     if phy_vocab['drowsiness'] not in obs_state.ObsIsDividedIntoPhS:
             obs_state.ObsIsDividedIntoPhS.append(phy_vocab['drowsiness'])
             
-    if phy_vocab['fatigue'] not in obs_state.ObsIsDividedIntoPhS:
-        obs_state.ObsIsDividedIntoPhS.append(phy_vocab['fatigue'])
-
-    if phy_vocab['attention'] not in obs_state.ObsIsDividedIntoPhS:
-            obs_state.ObsIsDividedIntoPhS.append(phy_vocab['attention'])
-
-    if phy_vocab['unresponsiveness'] not in obs_state.ObsIsDividedIntoPhS:
-            obs_state.ObsIsDividedIntoPhS.append(phy_vocab['unresponsiveness'])
-
+    # if phy_vocab['fatigue'] not in obs_state.ObsIsDividedIntoPhS:
+    #     obs_state.ObsIsDividedIntoPhS.append(phy_vocab['fatigue'])
+    #
+    # if phy_vocab['attention'] not in obs_state.ObsIsDividedIntoPhS:
+    #         obs_state.ObsIsDividedIntoPhS.append(phy_vocab['attention'])
+    #
+    # if phy_vocab['unresponsiveness'] not in obs_state.ObsIsDividedIntoPhS:
+    #         obs_state.ObsIsDividedIntoPhS.append(phy_vocab['unresponsiveness'])
+    #
     return obs_state
 
 

@@ -4,6 +4,7 @@ from tools.common import *
 from designs.rule_creator import RuleCreator
 
 import uuid
+import pdb
 import pandas as pd
 
 from owlready2 import *
@@ -86,6 +87,7 @@ class OntologyParser:
                 phy_vocab = create_Physiological_inds(self.ontology) 
                 actor_vocab = create_Actor_inds(self.ontology) 
 
+            
             # Check if the Observations class exists in the ontology
             for index, row in dataset.iterrows():
                 ts_iso = iso_format(row['TIME'])
@@ -116,18 +118,18 @@ class OntologyParser:
                 # Create the rules (once) for numerical comparison and health assessment
                 self.rule_parser.set_up_rules(index)
                 
-                import pdb;pdb.set_trace()
                 # Run the reasoner to update the ontology with the new values
                 self.rule_parser.synchronize_ontology()
                                 
                 # Create the description of the actor and save it in JSON format
-                #self.rule_parser.create_label(filepath, index)
+                with StepContext(name="Crate Label", catch=(RuntimeError,)):
+                    self.rule_parser.create_label(actor, filepath, index)
 
                 # Save the parsed ontology to a file for vizualization of the rules' results. 
                 self.save_onto(index=index)    
                 #self.rule_parser.determine_trends() 
 
-                import pdb;pdb.set_trace()
+                pdb.set_trace()
                 # Remove the previous values from the ontology to avoid conflicts
                 #self.rule_parser.remove_prev_values(obs)
                 
