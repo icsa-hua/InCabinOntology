@@ -1,19 +1,14 @@
 import time, tracemalloc, gc
+
 from owlready2 import sync_reasoner_pellet
 from collections import Counter, defaultdict
 from contextlib import contextmanager
-
 
 
 @contextmanager
 def timer():
     t0 = time.perf_counter()
     yield lambda: time.perf_counter() - t0
-
-
-
-
-
 
 
 class OntologyMetrics:

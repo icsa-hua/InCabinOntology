@@ -4,7 +4,6 @@ import uuid
 from typing import Any
 from owlready2 import Imp
 from owlready2 import * 
-from pandas import qcut
 from datetime import datetime, timezone
 
 def sync_reasoner(onto): 
@@ -21,7 +20,7 @@ def iso_format(datetime):
     return datetime.isoformat().replace("+00:00", "Z") 
 
 
-def new_state(onto, actor, ts_iso, last_state:Any): 
+def new_state(onto, actor, ts_iso): 
 
     if isinstance(ts_iso,list): 
         year = ts_iso[0]
@@ -41,7 +40,7 @@ def new_state(onto, actor, ts_iso, last_state:Any):
         state = onto.ActorState(state_iri) 
         state.StateOfActor = [actor] 
         state.validAt = [ts_iso] 
-        state.prevState = last_state
+        # state.prevState = []
 
     return state 
 
@@ -299,11 +298,14 @@ def pick_appropriate_profile_state(onto, actor_state, age_group, sex_group, temp
     actor_state.StateHasThresholdProfile = [tp]
 
 
-def new_actor_state(onto, actor, last_state, ts_iso:str): 
-    actor_state = new_state(onto, actor, ts_iso) 
+def new_actor_state(onto, actor, ts_iso:str, last_state:Any): 
+    actor_state = new_state(
+            onto=onto, 
+            actor=actor, 
+            ts_iso=ts_iso) 
 
     if last_state is not None: 
-        actor_state.prevState = [last_state]
+        actor_state.prevState = [last_state.get(actor.hasUniqueIdentifier[0])]
 
     actor.ActorhasState.append(actor_state)
 

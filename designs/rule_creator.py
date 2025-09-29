@@ -1,6 +1,6 @@
 from tools.common import *
 from tools.appraisal import StepContext 
-from tools.logger import logger 
+from tools.logger import get_logger
 
 import os 
 import pdb
@@ -12,6 +12,7 @@ from typing import Any
 from owlready2 import *
 from rdflib import Graph
 
+logger = get_logger("aiq_onto")
 
 class RuleCreator: 
 
@@ -2867,47 +2868,39 @@ class RuleCreator:
 
 
     def set_up_rules(self): 
-        """
-        This function is used tp set up the rules for the ontology.
-        The rules are created only on the first iteration of the loop.
-        Args: 
-            index: The index of the iteration.
-        """
 
-        with self.ontology: 
+        with StepContext(name="Connect_State_To_Values", catch=(RuntimeError,)):
+            self.connect_actor_to_values()
 
-            with StepContext(name="Connect_State_To_Values", catch=(RuntimeError,)):
-                self.connect_actor_to_values()
+        with StepContext(name="Preprocess_Temp_Age_Gender", catch=(RuntimeError,)):
+            self.denote_temperature()
+            self.determine_age()
+            self.determine_gender()
+            self.determine_acc_and_temp()
 
-            with StepContext(name="Preprocess_Temp_Age_Gender", catch=(RuntimeError,)):
-                self.denote_temperature()
-                self.determine_age()
-                self.determine_gender()
-                self.determine_acc_and_temp()
+        with StepContext(name="Threshold_Profiles", catch=(RuntimeError,)): 
+            self.determine_thresholds_profile()
 
-            with StepContext(name="Threshold_Profiles", catch=(RuntimeError,)): 
-                self.determine_thresholds_profile()
+        with StepContext(name="HR|HRV|RR|SPO2|Drowsiness", catch=(RuntimeError, )): 
+            self.determine_HR()
+            self.determine_HRV() 
+            self.determine_RR() 
+            self.determine_spo2() 
+            self.determine_drowsiness()
 
-            with StepContext(name="HR|HRV|RR|SPO2|Drowsiness", catch=(RuntimeError, )): 
-                self.determine_HR()
-                self.determine_HRV() 
-                self.determine_RR() 
-                self.determine_spo2() 
-                self.determine_drowsiness()
+        with StepContext(name="Define Fatigue Rules", catch=(RuntimeError,)):
+            self.determine_fatigue()
 
-            with StepContext(name="Define Fatigue Rules", catch=(RuntimeError,)):
-                self.determine_fatigue()
+        with StepContext(name="Define Attention Rules", catch=(RuntimeError,)): 
+            self.determine_attention()
+        with StepContext(name="Define Unresponsive Rules", catch=(RuntimeError,)): 
+            self.determine_unresponsiveness()
 
-            with StepContext(name="Define Attention Rules", catch=(RuntimeError,)): 
-                self.determine_attention()
-            with StepContext(name="Define Unresponsive Rules", catch=(RuntimeError,)): 
-                self.determine_unresponsiveness()
+        with StepContext(name="Define Eye State Rules", catch=(RuntimeError,)): 
+            self.determine_eye_state()
 
-            with StepContext(name="Define Eye State Rules", catch=(RuntimeError,)): 
-                self.determine_eye_state()
-
-            with StepContext(name="Define Mouth State Rules", catch=(RuntimeError,)): 
-                self.determine_mouth_state()
+        with StepContext(name="Define Mouth State Rules", catch=(RuntimeError,)): 
+            self.determine_mouth_state()
 
             # self.set_up_trends()
             # self.determine_eye_state() 
@@ -2918,7 +2911,7 @@ class RuleCreator:
        
 
 
-    def create_label(self, actor, filepath,  index): 
+    def create_label(self, actor, filepath:str,  index:int): 
         """
         This function creates a label, describing the actor based on the results 
         of the SWRL rules in the ontology. Requires reasoner to previously have 

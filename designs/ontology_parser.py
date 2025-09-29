@@ -1,5 +1,5 @@
 from tools.appraisal import StepContext
-from tools.logger import logger
+from tools.logger import get_logger
 from tools.common import *
 from designs.rule_creator import RuleCreator
 from tools.metrics import OntologyEvaluator
@@ -11,6 +11,8 @@ import pandas as pd
 import tracemalloc
 
 from owlready2 import *
+
+logger = get_logger("aiq_onto")
 
 class OntologyParser: 
     """
@@ -57,15 +59,19 @@ class OntologyParser:
 
     def get_or_create_actor(self): 
         #TODO: If actor is already inside the ontology as an individual we need to access the UID and find it inside the dataset. 
+
+        id = uuid.uuid4().hex
         if not self.ontology.Actor.instances(): 
-            id = uuid.uuid4().hex
             actor = self.ontology.Actor(f"actor_{id}")
             actor.hasUniqueIdentifier = [id] 
+            logger.debug("Created Actor")
+            print("Created Actor")
         else: 
             actor = self.ontology.Actor.instances()[0] 
-            if getattr(actor, "hasUniqueIdentifier"): 
-                if actor.hasUniqueIdentifier is None: 
-                    actor.hasUniqueIdentifier = [uuid.uuid4().hex]
+            if len(getattr(actor, "hasUniqueIdentifier")) == 0:
+                actor.hasUniqueIdentifier = [id]
+            logger.debug(f"Found Actor and assigned UUID->{id}")
+
         return actor 
 
 
@@ -110,14 +116,17 @@ class OntologyParser:
                 # Create the main instance for OBS and Actor. 
                 obs = self.get_or_create_obs()
                 actor = self.get_or_create_actor()
+                
+                # Here we create the PHY instances (hr_instance, hrv_instance, ...) 
                 phy_vocab = create_Physiological_inds(self.ontology) 
                 actor_vocab = create_Actor_inds(self.ontology) 
 
-            self.rule_parser.set_up_rules()
+                with StepContext(name="Setting up Rules", catch=(RuntimeError,)):
+                    self.rule_parser.set_up_rules()
+
+            pdb.set_trace()
             self.rule_parser.synchronize_ontology()
             gc.collect()
-            pdb.set_trace()
-
 
         # With this process we do NOT account for Obs inside SWRL. 
         with self.ontology:       
@@ -131,10 +140,10 @@ class OntologyParser:
                     onto = self.ontology, 
                     actor = actor, 
                     ts_iso=ts_iso,
-                    last_state = last_state.get(actor), 
+                    last_state=last_state.get(actor), 
                 )
-
-                last_state[actor.hasUniqueIdentifier] = actor_state
+                pdb.set_trace()
+                last_state[actor.hasUniqueIdentifier[0]] = actor_state
 
                 # Read the data into Observations. 
                 obs_state = attach_values_to_observations(
@@ -148,48 +157,37 @@ class OntologyParser:
                 # DON'T use rules to pass the observation values to the states 
                 obs_state = attach_obs_to_phy_state(obs_state,phy_vocab) 
                 obs_state = attach_obs_to_actor_state(obs_state, actor_vocab) 
+                batch_states.append(actor_state)
 
                 # Assign values to the subclasses instances based on the observations
                 self.rule_parser.assign_values(obs_state,"ObsIsDividedIntoPhS","hasNumericalValue")
                 self.rule_parser.assign_values(obs_state,"ObsIsDividedIntoActor","hasStringValue")
 
-                # Create the rules (once) for numerical comparison and health assessment
-                with StepContext(name="Setting up Rules", catch=(RuntimeError,)):
-                    self.rule_parser.set_up_rules(index)
+                need_sync = (not batching) or (len(batch_states)>= reasoning_thr) or (index == len(dataset)-1)
+                if need_sync: 
+                    gc.collect() 
 
-                batch_states.append(actor_state)
-
-                # Run the reasoner to update the ontology with the new values
-                if len(batch_states) >= reasoning_thr or (index == len(dataset)-1) or (index == 0):
-                    with StepContext(name="Synchronize Ontology", catch=(RuntimeError,)): 
-                        gc.collect()
-                        self.rule_parser.synchronize_ontology()
-                                
-                # Create the description of the actor and save it in JSON format
-                with StepContext(name="Crate Label", catch=(RuntimeError,)):
-                    for s in batch_states:
-                        self.rule_parser.create_label(actor, filepath, index)
-
-
-                # Get Metrics for the ontology. 
+                    # Run the reasoner to update the ontology with the new values                       # Run the reasoner to update the ontology with the new values     
+                    self.rule_parser.synchronize_ontology()
+                    
+                    # Create the description of the actor and save it in JSON format
+                    with StepContext(name="Crate Label", catch=(RuntimeError,)):
+                        for j, _ in enumerate(batch_states): 
+                            pdb.set_trace()
+                            self.rule_parser.create_label(actor, filepath, index=index-len(batch_states) +1 +j)
                 
-                last_state = batch_states[-1]
-                batch_states.clear()
-
+                    batch_states.clear() 
             
             # Remove the previous values from the ontology to avoid conflicts
             # self.rule_parser.remove_prev_values(obs, actor)
-                
-                if index ==0: 
-                    pdb.set_trace()
-                    print("Memory Allocated")
-                    print(tracemalloc.get_traced_memory())
-                    tracemalloc.stop()
 
         # Save the parsed ontology to a file for vizualization of the rules' results. 
                     self.save_onto(0)    
         #self.rule_parser.determine_trends() 
 
+        print("Memory Allocated")
+        print(tracemalloc.get_traced_memory())
+        tracemalloc.stop()
         return f"Ontology finished processing dataset observations."
         
 

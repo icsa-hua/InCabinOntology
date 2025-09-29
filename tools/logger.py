@@ -2,32 +2,35 @@ import logging
 import datetime 
 import os 
 
-parent_dir = os.getcwd()
-log_dir = parent_dir + "/logs"
 
-if not os.path.exists(log_dir):
-    os.mkdir(log_dir)
+def remove_logger(name=None): 
+    logr = logging.getLogger(name) 
+    logr.propagate = True 
+    logr.handlers.clear() 
+    logr.setLevel(logging.WARNING)
 
-log_file = os.path.join(log_dir, f"log_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.log")
+def setup_logging(level=logging.DEBUG, log_dir="logs"): 
+    root = logging.getLogger("aiq_onto")
+    root.setLevel(level) 
 
-logging.basicConfig(filename=log_file, filemode='w', format='[%(asctime)a][%(levelname)s]:%(message)s', encoding='utf-8', level=logging.DEBUG, datefmt='%m/%d/%Y %I:%M:%S %p')
-logger = logging.getLogger("ontology")
+    parent_dir = os.getcwd()
+    log_dir = parent_dir + "/" + log_dir
+    os.makedirs(log_dir, exist_ok=True)
+    log_file = os.path.join(log_dir, f"log_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.log")
 
-# Create console handler
-ch = logging.StreamHandler()
-ch.setLevel(logging.DEBUG)  # Default console level
+    fmt = logging.Formatter(
+        fmt="%(asctime)s | %(levelname)s | %(name)s | %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S"
+    ) 
+    
+    fh = logging.FileHandler(log_file, encoding="utf-8", mode="w")
+    fh.setLevel(level)
+    fh.setFormatter(fmt)
 
-# Create formatter
-formatter = logging.Formatter(
-    fmt="%(asctime)s | %(levelname)s | %(name)s | %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S"
-)
+    root.addHandler(fh)
+    root.propagate = True 
 
-# Add formatter to handler
-ch.setFormatter(formatter)
+def get_logger(name=None): 
+    return logging.getLogger(name)
 
-# Add handler to logger if not already added (avoids duplicate logs)
-if not logger.hasHandlers():
-    logger.addHandler(ch)
-
-
+setup_logging(level=logging.DEBUG)

@@ -1,9 +1,9 @@
-from tools.logger import logger 
+from tools.logger import get_logger 
 
 import time 
 import traceback 
 
-from collections import defaultdict, deque 
+logger = get_logger("aiq_onto")
 
 
 class SetupError(RuntimeError): 

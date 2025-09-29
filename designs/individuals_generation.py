@@ -1,7 +1,9 @@
 import os 
 import pandas as pd 
 from owlready2 import * 
-from tools.logger import logger 
+from tools.logger import get_logger 
+
+logger = get_logger("aiq_onto")
 
 
 class IndGenerator: 
