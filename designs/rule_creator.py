@@ -87,7 +87,7 @@ class RuleCreator:
         as only PELLET supports numerical conditions for SWRL rules. 
         """
         with self.ontology: 
-            sync_reasoner_pellet(infer_property_values=True)
+            sync_reasoner_pellet(infer_property_values=True, infer_data_property_values=True)
 
 
     def create_instances(self, ind_class): 
@@ -122,6 +122,7 @@ class RuleCreator:
         logger.debug("Monitoring Management system initialized based on observations...")
 
 
+    # Don't use this UNLESS completely necessary. Keep observations outside of logical reasoning (only provenance)
     def observations_to_classes(self, obs_state=None, cls_name="", property_name=""):
         """
         This function connects the observation to every class corresponding to a column in the 
@@ -219,6 +220,7 @@ class RuleCreator:
                         logger.debug(f"Instance {instance} does not have the property {property_name}...")
                         continue
 
+                    # access the physical property values from the OBS
                     obs_to_PHY_instance(
                         obs_state=obs_state, 
                         instance=instance, 
@@ -2098,11 +2100,11 @@ class RuleCreator:
             Imp(rule_name).set_as_rule(
                 """
                 ActorState(?act_st), 
-                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
-                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?mod_hr), Moderate_HR(?mod_hr), 
-                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?mod_hrv), Moderate_HRV(?mod_hrv), 
-                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?mod_rr), Moderate_RR(?mod_rr), 
-                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr),  DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HRis(?hr, ?mod_hr), Moderate_HR(?mod_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRVis(?hrv, ?mod_hrv), Moderate_HRV(?mod_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr),  RRis(?rr, ?mod_rr), Moderate_RR(?mod_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2),  SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
                 Unresponsiveness(unresponsiveness), Responsive(?repo) -> ActorStateHasUnresponsiveness(?act_st, unresponsiveness), UnresponsiveIs(unresponsiveness, ?repo)
                 """
             )
@@ -2112,11 +2114,11 @@ class RuleCreator:
             Imp(rule_name).set_as_rule(
                 """
                 ActorState(?act_st), 
-                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
-                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?mod_hr), Moderate_HR(?mod_hr), 
-                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?high_hr), High_HRV(?high_hr), 
-                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?mod_rr), Moderate_RR(?mod_rr), 
-                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr),  HRis(?hr, ?mod_hr), Moderate_HR(?mod_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv),  HRVis(?hrv, ?high_hr), High_HRV(?high_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RRis(?rr, ?mod_rr), Moderate_RR(?mod_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2),  SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
                 Unresponsiveness(unresponsiveness), Responsive(?repo) -> ActorStateHasUnresponsiveness(?act_st, unresponsiveness), UnresponsiveIs(unresponsiveness, ?repo)
                 """
             )
@@ -2126,11 +2128,11 @@ class RuleCreator:
             Imp(rule_name).set_as_rule(
                 """
                 ActorState(?act_st), 
-                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
-                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?l_hr), Low_HR(?l_hr), 
-                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?high_hr), High_HRV(?high_hr), 
-                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?mod_rr), Moderate_RR(?mod_rr), 
-                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr),  DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HRis(?hr, ?l_hr), Low_HR(?l_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv),  HRVis(?hrv, ?high_hr), High_HRV(?high_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr),  RRis(?rr, ?mod_rr), Moderate_RR(?mod_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
                 Unresponsiveness(unresponsiveness), Responsive(?repo) -> ActorStateHasUnresponsiveness(?act_st, unresponsiveness), UnresponsiveIs(unresponsiveness, ?repo)
                 """
             )
@@ -2141,11 +2143,11 @@ class RuleCreator:
             Imp(rule_name).set_as_rule(
                 """
                 ActorState(?act_st), 
-                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
-                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?mod_hr), Moderate_HR(?mod_hr), 
-                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?high_hr), High_HRV(?high_hr), 
-                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?l_rr), Low_RR(?l_rr), 
-                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr),  DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr),  HRis(?hr, ?mod_hr), Moderate_HR(?mod_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRVis(?hrv, ?high_hr), High_HRV(?high_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr),  RRis(?rr, ?l_rr), Low_RR(?l_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2),  SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
                 Unresponsiveness(unresponsiveness), Responsive(?repo) -> ActorStateHasUnresponsiveness(?act_st, unresponsiveness), UnresponsiveIs(unresponsiveness, ?repo)
                 """
             )
@@ -2155,11 +2157,11 @@ class RuleCreator:
             Imp(rule_name).set_as_rule(
                 """
                 ActorState(?act_st), 
-                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
-                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?l_hr), Low_HR(?l_hr), 
-                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?high_hr), High_HRV(?high_hr), 
-                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?mod_rr), Low_RR(?l_rr), 
-                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr),  DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HRis(?hr, ?l_hr), Low_HR(?l_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv),  HRVis(?hrv, ?high_hr), High_HRV(?high_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr),  RRis(?rr, ?mod_rr), Low_RR(?l_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2),  SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
                 Unresponsiveness(unresponsiveness), Responsive(?repo) -> ActorStateHasUnresponsiveness(?act_st, unresponsiveness), UnresponsiveIs(unresponsiveness, ?repo)
                 """
             )
@@ -2169,11 +2171,11 @@ class RuleCreator:
             Imp(rule_name).set_as_rule(
                 """
                 ActorState(?act_st), 
-                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
-                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?mod_hr), Moderate_HR(?mod_hr), 
-                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?mod_hrv), Moderate_HRV(?mod_hr), 
-                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?l_rr), Low_RR(?l_rr), 
-                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr),  HRis(?hr, ?mod_hr), Moderate_HR(?mod_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv),  HRVis(?hrv, ?mod_hrv), Moderate_HRV(?mod_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr),  RRis(?rr, ?l_rr), Low_RR(?l_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
                 Unresponsiveness(unresponsiveness), Responsive(?repo) -> ActorStateHasUnresponsiveness(?act_st, unresponsiveness), UnresponsiveIs(unresponsiveness, ?repo)
                 """
             )
@@ -2183,11 +2185,11 @@ class RuleCreator:
             Imp(rule_name).set_as_rule(
                 """
                 ActorState(?act_st), 
-                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
-                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?l_hr), Low_HR(?l_hr), 
-                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?mod_hr), Moderate_HRV(?mod_hrv), 
-                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?mod_rr), Low_RR(?l_rr), 
-                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr),  DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr),  HRis(?hr, ?l_hr), Low_HR(?l_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv),  HRVis(?hrv, ?mod_hr), Moderate_HRV(?mod_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr),  RRis(?rr, ?mod_rr), Low_RR(?l_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2),  SpO2is(?spo2, ?nor), Normal_SpO2(?nor), 
                 Unresponsiveness(unresponsiveness), Responsive(?repo) -> ActorStateHasUnresponsiveness(?act_st, unresponsiveness), UnresponsiveIs(unresponsiveness, ?repo)
                 """
             )
@@ -2197,7 +2199,7 @@ class RuleCreator:
             Imp(rule_name).set_as_rule(
                 """
                 ActorState(?act_st),
-                ActorStateHasPhysiologicalState(?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl5), Level_5_KSS(?lvl5), 
+                ActorStateHasPhysiologicalState(?act_st,?dr), DrowsinessIs(?dr, ?lvl5), Level_5_KSS(?lvl5), 
                 Unresponsiveness(unresponsiveness), AtRisk(?atrisk) -> ActorStateHasUnresponsiveness(?act_st, unresponsiveness), UnresponsiveIs(unresponsiveness, ?atrisk)
                 """
             )
@@ -2207,11 +2209,11 @@ class RuleCreator:
             Imp(rule_name).set_as_rule(
                 """
                 ActorState(?act_st),
-                ActorStateHasPhysiologicalState(?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
-                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?l_hr), Low_HR(?l_hr), 
-                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?l_hrv), Low_HRV(?l_hrv), 
-                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?l_rr), Low_RR(?l_rr), 
-                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HRis(?hr, ?l_hr), Low_HR(?l_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRVis(?hrv, ?l_hrv), Low_HRV(?l_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr),  RRis(?rr, ?l_rr), Low_RR(?l_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
                 Unresponsiveness(unresponsiveness), AtRisk(?atrisk) -> ActorStateHasUnresponsiveness(?act_st, unresponsiveness), UnresponsiveIs(unresponsiveness, ?atrisk)
                 """
             )
@@ -2221,11 +2223,11 @@ class RuleCreator:
             Imp(rule_name).set_as_rule(
                 """
                 ActorState(?act_st),
-                ActorStateHasPhysiologicalState(?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
-                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?mod_hr), Moderate_HR(?mod_hr), 
-                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?l_hrv), Low_HRV(?l_hrv), 
-                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?l_rr), Low_RR(?l_rr), 
-                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
+                ActorStateHasPhysiologicalState(?act_st,?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HRis(?hr, ?mod_hr), Moderate_HR(?mod_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv),  HRVis(?hrv, ?l_hrv), Low_HRV(?l_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RRis(?rr, ?l_rr), Low_RR(?l_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2),  SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
                 Unresponsiveness(unresponsiveness), AtRisk(?atrisk) -> ActorStateHasUnresponsiveness(?act_st, unresponsiveness), UnresponsiveIs(unresponsiveness, ?atrisk)
                 """
             )
@@ -2235,11 +2237,11 @@ class RuleCreator:
             Imp(rule_name).set_as_rule(
                 """
                 ActorState(?act_st),
-                ActorStateHasPhysiologicalState(?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
-                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?l_hr), Low_HR(?l_hr),  
-                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?l_hrv), Low_HRV(?l_hrv), 
-                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?l_rr), High_RR(?l_rr), 
-                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
+                ActorStateHasPhysiologicalState(?act_st,?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr),  HRis(?hr, ?l_hr), Low_HR(?l_hr),  
+                ActorStateHasPhysiologicalState(?act_st, ?hrv),  HRVis(?hrv, ?l_hrv), Low_HRV(?l_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr),  RRis(?rr, ?l_rr), High_RR(?l_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
                 Unresponsiveness(unresponsiveness), AtRisk(?atrisk) -> ActorStateHasUnresponsiveness(?act_st, unresponsiveness), UnresponsiveIs(unresponsiveness, ?atrisk)
                 """
             )
@@ -2249,7 +2251,7 @@ class RuleCreator:
             Imp(rule_name).set_as_rule(
                 """
                 ActorState(?act_st),
-                ActorStateHasPhysiologicalState(?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
                 ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?mod_hr), Moderate_HR(?mod_hr), 
                 ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?l_hrv), Low_HRV(?l_hrv), 
                 ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?l_rr), High_RR(?l_rr), 
@@ -2263,11 +2265,11 @@ class RuleCreator:
             Imp(rule_name).set_as_rule(
                 """
                 ActorState(?act_st), 
-                ActorStateHasPhysiologicalState(?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
-                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?high_rr), High_HR(?high_hr),  
-                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
-                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
-                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr),  DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr),  HRis(?hr, ?high_rr), High_HR(?high_hr),  
+                ActorStateHasPhysiologicalState(?act_st, ?hrv),  HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr),  RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2),  SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
                 Unresponsiveness(unresponsiveness), Imminent(?immi) -> ActorStateHasUnresponsiveness(?act_st, unresponsiveness), UnresponsiveIs(unresponsiveness, ?immi)
                 """
             )
@@ -2277,11 +2279,11 @@ class RuleCreator:
             Imp(rule_name).set_as_rule(
                 """
                 ActorState(?act_st), 
-                ActorStateHasPhysiologicalState(?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
-                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?high_hr), High_HR(?high_hr),  
-                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
-                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?high_rr), High_RR(?high_rr), 
-                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr),  DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HRis(?hr, ?high_hr), High_HR(?high_hr),  
+                ActorStateHasPhysiologicalState(?act_st, ?hrv),  HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr),  RRis(?rr, ?high_rr), High_RR(?high_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2),  SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
                 Unresponsiveness(unresponsiveness), Imminent(?immi) -> ActorStateHasUnresponsiveness(?act_st, unresponsiveness), UnresponsiveIs(unresponsiveness, ?immi)
                 """
             )
@@ -2291,11 +2293,11 @@ class RuleCreator:
             Imp(rule_name).set_as_rule(
                 """
                 ActorState(?act_st), 
-                ActorStateHasPhysiologicalState(?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
-                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?vrl_hr), Very_Low_HR(?vrl_hr),  
-                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
-                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
-                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr),  DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr),  HRis(?hr, ?vrl_hr), Very_Low_HR(?vrl_hr),  
+                ActorStateHasPhysiologicalState(?act_st, ?hrv),  HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2),  SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
                 Unresponsiveness(unresponsiveness), Imminent(?immi) -> ActorStateHasUnresponsiveness(?act_st, unresponsiveness), UnresponsiveIs(unresponsiveness, ?immi)
                 """
             )
@@ -2305,11 +2307,11 @@ class RuleCreator:
             Imp(rule_name).set_as_rule(
                 """
                 ActorState(?act_st), 
-                ActorStateHasPhysiologicalState(?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
-                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?vrl_hr), Very_Low_HR(?vrl_hr),  
-                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
-                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?high_rr), High_RR(?high_rr), 
-                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr),  DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HRis(?hr, ?vrl_hr), Very_Low_HR(?vrl_hr),  
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr),  RRis(?rr, ?high_rr), High_RR(?high_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2),  SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
                 Unresponsiveness(unresponsiveness), Imminent(?immi) -> ActorStateHasUnresponsiveness(?act_st, unresponsiveness), UnresponsiveIs(unresponsiveness, ?immi)
                 """
             )
@@ -2319,11 +2321,11 @@ class RuleCreator:
             Imp(rule_name).set_as_rule(
                 """
                 ActorState(?act_st), 
-                ActorStateHasPhysiologicalState(?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl5), Level_5_KSS(?lvl5), 
-                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?high_rr), High_HR(?high_hr),  
-                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
-                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
-                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr),  DrowsinessIs(?dr, ?lvl5), Level_5_KSS(?lvl5), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HRis(?hr, ?high_rr), High_HR(?high_hr),  
+                ActorStateHasPhysiologicalState(?act_st, ?hrv),  HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2),  SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
                 Unresponsiveness(unresponsiveness), Imminent(?immi) -> ActorStateHasUnresponsiveness(?act_st, unresponsiveness), UnresponsiveIs(unresponsiveness, ?immi)
                 """
             )
@@ -2333,11 +2335,11 @@ class RuleCreator:
             Imp(rule_name).set_as_rule(
                 """
                 ActorState(?act_st), 
-                ActorStateHasPhysiologicalState(?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl5), Level_5_KSS(?lvl5), 
-                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?high_hr), High_HR(?high_hr),  
-                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
-                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?high_rr), High_RR(?high_rr), 
-                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr),  DrowsinessIs(?dr, ?lvl5), Level_5_KSS(?lvl5), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr),  HRis(?hr, ?high_hr), High_HR(?high_hr),  
+                ActorStateHasPhysiologicalState(?act_st, ?hrv),  HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr),  RRis(?rr, ?high_rr), High_RR(?high_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2),  SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
                 Unresponsiveness(unresponsiveness), Imminent(?immi) -> ActorStateHasUnresponsiveness(?act_st, unresponsiveness), UnresponsiveIs(unresponsiveness, ?immi)
                 """
             )
@@ -2347,11 +2349,11 @@ class RuleCreator:
             Imp(rule_name).set_as_rule(
                 """
                 ActorState(?act_st), 
-                ActorStateHasPhysiologicalState(?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl5), Level_5_KSS(?lvl5), 
-                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?vrl_hr), Very_Low_HR(?vrl_hr),  
-                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
-                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
-                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr),  DrowsinessIs(?dr, ?lvl5), Level_5_KSS(?lvl5), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HRis(?hr, ?vrl_hr), Very_Low_HR(?vrl_hr),  
+                ActorStateHasPhysiologicalState(?act_st, ?hrv),  HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr),  RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2),  SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
                 Unresponsiveness(unresponsiveness), Imminent(?immi) -> ActorStateHasUnresponsiveness(?act_st, unresponsiveness), UnresponsiveIs(unresponsiveness, ?immi)
                 """
             )
@@ -2361,11 +2363,11 @@ class RuleCreator:
             Imp(rule_name).set_as_rule(
                 """
                 ActorState(?act_st), 
-                ActorStateHasPhysiologicalState(?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl5), Level_5_KSS(?lvl5), 
-                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?vrl_hr), Very_Low_HR(?vrl_hr),  
-                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
-                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?high_rr), High_RR(?high_rr), 
-                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr),  DrowsinessIs(?dr, ?lvl5), Level_5_KSS(?lvl5), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HRis(?hr, ?vrl_hr), Very_Low_HR(?vrl_hr),  
+                ActorStateHasPhysiologicalState(?act_st, ?hrv),  HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hrv), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr),  RRis(?rr, ?high_rr), High_RR(?high_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2),  SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
                 Unresponsiveness(unresponsiveness), Imminent(?immi) -> ActorStateHasUnresponsiveness(?act_st, unresponsiveness), UnresponsiveIs(unresponsiveness, ?immi)
                 """
             )
@@ -2375,8 +2377,8 @@ class RuleCreator:
             Imp(rule_name).set_as_rule(
                 """
                 ActorState(?act_st), 
-                ActorStateHasPhysiologicalState(?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl5), Level_5_KSS(?lvl5), 
-                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr),  DrowsinessIs(?dr, ?lvl5), Level_5_KSS(?lvl5), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
                 Unresponsiveness(unresponsiveness), Imminent(?immi) -> ActorStateHasUnresponsiveness(?act_st, unresponsiveness), UnresponsiveIs(unresponsiveness, ?immi)
                 """
             )
@@ -2386,8 +2388,8 @@ class RuleCreator:
             Imp(rule_name).set_as_rule(
                 """
                 ActorState(?act_st), 
-                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl7), Level_7_KSS(?lvl7), 
-                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr), DrowsinessIs(?dr, ?lvl7), Level_7_KSS(?lvl7), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2),  SpO2is(?spo2, ?l_spo2), Low_SpO2(?l_spo2), 
                 Unresponsiveness(unresponsiveness), Unresponsive(?not) -> ActorStateHasUnresponsiveness(?act_st, unresponsiveness), UnresponsiveIs(unresponsiveness, ?not)
                 """
             )
@@ -2397,7 +2399,7 @@ class RuleCreator:
             Imp(rule_name).set_as_rule(
                 """
                 ActorState(?act_st), 
-                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl9), Level_9_KSS(?lvl9), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr),  DrowsinessIs(?dr, ?lvl9), Level_9_KSS(?lvl9), 
                 Unresponsiveness(unresponsiveness), Unresponsive(?not) -> ActorStateHasUnresponsiveness(?act_st, unresponsiveness), UnresponsiveIs(unresponsiveness, ?not)
                 """
             )
@@ -2407,11 +2409,11 @@ class RuleCreator:
             Imp(rule_name).set_as_rule(
                 """
                 ActorState(?act_st), 
-                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?crit), Critical_SpO2(?crit), 
-                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?vrl_hr), Very_Low_HR(?vrl_hr), 
-                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hr), 
-                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
-                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2is(?spo2, ?crit), Critical_SpO2(?crit), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr),  HRis(?hr, ?vrl_hr), Very_Low_HR(?vrl_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr),  DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
                 Unresponsiveness(unresponsiveness), Unresponsive(?not) -> ActorStateHasUnresponsiveness(?act_st, unresponsiveness), UnresponsiveIs(unresponsiveness, ?not)
                 """
             )
@@ -2421,11 +2423,11 @@ class RuleCreator:
             Imp(rule_name).set_as_rule(
                 """
                 ActorState(?act_st), 
-                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?crit), Critical_SpO2(?crit), 
-                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?vrl_hr), Very_Low_HR(?vrl_hr), 
-                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hr), 
-                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
-                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl5), Level_5_KSS(?lvl5), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2is(?spo2, ?crit), Critical_SpO2(?crit), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr),  HRis(?hr, ?vrl_hr), Very_Low_HR(?vrl_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv),  HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr),  RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr),  DrowsinessIs(?dr, ?lvl5), Level_5_KSS(?lvl5), 
                 Unresponsiveness(unresponsiveness), Unresponsive(?not) -> ActorStateHasUnresponsiveness(?act_st, unresponsiveness), UnresponsiveIs(unresponsiveness, ?not)
                 """
             )
@@ -2435,11 +2437,11 @@ class RuleCreator:
             Imp(rule_name).set_as_rule(
                 """
                 ActorState(?act_st), 
-                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?crit), Critical_SpO2(?crit), 
-                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?vrl_hr), Very_Low_HR(?vrl_hr), 
-                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hr), 
-                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
-                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl7), Level_7_KSS(?lvl7), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2),  SpO2is(?spo2, ?crit), Critical_SpO2(?crit), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr),  HRis(?hr, ?vrl_hr), Very_Low_HR(?vrl_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv),  HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr),  RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr),  DrowsinessIs(?dr, ?lvl7), Level_7_KSS(?lvl7), 
                 Unresponsiveness(unresponsiveness), Unresponsive(?not) -> ActorStateHasUnresponsiveness(?act_st, unresponsiveness), UnresponsiveIs(unresponsiveness, ?not)
                 """
             )
@@ -2449,11 +2451,11 @@ class RuleCreator:
             Imp(rule_name).set_as_rule(
                 """
                 ActorState(?act_st), 
-                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?crit), Critical_SpO2(?crit), 
-                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?high_hr), High_HR(?high_hr), 
-                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hr), 
-                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
-                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2is(?spo2, ?crit), Critical_SpO2(?crit), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HRis(?hr, ?high_hr), High_HR(?high_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv),  HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr),  DrowsinessIs(?dr, ?lvl3), Level_3_KSS(?lvl3), 
                 Unresponsiveness(unresponsiveness), Unresponsive(?not) -> ActorStateHasUnresponsiveness(?act_st, unresponsiveness), UnresponsiveIs(unresponsiveness, ?not)
                 """
             )
@@ -2463,11 +2465,11 @@ class RuleCreator:
             Imp(rule_name).set_as_rule(
                 """
                 ActorState(?act_st), 
-                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?crit), Critical_SpO2(?crit), 
-                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?high_hr), High_HR(?high_hr), 
-                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hr), 
-                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
-                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl5), Level_5_KSS(?lvl5), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2),  SpO2is(?spo2, ?crit), Critical_SpO2(?crit), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr),  HRis(?hr, ?high_hr), High_HR(?high_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv),  HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr),  RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr),  DrowsinessIs(?dr, ?lvl5), Level_5_KSS(?lvl5), 
                 Unresponsiveness(unresponsiveness), Unresponsive(?not) -> ActorStateHasUnresponsiveness(?act_st, unresponsiveness), UnresponsiveIs(unresponsiveness, ?not)
                 """
             )
@@ -2477,11 +2479,11 @@ class RuleCreator:
             Imp(rule_name).set_as_rule(
                 """
                 ActorState(?act_st), 
-                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2(?spo2), SpO2is(?spo2, ?crit), Critical_SpO2(?crit), 
-                ActorStateHasPhysiologicalState(?act_st, ?hr), HR(?hr), HRis(?hr, ?high_hr), High_HR(?high_hr), 
-                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRV(?hrv), HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hr), 
-                ActorStateHasPhysiologicalState(?act_st, ?rr), RR(?rr), RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
-                ActorStateHasPhysiologicalState(?act_st, ?dr), Drowsiness(?dr), DrowsinessIs(?dr, ?lvl7), Level_7_KSS(?lvl5), 
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2is(?spo2, ?crit), Critical_SpO2(?crit), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HRis(?hr, ?high_hr), High_HR(?high_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?hrv),  HRVis(?hrv, ?vrl_hrv), Very_Low_HRV(?vrl_hr), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr),  RRis(?rr, ?vrl_rr), Very_Low_RR(?vrl_rr), 
+                ActorStateHasPhysiologicalState(?act_st, ?dr),  DrowsinessIs(?dr, ?lvl7), Level_7_KSS(?lvl5), 
                 Unresponsiveness(unresponsiveness), Unresponsive(?not) -> ActorStateHasUnresponsiveness(?act_st, unresponsiveness), UnresponsiveIs(unresponsiveness, ?not)
                 """
             )
@@ -2814,28 +2816,6 @@ class RuleCreator:
             )
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     def determine_trends(self):
 
         current_trend = self.ontology.CurrentReading.instances()[0] # Get the currenttreading_instance 
@@ -2886,7 +2866,7 @@ class RuleCreator:
         logger.debug("Determine Trends | Finished setting up trends...")
 
 
-    def set_up_rules(self, index): 
+    def set_up_rules(self): 
         """
         This function is used tp set up the rules for the ontology.
         The rules are created only on the first iteration of the loop.
@@ -2920,7 +2900,6 @@ class RuleCreator:
 
             with StepContext(name="Define Attention Rules", catch=(RuntimeError,)): 
                 self.determine_attention()
-
             with StepContext(name="Define Unresponsive Rules", catch=(RuntimeError,)): 
                 self.determine_unresponsiveness()
 

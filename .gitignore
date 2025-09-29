@@ -1,4 +1,6 @@
 labels/*
+*.docx
+*.png
 *.owl
 labels
 data

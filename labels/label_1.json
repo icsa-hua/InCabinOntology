@@ -1,7 +1,7 @@
 {
     "prompt_details": {
-        "seed": 276418,
-        "steps": 50,
+        "seed": 151632,
+        "steps": 33,
         "prompt": "Lorem ipsum...",
         "response": "Lorem ipsum...",
         "view_point": "front",
@@ -11,7 +11,7 @@
         "weather_condition": "sunny"
     },
     "label": {
-        "actor_id": "DriverState_68453cfc800b40788e1803a2ff9475cd",
+        "actor_id": "DriverState_e8878b95eba64689b405c12db1bb824b",
         "eye_state": "open",
         "mouth_state": "open",
         "age": 25,

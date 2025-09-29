@@ -21,7 +21,7 @@ def iso_format(datetime):
     return datetime.isoformat().replace("+00:00", "Z") 
 
 
-def new_state(onto, actor, ts_iso): 
+def new_state(onto, actor, ts_iso, last_state:Any): 
 
     if isinstance(ts_iso,list): 
         year = ts_iso[0]
@@ -41,7 +41,7 @@ def new_state(onto, actor, ts_iso):
         state = onto.ActorState(state_iri) 
         state.StateOfActor = [actor] 
         state.validAt = [ts_iso] 
-        state.prevState = []
+        state.prevState = last_state
 
     return state 
 
