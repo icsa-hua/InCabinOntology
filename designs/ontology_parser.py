@@ -1,11 +1,13 @@
+from os import wait
 from tools.appraisal import StepContext
-from tools.logger import get_logger
 from tools.common import *
 from designs.rule_creator import RuleCreator
+from tools.logger import get_logger
 from tools.metrics import OntologyEvaluator
 
 import uuid
 import pdb
+import time 
 import gc
 import pandas as pd
 import tracemalloc
@@ -85,7 +87,7 @@ class OntologyParser:
 
 
     
-    def parse_observations(self, dataset_path, batching=True, reasoning_thr=10, save=False):
+    def parse_observations(self, dataset_path, batching=True, reasoning_thr=5, save=False):
         """
         This method parses the observations from the given dataset and creates instances of the Observation class.
         Then translates the rules established in the ontology with the reasoner and saves the results.
@@ -97,7 +99,6 @@ class OntologyParser:
         """
 
         dataset = pd.read_csv(dataset_path)
-        dataset = dataset[:5]
         filepath = os.getcwd() + "/labels"
         tracemalloc.start()
         save_path = os.path.join(os.getcwd(),"ontologies/snapshot.owl") if save else None
@@ -116,15 +117,13 @@ class OntologyParser:
                 # Create the main instance for OBS and Actor. 
                 obs = self.get_or_create_obs()
                 actor = self.get_or_create_actor()
-                
-                # Here we create the PHY instances (hr_instance, hrv_instance, ...) 
-                phy_vocab = create_Physiological_inds(self.ontology) 
-                actor_vocab = create_Actor_inds(self.ontology) 
+            
+                with StepContext(name="SetUp all Initial Indis", catch=(RuntimeError,)): 
+                    self.rule_parser.generate_all_nece_instances()
 
                 with StepContext(name="Setting up Rules", catch=(RuntimeError,)):
                     self.rule_parser.set_up_rules()
-
-            pdb.set_trace()
+    
             self.rule_parser.synchronize_ontology()
             gc.collect()
 
@@ -134,55 +133,77 @@ class OntologyParser:
             # Main loop to go through the observations. 
             for index, row in dataset.iterrows():
 
-                ts_iso = str(iso_format(row['TIME']))
+                ts_iso =(iso_format(row['TIME']))
+                ts_iso_date = get_ts_iso_value(ts_iso)
+                # Here we create the PHY instances (hr_instance, hrv_instance, ...) 
+                phy_vocab = create_Physiological_inds(self.ontology, ts_iso_date) 
+                actor_vocab = create_Actor_inds(self.ontology, ts_iso_date) 
 
                 actor_state = new_actor_state(
                     onto = self.ontology, 
                     actor = actor, 
-                    ts_iso=ts_iso,
+                    ts_iso=ts_iso_date,
                     last_state=last_state.get(actor), 
                 )
-                pdb.set_trace()
+
+                logger.info(f"DATASET ROW:{row}")
                 last_state[actor.hasUniqueIdentifier[0]] = actor_state
+                with StepContext(name="Dataset -> Observation", catch=(RuntimeError,), verbose=True):
+                        # Read the data into Observations. 
+                        obs_state = attach_values_to_observations(
+                            onto=self.ontology, 
+                            obs_state=obs,
+                            cols=dataset.columns, 
+                            row=row, 
+                            idx=index
+                        )
+                with StepContext(name="Process Observation", catch=(IndexError, RuntimeError)): 
 
-                # Read the data into Observations. 
-                obs_state = attach_values_to_observations(
-                    onto=self.ontology, 
-                    obs_state=obs,
-                    cols=dataset.columns, 
-                    row=row, 
-                    idx=index
-                )
+                    # DON'T use rules to pass the observation values to the states 
+                    obs_state = attach_obs_to_phy_state(obs_state,phy_vocab) 
+                    obs_state = attach_obs_to_actor_state(obs_state, actor_vocab) 
+                    batch_states.append(actor_state)
 
-                # DON'T use rules to pass the observation values to the states 
-                obs_state = attach_obs_to_phy_state(obs_state,phy_vocab) 
-                obs_state = attach_obs_to_actor_state(obs_state, actor_vocab) 
-                batch_states.append(actor_state)
+                    # self.rule_parser.re_create_indi(
+                    #     ts_iso=ts_iso_date, 
+                    #     unique=None, 
+                    #     regenerate=True
+                    # )
 
-                # Assign values to the subclasses instances based on the observations
-                self.rule_parser.assign_values(obs_state,"ObsIsDividedIntoPhS","hasNumericalValue")
-                self.rule_parser.assign_values(obs_state,"ObsIsDividedIntoActor","hasStringValue")
-
-                need_sync = (not batching) or (len(batch_states)>= reasoning_thr) or (index == len(dataset)-1)
-                if need_sync: 
-                    gc.collect() 
-
-                    # Run the reasoner to update the ontology with the new values                       # Run the reasoner to update the ontology with the new values     
-                    self.rule_parser.synchronize_ontology()
-                    
-                    # Create the description of the actor and save it in JSON format
-                    with StepContext(name="Crate Label", catch=(RuntimeError,)):
-                        for j, _ in enumerate(batch_states): 
-                            pdb.set_trace()
-                            self.rule_parser.create_label(actor, filepath, index=index-len(batch_states) +1 +j)
+                    # Assign values to the subclasses instances based on the observations
+                    self.rule_parser.assign_values(obs_state,"ObsIsDividedIntoPhS","hasNumericalValue")
+                    self.rule_parser.assign_values(obs_state,"ObsIsDividedIntoActor","hasStringValue")
                 
-                    batch_states.clear() 
-            
+                with StepContext(name="Parse Instances to Actor State", catch=(Exception, RuntimeError)): 
+                    self.rule_parser.connect_actor_state_to_values(
+                        actor_state=actor_state, 
+                        phy_vocab=phy_vocab, 
+                        actor_vocab=actor_vocab
+                    )
+                
+               
+                with StepContext(name="Batching Ontology Inference", catch=(RuntimeError,)):
+                    need_sync =  (len(batch_states)>= reasoning_thr) or (index == len(dataset)-1)
+                    
+                    if need_sync: 
+                        gc.collect() 
+                        pdb.set_trace()
+                        # Run the reasoner to update the ontology with the new values                       # Run the reasoner to update the ontology with the new values     
+                        self.rule_parser.synchronize_ontology()
+                        
+                        # Create the description of the actor and save it in JSON format
+                        with StepContext(name="Crate Label", catch=(RuntimeError,)):
+                            for j, _ in enumerate(batch_states): 
+                                self.rule_parser.create_label(actor, filepath, index=index-len(batch_states) +1 +j)
+                
+                        batch_states.clear() 
+
+                self.rule_parser.clear_obs(obs)  
             # Remove the previous values from the ontology to avoid conflicts
             # self.rule_parser.remove_prev_values(obs, actor)
 
         # Save the parsed ontology to a file for vizualization of the rules' results. 
-                    self.save_onto(0)    
+                    # self.save_onto(0)    
         #self.rule_parser.determine_trends() 
 
         print("Memory Allocated")

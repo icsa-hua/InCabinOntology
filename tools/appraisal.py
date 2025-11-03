@@ -15,9 +15,10 @@ class SetupError(RuntimeError):
 
 class StepContext(): 
 
-    def __init__(self, name, *, catch=(Exception, ), supress=False, on_error=None): 
+    def __init__(self, name, *, catch=(Exception, ), verbose=False, supress=False, on_error=None): 
         self.name = name 
         self.catch = catch 
+        self.__verbose = verbose
         self.supress = supress 
         self.on_error = on_error 
 
@@ -27,7 +28,10 @@ class StepContext():
 
 
     def __enter__(self): 
-        logger.debug(f"[checked] SCM ==> {self.name}...") 
+        if not self.__verbose: 
+            logger.debug(f"[checked] SCM ==> {self.name}...") 
+        else: 
+            logger.info(f"[checked] SCM ==> {self.name}...")
         self.t0 = time.perf_counter() 
         return self 
 

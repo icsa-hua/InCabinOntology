@@ -1,3 +1,4 @@
+import pdb
 import re
 import uuid
 
@@ -20,6 +21,12 @@ def iso_format(datetime):
     return datetime.isoformat().replace("+00:00", "Z") 
 
 
+def get_ts_iso_value(ts_iso): 
+
+    ts_iso = '_'.join(map(str, ts_iso))
+    return ts_iso
+
+
 def new_state(onto, actor, ts_iso): 
 
     if isinstance(ts_iso,list): 
@@ -34,13 +41,13 @@ def new_state(onto, actor, ts_iso):
             tzinfo=timezone.utc
         ).isoformat() 
         ts_iso = ts_iso.replace("+00:00","")
-
     state_iri = f"DriverState_{uuid.uuid4().hex}"
     with onto: 
         state = onto.ActorState(state_iri) 
-        state.StateOfActor = [actor] 
-        state.validAt = [ts_iso] 
-        # state.prevState = []
+        state.StateOfActor = actor 
+        state.validAt = [ts_iso]
+        state.StateHasThresholdProfile = None
+        state.prevState = None
 
     return state 
 
@@ -53,7 +60,7 @@ def attach_values_to_observations(onto, obs_state, cols, row, idx):
         - row : the information from the dataset 
         - idx : the index of the row inside the dataset 
     """
-
+    
     #Pass health factors 
     obs_state.hasHR.append(row['HR'] if "HR" in cols and isinstance(row['HR'],int) else [-1])
     obs_state.hasHRV.append(row['HRV'] if "HRV" in cols and isinstance(row['HRV'],int) else [-1])
@@ -107,16 +114,16 @@ def obs_to_PHY_instance(obs_state, instance:Any, property_name:Any):
             instance_property.append(int(obs_state.hasAge.pop(0))) 
 
 
-def create_Physiological_inds(onto): 
+def create_Physiological_inds(onto, ts_iso): 
 
-    hr_instance = onto.HR('hr_instance') 
-    hrv_instance = onto.HRV('hrv_instance') 
-    rr_instance = onto.RR('rr_instance') 
-    spo2_instance = onto.SpO2('spo2_instance') 
-    drowsiness_instance = onto.Drowsiness('drowsiness_instance')
-    fatigue_instance = onto.Fatigue('fatigue_instance') 
-    attention_instance = onto.AttentionLevels('attention_instance')
-    unresponsiveness = onto.Unresponsiveness('unresponsiveness') 
+    hr_instance = onto.HR(f'hr_instance_{ts_iso}') 
+    hrv_instance = onto.HRV(f'hrv_instance_{ts_iso}') 
+    rr_instance = onto.RR(f'rr_instance_{ts_iso}') 
+    spo2_instance = onto.SpO2(f'spo2_instance_{ts_iso}') 
+    drowsiness_instance = onto.Drowsiness(f'drowsiness_instance_{ts_iso}')
+    fatigue_instance = onto.Fatigue(f'fatigue_instance_{ts_iso}') 
+    attention_instance = onto.AttentionLevels(f'attention_instance_{ts_iso}')
+    unresponsiveness = onto.Unresponsiveness(f'unresponsiveness_{ts_iso}') 
     return {
             'hr': hr_instance, 
             'hrv': hrv_instance, 
@@ -130,14 +137,15 @@ def create_Physiological_inds(onto):
 
 
 
-def create_Actor_inds(onto): 
-    accessories_instance = onto.Accessories('accessories_instance') 
-    age_instance = onto.Age('age_instance') 
-    demographic_instance = onto.Demographic('demographic_instance') 
-    eye_state = onto.EyeState('eye_state') 
-    facecharacteristics = onto.FaceCharacteristics('facecharacteristics_instance') 
-    mouth_state = onto.MouthState('mouth_state')
-    sex_instance = onto.Sex('sex_instance') 
+def create_Actor_inds(onto, ts_iso): 
+    accessories_instance = onto.Accessories(f'accessories_instance_{ts_iso}') 
+    age_instance = onto.Age(f'age_instance_{ts_iso}') 
+    demographic_instance = onto.Demographic(f'demographic_instance_{ts_iso}') 
+    eye_state = onto.EyeState(f'eye_state_{ts_iso}') 
+    facecharacteristics = onto.FaceCharacteristics(f'facecharacteristics_instance_{ts_iso}') 
+    mouth_state = onto.MouthState(f'mouth_state_{ts_iso}')
+    sex_instance = onto.Sex(f'sex_instance_{ts_iso}') 
+    temp_instance = onto.WeatherCondition(f'temp_instance_{ts_iso}')
 
     return {
             "accessories": accessories_instance, 
@@ -146,7 +154,8 @@ def create_Actor_inds(onto):
             "eye_state" : eye_state, 
             "facecharacteristics": facecharacteristics, 
             "mouth_state": mouth_state, 
-            "sex": sex_instance 
+            "sex": sex_instance, 
+            "temp": temp_instance
     }
 
 

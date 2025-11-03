@@ -30,7 +30,33 @@ def setup_logging(level=logging.DEBUG, log_dir="logs"):
     root.addHandler(fh)
     root.propagate = True 
 
+
 def get_logger(name=None): 
     return logging.getLogger(name)
 
+
+def list_loggers(show_handlers=False): 
+    reg = logging.Logger.manager.loggerDict 
+    rows = [] 
+    for name, obj in reg.items(): 
+        if not isinstance(obj, logging.Logger): 
+            continue 
+
+        level = logging.getLevelName(obj.level) if obj.level else "NOTSET" 
+        eff = logging.getLevelName(obj.getEffectiveLevel()) 
+        hs = [type(h).__name__ for h in obj.handlers] 
+        rows.append((name, level, eff, obj.propagate, hs)) 
+    print(rows)
+    rows.sort() 
+    for name, level, eff, prop, hs in rows: 
+        line = f"{name:40} level={level:7} effective={eff:7}, propagate={prop:7}"
+        if show_handlers: 
+            line += f" handlers={hs}" 
+        print(line) 
+
+    for n in logging.Logger.manager.loggerDict: 
+        if n.startswith(("owl")): 
+            print(n) 
+
+list_loggers(False)
 setup_logging(level=logging.DEBUG)
