@@ -13,7 +13,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="", 
-    packages=setuptools.find_packages(include=['scripts', 'scripts.*']),
+    packages=setuptools.find_packages(include=['src', 'src.*']),
     # install_requires=requirements,
     python_requires='>=3.9'
 )
