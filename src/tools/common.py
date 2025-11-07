@@ -291,7 +291,7 @@ def parse_thr_profiles(onto,thr_values):
                 rr_low = ind(f"{temp}_{bw}_rr_{age}_{sex}")
                 if rr_low: onto.appliesRRLow[tp].append(rr_low) 
                 spo2_low = ind(f"{temp}_{bw}_spo2_{age}_{sex}")
-                if spo2_low: onto.appliesSPO2Low[tp].append(spo2_low) 
+                if spo2_low: onto.appliesSpO2Low[tp].append(spo2_low) 
 
             elif bw == "moderate" : 
                 hr_mod = ind(f"{temp}_{bw}_hr_{age}_{sex}")
@@ -301,7 +301,7 @@ def parse_thr_profiles(onto,thr_values):
                 rr_mod = ind(f"{temp}_{bw}_rr_{age}_{sex}")
                 if rr_mod: onto.appliesRRModerate[tp].append(rr_mod) 
                 spo2_mod = ind(f"{temp}_{bw}_spo2_{age}_{sex}")
-                if spo2_mod: onto.appliesSPO2Moderate[tp].append(spo2_mod) 
+                if spo2_mod: onto.appliesSpO2Moderate[tp].append(spo2_mod) 
 
 
             elif bw == "high" : 
@@ -312,7 +312,7 @@ def parse_thr_profiles(onto,thr_values):
                 rr_high = ind(f"{temp}_{bw}_rr_{age}_{sex}")
                 if rr_high: onto.appliesRRHigh[tp].append(rr_high) 
                 spo2_high = ind(f"{temp}_{bw}_spo2_{age}_{sex}")
-                if spo2_high: onto.appliesSPO2High[tp].append(spo2_high) 
+                if spo2_high: onto.appliesSpO2High[tp].append(spo2_high) 
 
 
 def pick_appropriate_profile_state(onto, actor_state, age_group, sex_group, temp_group): 
@@ -338,7 +338,83 @@ def new_actor_state(onto, actor, ts_iso:str, last_state:Any):
     return actor_state
 
 
+def check_spo2(onto): 
+    for st in onto.ActorState.instances():
+        spo2s = [p for p in onto.ActorStateHasPhysiologicalState[st] if isinstance(p, onto.SpO2)]
+        if len(spo2s) != 1: 
+            continue
+        spo2 = spo2s[0]
+        # classified via SpO2is?
+        if not onto.SpO2is[spo2]:
+            print("UNCLASSIFIED:", st.name, "| SpO2:", spo2.name)
+            # dump bindings used by the rule
+            print("  state time:", list(onto.validAt[st]))
+            print("  spo2 time:", list(getattr(onto, "phyValidAt")[spo2] if hasattr(onto, "phyValidAt") else onto.validAt[spo2]))
+            print("  spo2 numeric:", list(getattr(onto, "hasNumericalValue")[spo2] or getattr(onto, "hasNumericValue")[spo2]))
+            tp = next(iter(onto.StateHasThresholdProfile[st]))
+            print("  tp:", tp.name)
+            lows = list(onto.appliesSpO2Low[tp])
+            mods = list(onto.appliesSpO2Moderate[tp])
+            highs = list(onto.appliesSpO2High[tp])
+            print("  low thr:", [(x.name, list(onto.hasThrValue[x])) for x in lows])
+            print("  mod thr:", [(x.name, list(onto.hasThrValue[x])) for x in mods])
+            print("  high thr:", [(x.name, list(onto.hasThrValue[x])) for x in highs])
+            
 
+
+def check_elderly_state(onto): 
+    # Helper to resolve by local name
+    def ent(name):
+        return getattr(onto, name, None)
+
+# 1) Locate the tp and its threshold links
+    tp = ent("tp_elderly_male_cold")
+    print("TP exists:", bool(tp), tp)
+
+    applies_low  = getattr(onto, "appliesSpO2Low",  None)
+    applies_mod  = getattr(onto, "appliesSpO2Moderate",  None)
+    applies_high = getattr(onto, "appliesSpO2High",  None)
+    has_thr      = getattr(onto, "hasThrValue", None)
+
+    print("Props present:", bool(applies_low), bool(applies_mod), bool(applies_high), bool(has_thr))
+
+    def safe_vals(thr_ind):
+        if not thr_ind or not has_thr: return []
+        try:
+            return list(has_thr[thr_ind])
+        except Exception:
+            return []
+
+    lows = list(applies_low[tp]) if applies_low and tp else []
+    mods = list(applies_mod[tp]) if applies_mod and tp else []
+    highs= list(applies_high[tp]) if applies_high and tp else []
+
+    print("Low thresholds:", [(x.name, safe_vals(x)) for x in lows])
+    print("Mod thresholds:", [(x.name, safe_vals(x)) for x in mods])
+    print("High thresholds:", [(x.name, safe_vals(x)) for x in highs])
+
+# 2) Dump SWRL rules that mention SpO2 and 'High' to check head/body correctness
+
+    rules = list(onto.rules()) 
+    print("\nTotal rules:", len(rules))
+    spo2_rules = []
+    for r in rules:
+        txt = r.get_name()
+        if not txt: 
+            continue
+        stxt = str(txt)
+        if ("SpO2" in stxt or "spo2" in stxt) and ("Normal" in stxt or "normal" in stxt):
+            
+            spo2_rules.append((r.name, stxt))
+
+    print("SpO2 'normal' rules found:", len(spo2_rules))
+    for name, txt in spo2_rules:
+        print("\n==", name, "==")
+        print(txt)
+
+# 3) Verify High_SpO2 class vs individual existence
+    High_SpO2 = ent("Normal_SpO2")
+    print("\nHigh_SpO2 entity:", High_SpO2, "is class:", getattr(High_SpO2, "is_a", None) is not None and hasattr(High_SpO2, "instances"))
 
 
 
