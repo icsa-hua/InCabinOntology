@@ -1643,15 +1643,58 @@ class RuleCreator:
 
         # self.create_instances("AttentionLevels")
 
-        rule_name = "undefined_att_1" 
+        rule_name = "undefined_1" 
         if not has_rule_named(onto=self.ontology, name=rule_name): 
             Imp(rule_name).set_as_rule(
                 """
                 ActorState(?act_st), validAt(?act_st, ?t),
                 ActorStateHasPhysiologicalState(?act_st, ?spo2), phyValidAt(?spo2, ?spo2_t),   
                 SpO2is(?spo2, critical_spo2_instance),stringEqualIgnoreCase(?t, ?spo2_t),
-                ActorStateHasAttention(?act_st, ?att), AttentionLevels(?att)
+                ActorStateHasAttention(?act_st, ?att), AttentionLevels(?att), 
+                phyValidAt(?attention_inst, ?att_t), stringEqualIgnoreCase(?t, ?att_t)
                 ->  AttentionIs(?att, undefined_instance)
+                """
+            )
+
+
+        # Undefined 
+        rule_name = "undefined_2" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st),validAt(?act_st, ?t),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), DrowsinessIs(?dr, level_3_kss_instance), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HRis(?hr, very_low_hr_instance),  
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRVis(?hrv, low_hrv_instance), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RRis(?rr, high_rr_instance),  
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2is(?spo2, normal_spo2_instance), 
+                phyValidAt(?dr, ?dr_t), phyValidAt(?hr, ?hr_t), phyValidAt(?hrv, ?hrv_t),      
+                phyValidAt(?rr, ?rr_t), phyValidAt(?spo2, ?spo2_t),   
+                stringEqualIgnoreCase(?t, ?dr_t),stringEqualIgnoreCase(?t, ?hr_t),stringEqualIgnoreCase(?t, ?hrv_t),
+                stringEqualIgnoreCase(?t, ?rr_t),stringEqualIgnoreCase(?t, ?spo2_t),
+                ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst),
+                phyValidAt(?attention_inst, ?att_t), stringEqualIgnoreCase(?t, ?att_t)
+                -> AttentionIs(?attention_inst, undefined_instance)
+                """
+            )
+
+        rule_name = "undefined_3" 
+        if not has_rule_named(onto=self.ontology, name=rule_name): 
+            Imp(rule_name).set_as_rule(
+                """
+                ActorState(?act_st), validAt(?act_st, ?t),
+                ActorStateHasPhysiologicalState(?act_st, ?dr), DrowsinessIs(?dr, level_3_kss_instance), 
+                ActorStateHasPhysiologicalState(?act_st, ?hr), HRis(?hr, very_low_hr_instance),  
+                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRVis(?hrv, very_low_hrv_instance), 
+                ActorStateHasPhysiologicalState(?act_st, ?rr), RRis(?rr, high_rr_instance),  
+                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2is(?spo2, normal_spo2_instance), 
+                phyValidAt(?dr, ?dr_t), phyValidAt(?hr, ?hr_t), phyValidAt(?hrv, ?hrv_t),      
+                phyValidAt(?rr, ?rr_t), phyValidAt(?spo2, ?spo2_t),   
+                stringEqualIgnoreCase(?t, ?dr_t),stringEqualIgnoreCase(?t, ?hr_t),stringEqualIgnoreCase(?t, ?hrv_t),
+                stringEqualIgnoreCase(?t, ?rr_t),stringEqualIgnoreCase(?t, ?spo2_t),
+                ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst),
+                phyValidAt(?attention_inst, ?att_t), stringEqualIgnoreCase(?t, ?att_t)
+                -> AttentionIs(?attention_inst, undefined_instance)                
                 """
             )
 
@@ -1669,12 +1712,12 @@ class RuleCreator:
                 phyValidAt(?rr, ?rr_t), phyValidAt(?spo2, ?spo2_t),   
                 stringEqualIgnoreCase(?t, ?dr_t),stringEqualIgnoreCase(?t, ?hr_t),stringEqualIgnoreCase(?t, ?hrv_t),
                 stringEqualIgnoreCase(?t, ?rr_t),stringEqualIgnoreCase(?t, ?spo2_t),
-                ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst)
+                ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst), 
+                phyValidAt(?attention_inst, ?att_t), stringEqualIgnoreCase(?t, ?att_t)
                 -> AttentionIs(?attention_inst, attentive_instance)
                 """
             )
 
-        
         rule_name = "attentive_2" 
         if not has_rule_named(onto=self.ontology, name=rule_name): 
             Imp(rule_name).set_as_rule(
@@ -1690,6 +1733,7 @@ class RuleCreator:
                 stringEqualIgnoreCase(?t, ?dr_t),stringEqualIgnoreCase(?t, ?hr_t),stringEqualIgnoreCase(?t, ?hrv_t),
                 stringEqualIgnoreCase(?t, ?rr_t),stringEqualIgnoreCase(?t, ?spo2_t),
                 ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst),  
+                phyValidAt(?attention_inst, ?att_t), stringEqualIgnoreCase(?t, ?att_t)
                  -> AttentionIs(?attention_inst, attentive_instance)
                 """
             )
@@ -1709,6 +1753,7 @@ class RuleCreator:
                 stringEqualIgnoreCase(?t, ?dr_t),stringEqualIgnoreCase(?t, ?hr_t),stringEqualIgnoreCase(?t, ?hrv_t),
                 stringEqualIgnoreCase(?t, ?rr_t),stringEqualIgnoreCase(?t, ?spo2_t),
                 ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst), 
+                phyValidAt(?attention_inst, ?att_t), stringEqualIgnoreCase(?t, ?att_t)
                 -> AttentionIs(?attention_inst, attentive_instance)
                 """
             )
@@ -1727,7 +1772,8 @@ class RuleCreator:
                 phyValidAt(?rr, ?rr_t), phyValidAt(?spo2, ?spo2_t),   
                 stringEqualIgnoreCase(?t, ?dr_t),stringEqualIgnoreCase(?t, ?hr_t),stringEqualIgnoreCase(?t, ?hrv_t),
                 stringEqualIgnoreCase(?t, ?rr_t),stringEqualIgnoreCase(?t, ?spo2_t),
-                ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst)
+                ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst), 
+                phyValidAt(?attention_inst, ?att_t), stringEqualIgnoreCase(?t, ?att_t)
                 -> AttentionIs(?attention_inst, attentive_instance)
                 """
             )
@@ -1746,27 +1792,13 @@ class RuleCreator:
                 phyValidAt(?rr, ?rr_t), phyValidAt(?spo2, ?spo2_t),   
                 stringEqualIgnoreCase(?t, ?dr_t),stringEqualIgnoreCase(?t, ?hr_t),stringEqualIgnoreCase(?t, ?hrv_t),
                 stringEqualIgnoreCase(?t, ?rr_t),stringEqualIgnoreCase(?t, ?spo2_t),
-                ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst)
+                ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst),
+                phyValidAt(?attention_inst, ?att_t), stringEqualIgnoreCase(?t, ?att_t)
                 -> AttentionIs(?attention_inst, attentive_instance)
                 """
             )
 
-        # rule_name = "attentive_3_1" 
-        # if not has_rule_named(onto=self.ontology, name=rule_name): 
-        #     Imp(rule_name).set_as_rule(
-        #         """
-        #         ActorState(?act_st),validAt(?act_st, ?t),
-        #         ActorStateHasPhysiologicalState(?act_st, ?dr), DrowsinessIs(?dr, level_3_kss_instance), 
-        #         ActorStateHasPhysiologicalState(?act_st, ?hr), HRis(?hr, moderate_hr_instance), 
-        #         ActorStateHasPhysiologicalState(?act_st, ?hrv), HRVis(?hrv, moderate_hrv_instance), 
-        #         ActorStateHasPhysiologicalState(?act_st, ?rr), RRis(?rr, moderate_rr_instance), 
-        #         ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2is(?spo2, low_spo2_instance), 
-        #         ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst)
-        #         -> AttentionIs(?attention_inst, attentive_instance)
-        #         """
-        #     )
-
-        rule_name = "attentive_4_1" 
+        rule_name = "attentive_6" 
         if not has_rule_named(onto=self.ontology, name=rule_name): 
             Imp(rule_name).set_as_rule(
                 """
@@ -1780,12 +1812,13 @@ class RuleCreator:
                 phyValidAt(?rr, ?rr_t), phyValidAt(?spo2, ?spo2_t),   
                 stringEqualIgnoreCase(?t, ?dr_t),stringEqualIgnoreCase(?t, ?hr_t),stringEqualIgnoreCase(?t, ?hrv_t),
                 stringEqualIgnoreCase(?t, ?rr_t),stringEqualIgnoreCase(?t, ?spo2_t),
-                ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst)
+                ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst),
+                phyValidAt(?attention_inst, ?att_t), stringEqualIgnoreCase(?t, ?att_t)
                 -> AttentionIs(?attention_inst, attentive_instance)
                 """
             )
 
-        rule_name = "attentive_5_1" 
+        rule_name = "attentive_7" 
         if not has_rule_named(onto=self.ontology, name=rule_name): 
             Imp(rule_name).set_as_rule(
                 """
@@ -1800,12 +1833,13 @@ class RuleCreator:
                 stringEqualIgnoreCase(?t, ?dr_t),stringEqualIgnoreCase(?t, ?hr_t),stringEqualIgnoreCase(?t, ?hrv_t),
                 stringEqualIgnoreCase(?t, ?rr_t),stringEqualIgnoreCase(?t, ?spo2_t),
                 ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst), 
+                phyValidAt(?attention_inst, ?att_t), stringEqualIgnoreCase(?t, ?att_t)
                 -> AttentionIs(?attention_inst, attentive_instance)
                 """
             )
 
         # return 
-        rule_name = "attentive_6" 
+        rule_name = "attentive_8" 
         if not has_rule_named(onto=self.ontology, name=rule_name): 
             Imp(rule_name).set_as_rule(
                 """
@@ -1819,12 +1853,13 @@ class RuleCreator:
                 phyValidAt(?rr, ?rr_t), phyValidAt(?spo2, ?spo2_t),   
                 stringEqualIgnoreCase(?t, ?dr_t),stringEqualIgnoreCase(?t, ?hr_t),stringEqualIgnoreCase(?t, ?hrv_t),
                 stringEqualIgnoreCase(?t, ?rr_t),stringEqualIgnoreCase(?t, ?spo2_t),
-                ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst)
+                ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst),
+                phyValidAt(?attention_inst, ?att_t), stringEqualIgnoreCase(?t, ?att_t)
                 -> AttentionIs(?attention_inst, attentive_instance)
                 """
             )
 
-        rule_name = "attentive_7" 
+        rule_name = "attentive_9" 
         if not has_rule_named(onto=self.ontology, name=rule_name): 
             Imp(rule_name).set_as_rule(
                 """
@@ -1838,12 +1873,13 @@ class RuleCreator:
                 phyValidAt(?rr, ?rr_t), phyValidAt(?spo2, ?spo2_t),   
                 stringEqualIgnoreCase(?t, ?dr_t),stringEqualIgnoreCase(?t, ?hr_t),stringEqualIgnoreCase(?t, ?hrv_t),
                 stringEqualIgnoreCase(?t, ?rr_t),stringEqualIgnoreCase(?t, ?spo2_t),
-                ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst)
+                ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst),
+                phyValidAt(?attention_inst, ?att_t), stringEqualIgnoreCase(?t, ?att_t)
                 -> AttentionIs(?attention_inst, attentive_instance)
                 """
             )
 
-        rule_name = "attentive_8" 
+        rule_name = "attentive_10" 
         if not has_rule_named(onto=self.ontology, name=rule_name): 
             Imp(rule_name).set_as_rule(
                 """
@@ -1857,13 +1893,14 @@ class RuleCreator:
                 phyValidAt(?rr, ?rr_t), phyValidAt(?spo2, ?spo2_t),   
                 stringEqualIgnoreCase(?t, ?dr_t),stringEqualIgnoreCase(?t, ?hr_t),stringEqualIgnoreCase(?t, ?hrv_t),
                 stringEqualIgnoreCase(?t, ?rr_t),stringEqualIgnoreCase(?t, ?spo2_t),
-                ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst)
+                ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst),
+                phyValidAt(?attention_inst, ?att_t), stringEqualIgnoreCase(?t, ?att_t)
                 -> AttentionIs(?attention_inst, attentive_instance)
                 """
             )
 
         # return
-        rule_name = "attentive_9" 
+        rule_name = "attentive_11" 
         if not has_rule_named(onto=self.ontology, name=rule_name): 
             Imp(rule_name).set_as_rule(
                 """
@@ -1877,12 +1914,13 @@ class RuleCreator:
                 phyValidAt(?rr, ?rr_t), phyValidAt(?spo2, ?spo2_t),   
                 stringEqualIgnoreCase(?t, ?dr_t),stringEqualIgnoreCase(?t, ?hr_t),stringEqualIgnoreCase(?t, ?hrv_t),
                 stringEqualIgnoreCase(?t, ?rr_t),stringEqualIgnoreCase(?t, ?spo2_t),
-                ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst)
+                ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst),
+                phyValidAt(?attention_inst, ?att_t), stringEqualIgnoreCase(?t, ?att_t)
                 -> AttentionIs(?attention_inst, attentive_instance) 
                 """
             )
 
-        rule_name = "attentive_10" 
+        rule_name = "attentive_12" 
         if not has_rule_named(onto=self.ontology, name=rule_name): 
             Imp(rule_name).set_as_rule(
                 """
@@ -1896,71 +1934,14 @@ class RuleCreator:
                 phyValidAt(?rr, ?rr_t), phyValidAt(?spo2, ?spo2_t),   
                 stringEqualIgnoreCase(?t, ?dr_t),stringEqualIgnoreCase(?t, ?hr_t),stringEqualIgnoreCase(?t, ?hrv_t),
                 stringEqualIgnoreCase(?t, ?rr_t),stringEqualIgnoreCase(?t, ?spo2_t),
-                ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst)
-                -> AttentionIs(?attention_inst, attentive_instance)
-                """
-            )
-
-        rule_name = "attentive_11" 
-        if not has_rule_named(onto=self.ontology, name=rule_name): 
-            Imp(rule_name).set_as_rule(
-                """
-                ActorState(?act_st),validAt(?act_st, ?t),
-                ActorStateHasPhysiologicalState(?act_st, ?dr), DrowsinessIs(?dr, level_3_kss_instance), 
-                ActorStateHasPhysiologicalState(?act_st, ?hr), HRis(?hr, very_low_hr_instance),  
-                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRVis(?hrv, low_hrv_instance), 
-                ActorStateHasPhysiologicalState(?act_st, ?rr), RRis(?rr, high_rr_instance),  
-                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2is(?spo2, normal_spo2_instance), 
-                phyValidAt(?dr, ?dr_t), phyValidAt(?hr, ?hr_t), phyValidAt(?hrv, ?hrv_t),      
-                phyValidAt(?rr, ?rr_t), phyValidAt(?spo2, ?spo2_t),   
-                stringEqualIgnoreCase(?t, ?dr_t),stringEqualIgnoreCase(?t, ?hr_t),stringEqualIgnoreCase(?t, ?hrv_t),
-                stringEqualIgnoreCase(?t, ?rr_t),stringEqualIgnoreCase(?t, ?spo2_t),
-                ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst)
-                -> AttentionIs(?attention_inst, attentive_instance)
-                """
-            )
-
-        rule_name = "attentive_12" 
-        if not has_rule_named(onto=self.ontology, name=rule_name): 
-            Imp(rule_name).set_as_rule(
-                """
-                ActorState(?act_st),validAt(?act_st, ?t),
-                ActorStateHasPhysiologicalState(?act_st, ?dr), DrowsinessIs(?dr, level_3_kss_instance), 
-                ActorStateHasPhysiologicalState(?act_st, ?hr), HRis(?hr, very_low_hr_instance),  
-                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRVis(?hrv, low_hrv_instance), 
-                ActorStateHasPhysiologicalState(?act_st, ?rr), RRis(?rr, very_low_rr_instance),  
-                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2is(?spo2, normal_spo2_instance), 
-                phyValidAt(?dr, ?dr_t), phyValidAt(?hr, ?hr_t), phyValidAt(?hrv, ?hrv_t),      
-                phyValidAt(?rr, ?rr_t), phyValidAt(?spo2, ?spo2_t),   
-                stringEqualIgnoreCase(?t, ?dr_t),stringEqualIgnoreCase(?t, ?hr_t),stringEqualIgnoreCase(?t, ?hrv_t),
-                stringEqualIgnoreCase(?t, ?rr_t),stringEqualIgnoreCase(?t, ?spo2_t),
-                ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst)
-                -> AttentionIs(?attention_inst, attentive_instance)                
-                """
-            )
-
-        # return
-        rule_name = "attentive_13" 
-        if not has_rule_named(onto=self.ontology, name=rule_name): 
-            Imp(rule_name).set_as_rule(
-                """
-                ActorState(?act_st), validAt(?act_st, ?t),
-                ActorStateHasPhysiologicalState(?act_st, ?dr), DrowsinessIs(?dr, level_3_kss_instance), 
-                ActorStateHasPhysiologicalState(?act_st, ?hr), HRis(?hr, high_hr_instance),  
-                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRVis(?hrv, low_hrv_instance), 
-                ActorStateHasPhysiologicalState(?act_st, ?rr), RRis(?rr, very_low_rr_instance),  
-                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2is(?spo2, normal_spo2_instance), 
-                phyValidAt(?dr, ?dr_t), phyValidAt(?hr, ?hr_t), phyValidAt(?hrv, ?hrv_t),      
-                phyValidAt(?rr, ?rr_t), phyValidAt(?spo2, ?spo2_t),   
-                stringEqualIgnoreCase(?t, ?dr_t),stringEqualIgnoreCase(?t, ?hr_t),stringEqualIgnoreCase(?t, ?hrv_t),
-                stringEqualIgnoreCase(?t, ?rr_t),stringEqualIgnoreCase(?t, ?spo2_t),
                 ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst),
-                phyValidAt(?attention_inst, ?att_t),stringEqualIgnoreCase(?t, ?att_t)
-                -> AttentionIs(?attention_inst, attentive_instance)                
+                phyValidAt(?attention_inst, ?att_t), stringEqualIgnoreCase(?t, ?att_t),
+                -> AttentionIs(?attention_inst, attentive_instance)
                 """
             )
 
-        rule_name = "attentive_10_1" 
+        # Maybe exception for all metrics being high and only hrv being low
+        rule_name = "attentive_13" 
         if not has_rule_named(onto=self.ontology, name=rule_name): 
             Imp(rule_name).set_as_rule(
                 """
@@ -1980,71 +1961,7 @@ class RuleCreator:
                 """
             )
 
-
-
-        # This is the problem with the consistency
-        # rule_name = "undefined_11_1" 
-        # if not has_rule_named(onto=self.ontology, name=rule_name): 
-        #     Imp(rule_name).set_as_rule(
-        #         """
-        #         ActorState(?act_st),validAt(?act_st, ?t),
-        #         ActorStateHasPhysiologicalState(?act_st, ?dr), DrowsinessIs(?dr, level_3_kss_instance), 
-        #         ActorStateHasPhysiologicalState(?act_st, ?hr), HRis(?hr, very_low_hr_instance),  
-        #         ActorStateHasPhysiologicalState(?act_st, ?hrv), HRVis(?hrv, very_low_hrv_instance), 
-        #         ActorStateHasPhysiologicalState(?act_st, ?rr), RRis(?rr, high_rr_instance),  
-        #         ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2is(?spo2, normal_spo2_instance), 
-        #         phyValidAt(?dr, ?dr_t), phyValidAt(?hr, ?hr_t), phyValidAt(?hrv, ?hrv_t),      
-        #         phyValidAt(?rr, ?rr_t), phyValidAt(?spo2, ?spo2_t),   
-        #         stringEqualIgnoreCase(?t, ?dr_t),stringEqualIgnoreCase(?t, ?hr_t),stringEqualIgnoreCase(?t, ?hrv_t),
-        #         stringEqualIgnoreCase(?t, ?rr_t),stringEqualIgnoreCase(?t, ?spo2_t),
-        #         ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst),
-        #         phyValidAt(?attention_inst, ?att_t),stringEqualIgnoreCase(?t, ?att_t)
-        #         -> AttentionIs(?attention_inst, undefined_instance)                
-        #         """
-        #     )
-    
-        rule_name = "attentive_12_1" 
-        if not has_rule_named(onto=self.ontology, name=rule_name): 
-            Imp(rule_name).set_as_rule(
-                """
-                ActorState(?act_st),validAt(?act_st, ?t),
-                ActorStateHasPhysiologicalState(?act_st, ?dr), DrowsinessIs(?dr, level_3_kss_instance), 
-                ActorStateHasPhysiologicalState(?act_st, ?hr), HRis(?hr, very_low_hr_instance),  
-                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRVis(?hrv, very_low_hrv_instance), 
-                ActorStateHasPhysiologicalState(?act_st, ?rr), RRis(?rr, very_low_rr_instance),  
-                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2is(?spo2, normal_spo2_instance), 
-                phyValidAt(?dr, ?dr_t), phyValidAt(?hr, ?hr_t), phyValidAt(?hrv, ?hrv_t),      
-                phyValidAt(?rr, ?rr_t), phyValidAt(?spo2, ?spo2_t),   
-                stringEqualIgnoreCase(?t, ?dr_t),stringEqualIgnoreCase(?t, ?hr_t), stringEqualIgnoreCase(?t, ?hrv_t),
-                stringEqualIgnoreCase(?t, ?rr_t),stringEqualIgnoreCase(?t, ?spo2_t),
-                ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst),
-                phyValidAt(?attention_inst, ?att_t),stringEqualIgnoreCase(?t, ?att_t)
-                -> AttentionIs(?attention_inst, attentive_instance) 
-                """
-            )
-
-        return
-        rule_name = "attentive_13_1" 
-        if not has_rule_named(onto=self.ontology, name=rule_name): 
-            Imp(rule_name).set_as_rule(
-                """
-                ActorState(?act_st),validAt(?act_st, ?t),
-                ActorStateHasPhysiologicalState(?act_st, ?dr), DrowsinessIs(?dr, level_3_kss_instance), 
-                ActorStateHasPhysiologicalState(?act_st, ?hr), HRis(?hr, high_hr_instance),  
-                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRVis(?hrv, very_low_hrv_instance), 
-                ActorStateHasPhysiologicalState(?act_st, ?rr), RRis(?rr, very_low_rr_instance),  
-                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2is(?spo2, normal_spo2_instance), 
-                phyValidAt(?dr, ?dr_t), phyValidAt(?hr, ?hr_t), phyValidAt(?hrv, ?hrv_t),      
-                phyValidAt(?rr, ?rr_t), phyValidAt(?spo2, ?spo2_t),   
-                stringEqualIgnoreCase(?t, ?dr_t),stringEqualIgnoreCase(?t, ?hr_t),stringEqualIgnoreCase(?t, ?hrv_t),
-                stringEqualIgnoreCase(?t, ?rr_t),stringEqualIgnoreCase(?t, ?spo2_t),
-                ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst)
-                -> AttentionIs(?attention_inst, attentive_instance) 
-                """
-            )
-
-
-        rule_name = "attentive_10_2" 
+        rule_name = "attentive_14" 
         if not has_rule_named(onto=self.ontology, name=rule_name): 
             Imp(rule_name).set_as_rule(
                 """
@@ -2058,31 +1975,13 @@ class RuleCreator:
                 phyValidAt(?rr, ?rr_t), phyValidAt(?spo2, ?spo2_t),   
                 stringEqualIgnoreCase(?t, ?dr_t),stringEqualIgnoreCase(?t, ?hr_t),stringEqualIgnoreCase(?t, ?hrv_t),
                 stringEqualIgnoreCase(?t, ?rr_t),stringEqualIgnoreCase(?t, ?spo2_t),
-                ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst)
+                ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst),
+                phyValidAt(?attention_inst, ?att_t), stringEqualIgnoreCase(?t, ?att_t)
                 -> AttentionIs(?attention_inst, attentive_instance) 
                 """
             )
 
-        rule_name = "attentive_11_2" 
-        if not has_rule_named(onto=self.ontology, name=rule_name): 
-            Imp(rule_name).set_as_rule(
-                """
-                ActorState(?act_st),validAt(?act_st, ?t),
-                ActorStateHasPhysiologicalState(?act_st, ?dr), DrowsinessIs(?dr, level_3_kss_instance), 
-                ActorStateHasPhysiologicalState(?act_st, ?hr), HRis(?hr, low_hr_instance),  
-                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRVis(?hrv, very_low_hrv_instance), 
-                ActorStateHasPhysiologicalState(?act_st, ?rr), RRis(?rr, very_low_rr_instance),  
-                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2is(?spo2, normal_spo2_instance),  
-                phyValidAt(?dr, ?dr_t), phyValidAt(?hr, ?hr_t), phyValidAt(?hrv, ?hrv_t),      
-                phyValidAt(?rr, ?rr_t), phyValidAt(?spo2, ?spo2_t),   
-                stringEqualIgnoreCase(?t, ?dr_t),stringEqualIgnoreCase(?t, ?hr_t),stringEqualIgnoreCase(?t, ?hrv_t),
-                stringEqualIgnoreCase(?t, ?rr_t),stringEqualIgnoreCase(?t, ?spo2_t),
-                ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst)
-                -> AttentionIs(?attention_inst, attentive_instance)
-                """
-            )
-
-        rule_name = "attentive_12_2" 
+        rule_name = "undefined_4" 
         if not has_rule_named(onto=self.ontology, name=rule_name): 
             Imp(rule_name).set_as_rule(
                 """
@@ -2096,30 +1995,32 @@ class RuleCreator:
                 phyValidAt(?rr, ?rr_t), phyValidAt(?spo2, ?spo2_t),   
                 stringEqualIgnoreCase(?t, ?dr_t),stringEqualIgnoreCase(?t, ?hr_t),stringEqualIgnoreCase(?t, ?hrv_t),
                 stringEqualIgnoreCase(?t, ?rr_t),stringEqualIgnoreCase(?t, ?spo2_t),
-                ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst)
-                -> AttentionIs(?attention_inst, attentive_instance)
+                ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst), 
+                phyValidAt(?attention_inst, ?att_t), stringEqualIgnoreCase(?t, ?att_t)
+                -> AttentionIs(?attention_inst, undefined_instance)
                 """
             )
-
-        rule_name = "attentive_13_2" 
-        if not has_rule_named(onto=self.ontology, name=rule_name): 
-            Imp(rule_name).set_as_rule(
-                """
-                ActorState(?act_st),validAt(?act_st, ?t),
-                ActorStateHasPhysiologicalState(?act_st, ?dr), DrowsinessIs(?dr, level_3_kss_instance), 
-                ActorStateHasPhysiologicalState(?act_st, ?hr), HRis(?hr, high_hr_instance),  
-                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRVis(?hrv, very_low_hrv_instance), 
-                ActorStateHasPhysiologicalState(?act_st, ?rr), RRis(?rr, very_low_rr_instance),  
-                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2is(?spo2, normal_spo2_instance), 
-                phyValidAt(?dr, ?dr_t), phyValidAt(?hr, ?hr_t), phyValidAt(?hrv, ?hrv_t),      
-                phyValidAt(?rr, ?rr_t), phyValidAt(?spo2, ?spo2_t),   
-                stringEqualIgnoreCase(?t, ?dr_t),stringEqualIgnoreCase(?t, ?hr_t),stringEqualIgnoreCase(?t, ?hrv_t),
-                stringEqualIgnoreCase(?t, ?rr_t),stringEqualIgnoreCase(?t, ?spo2_t),
-                ActorStateHasAttention(?act_st, ?attention_inst),AttentionLevels(?attention_inst)
-                -> AttentionIs(?attention_inst, attentive_instance)
-                """
-            )
-
+        
+        return 
+        # Very - Low RR included -> Remove? 
+        # rule_name = "undefined_13_2" 
+        # if not has_rule_named(onto=self.ontology, name=rule_name): 
+        #     Imp(rule_name).set_as_rule(
+        #         """
+        #         ActorState(?act_st),validAt(?act_st, ?t),
+        #         ActorStateHasPhysiologicalState(?act_st, ?dr), DrowsinessIs(?dr, level_3_kss_instance), 
+        #         ActorStateHasPhysiologicalState(?act_st, ?hr), HRis(?hr, high_hr_instance),  
+        #         ActorStateHasPhysiologicalState(?act_st, ?hrv), HRVis(?hrv, very_low_hrv_instance), 
+        #         ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2is(?spo2, normal_spo2_instance), 
+        #         phyValidAt(?dr, ?dr_t), phyValidAt(?hr, ?hr_t), phyValidAt(?hrv, ?hrv_t),      
+        #         phyValidAt(?rr, ?rr_t), phyValidAt(?spo2, ?spo2_t),   
+        #         stringEqualIgnoreCase(?t, ?dr_t),stringEqualIgnoreCase(?t, ?hr_t),stringEqualIgnoreCase(?t, ?hrv_t),
+        #         stringEqualIgnoreCase(?t, ?rr_t),stringEqualIgnoreCase(?t, ?spo2_t),
+        #         ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst), 
+        #         phyValidAt(?attention_inst, ?att_t), stringEqualIgnoreCase(?t, ?att_t)
+        #         -> AttentionIs(?attention_inst, undefined_instance)
+        #         """
+        #     )
 
         rule_name = "attentive_10_3" 
         if not has_rule_named(onto=self.ontology, name=rule_name): 
@@ -2135,30 +2036,35 @@ class RuleCreator:
                 phyValidAt(?rr, ?rr_t), phyValidAt(?spo2, ?spo2_t),   
                 stringEqualIgnoreCase(?t, ?dr_t),stringEqualIgnoreCase(?t, ?hr_t),stringEqualIgnoreCase(?t, ?hrv_t),
                 stringEqualIgnoreCase(?t, ?rr_t),stringEqualIgnoreCase(?t, ?spo2_t),
-                ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst)
-                -> AttentionIs(?attention_inst, attentive_instance)
+                ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst), 
+                phyValidAt(?attention_inst, ?att_t), stringEqualIgnoreCase(?t, ?att_t)
+                -> AttentionIs(?attention_inst, undefined_instance)
                 """
             )
 
-        rule_name = "attentive_11_3" 
-        if not has_rule_named(onto=self.ontology, name=rule_name): 
-            Imp(rule_name).set_as_rule(
-                """
-                ActorState(?act_st),validAt(?act_st, ?t),
-                ActorStateHasPhysiologicalState(?act_st, ?dr), DrowsinessIs(?dr, level_3_kss_instance), 
-                ActorStateHasPhysiologicalState(?act_st, ?hr), HRis(?hr, low_hr_instance),  
-                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRVis(?hrv, low_hrv_instance), 
-                ActorStateHasPhysiologicalState(?act_st, ?rr), RRis(?rr, very_low_rr_instance),  
-                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2is(?spo2, normal_spo2_instance), 
-                phyValidAt(?dr, ?dr_t), phyValidAt(?hr, ?hr_t), phyValidAt(?hrv, ?hrv_t),      
-                phyValidAt(?rr, ?rr_t), phyValidAt(?spo2, ?spo2_t),   
-                stringEqualIgnoreCase(?t, ?dr_t),stringEqualIgnoreCase(?t, ?hr_t),stringEqualIgnoreCase(?t, ?hrv_t),
-                stringEqualIgnoreCase(?t, ?rr_t),stringEqualIgnoreCase(?t, ?spo2_t),
-                ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst)
-                -> AttentionIs(?attention_inst, attentive_instance)
-                """
-            )
+        return
 
+        # Very - Low RR included -> Remove? 
+        # rule_name = "attentive_11_3" 
+        # if not has_rule_named(onto=self.ontology, name=rule_name): 
+        #     Imp(rule_name).set_as_rule(
+        #         """
+        #         ActorState(?act_st),validAt(?act_st, ?t),
+        #         ActorStateHasPhysiologicalState(?act_st, ?dr), DrowsinessIs(?dr, level_3_kss_instance), 
+        #         ActorStateHasPhysiologicalState(?act_st, ?hr), HRis(?hr, low_hr_instance),  
+        #         ActorStateHasPhysiologicalState(?act_st, ?hrv), HRVis(?hrv, low_hrv_instance), 
+        #         ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2is(?spo2, normal_spo2_instance), 
+        #         phyValidAt(?dr, ?dr_t), phyValidAt(?hr, ?hr_t), 
+        #         phyValidAt(?hrv, ?hrv_t), phyValidAt(?spo2, ?spo2_t),   
+        #         stringEqualIgnoreCase(?t, ?dr_t),stringEqualIgnoreCase(?t, ?hr_t),
+        #         stringEqualIgnoreCase(?t, ?hrv_t), stringEqualIgnoreCase(?t, ?spo2_t),
+        #         ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst),
+        #         phyValidAt(?attention_inst, ?att_t), stringEqualIgnoreCase(?t, ?att_t)
+        #         -> AttentionIs(?attention_inst, undefined_instance)
+        #         """
+        #     )
+
+        # Inattentive perhaps
         rule_name = "attentive_12_3" 
         if not has_rule_named(onto=self.ontology, name=rule_name): 
             Imp(rule_name).set_as_rule(
@@ -2174,29 +2080,30 @@ class RuleCreator:
                 stringEqualIgnoreCase(?t, ?dr_t),stringEqualIgnoreCase(?t, ?hr_t),stringEqualIgnoreCase(?t, ?hrv_t),
                 stringEqualIgnoreCase(?t, ?rr_t),stringEqualIgnoreCase(?t, ?spo2_t),
                 ActorStateHasAttention(?act_st, ?attention_inst),AttentionLevels(?attention_inst)
-                -> AttentionIs(?attention_inst, attentive_instance)
+                -> AttentionIs(?attention_inst, inattentive_instance)
                 """
             )
 
-        rule_name = "attentive_13_3" 
-        if not has_rule_named(onto=self.ontology, name=rule_name): 
-            Imp(rule_name).set_as_rule(
-                """
-                ActorState(?act_st),validAt(?act_st, ?t),
-                ActorStateHasPhysiologicalState(?act_st, ?dr), DrowsinessIs(?dr, level_3_kss_instance), 
-                ActorStateHasPhysiologicalState(?act_st, ?hr), HRis(?hr, high_hr_instance),  
-                ActorStateHasPhysiologicalState(?act_st, ?hrv), HRVis(?hrv, low_hrv_instance), 
-                ActorStateHasPhysiologicalState(?act_st, ?rr), RRis(?rr, very_low_rr_instance),  
-                ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2is(?spo2, normal_spo2_instance), 
-                phyValidAt(?dr, ?dr_t), phyValidAt(?hr, ?hr_t), phyValidAt(?hrv, ?hrv_t),      
-                phyValidAt(?rr, ?rr_t), phyValidAt(?spo2, ?spo2_t),   
-                stringEqualIgnoreCase(?t, ?dr_t),stringEqualIgnoreCase(?t, ?hr_t),stringEqualIgnoreCase(?t, ?hrv_t),
-                stringEqualIgnoreCase(?t, ?rr_t),stringEqualIgnoreCase(?t, ?spo2_t),
-                ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst)
-                -> AttentionIs(?attention_inst, attentive_instance)
-                """
-            )
-
+        # Very Low RR iuncluded ->> Remove? 
+        # rule_name = "attentive_13_3" 
+        # if not has_rule_named(onto=self.ontology, name=rule_name): 
+        #     Imp(rule_name).set_as_rule(
+        #         """
+        #         ActorState(?act_st),validAt(?act_st, ?t),
+        #         ActorStateHasPhysiologicalState(?act_st, ?dr), DrowsinessIs(?dr, level_3_kss_instance), 
+        #         ActorStateHasPhysiologicalState(?act_st, ?hr), HRis(?hr, high_hr_instance),  
+        #         ActorStateHasPhysiologicalState(?act_st, ?hrv), HRVis(?hrv, low_hrv_instance), 
+        #         ActorStateHasPhysiologicalState(?act_st, ?rr), RRis(?rr, very_low_rr_instance),  
+        #         ActorStateHasPhysiologicalState(?act_st, ?spo2), SpO2is(?spo2, normal_spo2_instance), 
+        #         phyValidAt(?dr, ?dr_t), phyValidAt(?hr, ?hr_t), phyValidAt(?hrv, ?hrv_t),      
+        #         phyValidAt(?rr, ?rr_t), phyValidAt(?spo2, ?spo2_t),   
+        #         stringEqualIgnoreCase(?t, ?dr_t),stringEqualIgnoreCase(?t, ?hr_t),stringEqualIgnoreCase(?t, ?hrv_t),
+        #         stringEqualIgnoreCase(?t, ?rr_t),stringEqualIgnoreCase(?t, ?spo2_t),
+        #         ActorStateHasAttention(?act_st, ?attention_inst), AttentionLevels(?attention_inst)
+        #         -> AttentionIs(?attention_inst, attentive_instance)
+        #         """
+        #     )
+        return
         rule_name = "attentive_14" 
         if not has_rule_named(onto=self.ontology, name=rule_name): 
             Imp(rule_name).set_as_rule(
