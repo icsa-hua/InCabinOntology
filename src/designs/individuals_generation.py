@@ -1,8 +1,10 @@
-import os 
-import pandas as pd 
-from owlready2 import * 
 from src.tools.logger import get_logger 
 from src.tools.common import get_assets_path
+
+import os 
+import pandas as pd 
+
+from owlready2 import * 
 
 
 logger = get_logger("aiq_onto")

@@ -8,6 +8,7 @@ from src.tools.metrics import OntologyEvaluator
 import uuid
 import pdb
 import time 
+import os 
 import gc
 import pandas as pd
 import tracemalloc
@@ -186,7 +187,7 @@ class OntologyParser:
                     
                     if need_sync: 
                         gc.collect() 
-                        pdb.set_trace()
+
                         # Run the reasoner to update the ontology with the new values                       # Run the reasoner to update the ontology with the new values     
                         self.rule_parser.synchronize_ontology()
                         
@@ -197,6 +198,7 @@ class OntologyParser:
                 
                         batch_states.clear() 
 
+                pdb.set_trace()
                 self.rule_parser.clear_obs(obs)  
             # Remove the previous values from the ontology to avoid conflicts
             # self.rule_parser.remove_prev_values(obs, actor)
@@ -204,6 +206,11 @@ class OntologyParser:
         # Save the parsed ontology to a file for vizualization of the rules' results. 
                     # self.save_onto(0)    
         #self.rule_parser.determine_trends() 
+
+        self.__print_results()
+
+
+
 
         logger.info("[checked] Memory Allocated")
         logger.info(tracemalloc.get_traced_memory())
@@ -221,6 +228,13 @@ class OntologyParser:
             logger.info(f"[checked] Ontology Saved at {index}.")
 
 
-    
+    def __print_results(self): 
+        logger.info("Reason times (s):", self.ev.metrics.reason_times)
+        logger.info("Throughput (states/s):", self.ev.metrics.throughput)
+        logger.info("Memory (KB):", self.ev.metrics.mem_snapshots[-1] if self.ev.metrics.mem_snapshots else None)
+        logger.info("Undefined ratios:", self.ev.metrics.undefined_ratios[-1] if self.ev.metrics.undefined_ratios else None)
+        logger.info("Functional violations (last):", self.ev.metrics.functional_violations[-1] if self.ev.metrics.functional_violations else None)
+        logger.info("Label distributions:", self.ev.metrics.distributions)
+        logger.info("Crosstabs sample:", {k: list(v.items())[:5] for k, v in self.ev.metrics.crosstabs.items()})
 
-    
+            
