@@ -12,7 +12,9 @@ import random
 
 from typing import Any
 from owlready2 import *
+from owlready2 import destroy_entity
 from rdflib import Graph
+from collections import defaultdict
 
 logger = get_logger("aiq_onto")
 
@@ -90,8 +92,7 @@ class RuleCreator:
         Uses the PELLET reasoner to infer property values and synchronize the ontology, 
         as only PELLET supports numerical conditions for SWRL rules. 
         """
-        with self.ontology: 
-            sync_reasoner_pellet(infer_property_values=True, infer_data_property_values=True)
+        sync_reasoner_pellet(infer_property_values=True, infer_data_property_values=True)
 
 
     def create_instances(self, ind_class, ts_iso=None, unique=None, regenerate=False): 
@@ -375,20 +376,8 @@ class RuleCreator:
                     """
                 )
             
-    
-    # def trend_analysis(self): 
-    #     rule_name = "trend_analysis" 
-    #     if not  has_rule_named(self.ontology, name=rule_name): 
-    #         Imp(rule_name).set_as_rule()
-    #
 
-    def connect_actor_state_to_values(self, actor_state, phy_vocab, actor_vocab):
-        
-        # pdb.set_trace()
-        # if not getattr(actor_state, "ActorStateHasPhysiologicalState") or \
-        #     not getattr(actor_state, "ActorStateHasCharacteristics"): 
-        #         logger.debug("Not initialized correctly for actor") 
-        #         raise RuntimeError("Actor initialized incorrectly")
+    def connect_actor_state_to_values(self, actor_state, phy_vocab, actor_vocab, label_inst):
         
         actor_state.ActorStateHasPhysiologicalState.append(phy_vocab['hr'])
         actor_state.ActorStateHasPhysiologicalState.append(phy_vocab['hrv'])
@@ -405,7 +394,8 @@ class RuleCreator:
 
         actor_state.ActorHasEyeState = actor_vocab['eye_state'] 
         actor_state.ActorHasMouthState = actor_vocab['mouth_state']
-    
+        actor_state.ActorIsTargetedByLabel = label_inst 
+
         logger.debug(f"the Actor State Characteristics Voc {actor_vocab}")
     
 
@@ -493,57 +483,7 @@ class RuleCreator:
         self.create_instances("Age", ts_iso=ts_iso, unique=unique, regenerate=regenerate)
         self.create_instances("Demographic", ts_iso=ts_iso, unique=unique, regenerate=regenerate)
         self.create_instances("FaceCharacteristics", ts_iso=ts_iso, unique=unique, regenerate=regenerate)
-
-
-
-    def determine_trends(self):
-
-        current_trend = self.ontology.CurrentReading.instances()[0] # Get the currenttreading_instance 
-        prev_trend = self.ontology.PreviousReading.instances()[0] 
-        level = ["high", "low", "moderate","very_low"]
-        rank = {v:r for r,v in enumerate(level)} 
-        
-        logger.debug(current_trend.hasHRRank)
-        logger.debug(current_trend.hasHRVRank)
-        logger.debug(current_trend.hasRRRank)
-        logger.debug(prev_trend.hasHRRank)
-        logger.debug(prev_trend.hasHRVRank)        
-        logger.debug(prev_trend.hasRRRank)
-        
-        # Access the individual HR,HRV, RR instances 
-        hr_inst = current_trend.CurrentHasHRTrend.pop(0) 
-        hrv_inst = current_trend.CurrentHasHRVTrend.pop(0)
-        rr_inst = current_trend.CurrentHasRRTrend.pop(0)
-
-        # List of individuals accessed through temporal Context 
-        comp = [hr_inst, hrv_inst, rr_inst] 
-
-        # Get the level based on the name of each instance (high, low, moderate, very_low)
-        for individual in comp : 
-            if "very_low" in individual.name:
-                level_name = individual.name.split("_")[0:2]
-                level_name = "_".join(level_name)
-                name_ph = individual.name.split("_")[2]
-            else: 
-                level_name = individual.name.split("_")[0] 
-                name_ph = individual.name.split("_")[1] 
-
-            rank_level = rank[level_name] 
-            has_temporal_value = getattr(current_trend, f"has{name_ph.upper()}Rank")
-
-            if len(has_temporal_value)==0 : 
-                has_temporal_value.append(rank_level)
-
-            else: 
-                property_prev = getattr(prev_trend, f"has{name_ph.upper()}Rank")
-
-                if len(property_prev) == 0 : 
-                    property_prev.append(has_temporal_value.pop(0))
-                else:
-                    property_prev[0] = has_temporal_value.pop(0)
-                has_temporal_value.append(rank_level)
-
-        logger.debug("Determine Trends | Finished setting up trends...")
+        self.create_instances("Labels",ts_iso=ts_iso, unique=unique, regenerate=regenerate)
 
 
     def set_up_rules(self): 
@@ -581,7 +521,7 @@ class RuleCreator:
 
 
 
-    def create_label(self, actor, filepath:str,  index:int): 
+    def create_labels(self, actor, filepath:str,  index:int, batch_size:int): 
         """
         This function creates a label, describing the actor based on the results 
         of the SWRL rules in the ontology. Requires reasoner to previously have 
@@ -591,67 +531,77 @@ class RuleCreator:
             filepath (str): The filepath to the ontology file.
             index (int): The index of the ontology file.
         """
-
         
-        act_st = actor.ActorhasState[0]
-        chars = act_st.ActorStateHasCharacteristics
-        phys = act_st.ActorStateHasPhysiologicalState 
+
+        act_states = actor.ActorhasState
+        
+        if len(act_states) != batch_size: 
+            raise RuntimeError("The batch size and the number of actor states is different")
+        chars = { pos:val.ActorStateHasCharacteristics for pos, val in enumerate(act_states)}
+        phys = { pos:val.ActorStateHasPhysiologicalState for pos, val in enumerate(act_states)}
+        
         data = defaultdict() 
 
-        for char in chars: 
-            data[char.name] = char.hasStringValue[0] if char.name != "age_inst" else char.hasAgeValue[0] 
+        for ind, act_st in enumerate(act_states): 
+            for char in chars[ind]:
+                data[act_st][char.name] = char.hasStringValue[0] if char.name != "age_instance" else char.hasAgeValue[0] 
+
+            for phy in phys: 
+                data[act_st][phy.name] = phy.hasNumericalValue[0] 
+
+            data[act_st]['age'] = act_st.ActorStateHasAge.AgeBelongsToGroup.name.split("_")[0] 
+            data[act_st]['sex'] = act_st.ActorStateHasSex.SexBelongsToGroup.name.split("_")[0] 
+            data[act_st]['accessories'] = act_st.ActorStateHasAccessories.AccessoriesIncludeWearables.name.split("_")[0] 
+            data[act_st]['fatigue'] = act_st.ActorStateHasFatigue.name.split("_")[0]
+            data[act_st]['attention'] = act_st.ActorStateHasAttention.name.split("_")[0]
+            data[act_st]['unresp_inst'] = act_st.ActorStateHasUnresponsiveness.name.split("_")[0]
+            data[act_st]['driver_id'] = act_st.name
+            eye_inst = act_st.ActorHasEyeState[0].EyeStateIs[0].name.split("_")[0] 
+            data[act_st]['eye_state']  = eye_inst.replace("state", "")
+            data[act_st]['mouth_state'] = act_st.ActorHasMouthState[0].MouthStateIs[0].name.split("_")[0]
+
+            actor_data = {
+                "prompt_details": {
+                    "seed":random.randint(1,1000000), 
+                    "steps": random.randint(1,100), 
+                    "prompt":"Lorem ipsum...", 
+                    "response":"Lorem ipsum...",
+                    "view_point":"front", 
+                    "object_name": "person", 
+                    "time_of_day":"morning", 
+                    "sky_condition":"clear", 
+                    "weather_condition":"sunny",
+                },
+
+                "label":{
+                    "actor_id":data[act_st]['driver_id'] ,
+                    "?eye_inst": data[act_st]['eye_state'],
+                    "?mouth_inst":data[act_st]['mouth_state'],
+                    "age":data[act_st]["age_inst"], 
+                    "face":data[act_st]["facecharacteristics_instance"], 
+                    "sex":data[act_st]['sex'], 
+                    "demographic": data[act_st]["demographic_instance"], 
+                    "accessories": data[act_st]['accessories'], 
+                    "fatigue":data[act_st]['fatigue'], 
+                    "attention":data[act_st]['attention'], 
+                    "unresponsive":data[act_st]['unresp_inst'],
+                    "bounding_box":"...", 
+                    "bounding_polygon":"...", 
+                }
+            } 
+
+            json_file = filepath + f"/label_{ind}.json"
+            with self.ontology: 
+                label = act_st.ActorIsTargetedByLabel
+                with open(json_file, "w") as f:
+                    json.dump(actor_data, f, indent=4)
+                label.hasDescription.append(json.dumps(actor_data))
+                
+
+            logger.debug(f"Label for Actor {actor.name} created succesfully")
         
-        for phy in phys: 
-            data[phy.name] = phy.hasNumericalValue[0]
+        return data
 
-        data['fatigue'] = act_st.ActorStateHasFatigue[0].FatigueIs[0].name.split("_")[0]
-        data['attention'] = act_st.ActorStateHasAttention[0].AttentionIs[0].name.split("_")[0]
-        data['?unresp_inst'] = act_st.ActorStateHasUnresponsiveness[0].UnresponsiveIs[0].name.split("_")[0]
-        data['driver_id'] = act_st.name
-        eye_inst = act_st.ActorHasEyeState[0].EyeStateIs[0].name.split("_")[0] 
-        eye_inst = eye_inst.replace("state", "")
-        mouth_inst = act_st.ActorHasMouthState[0].MouthStateIs[0].name.split("_")[0]
-
-        actor_data = {
-            "prompt_details": {
-                "seed":random.randint(1,1000000), 
-                "steps": random.randint(1,100), 
-                "prompt":"Lorem ipsum...", 
-                "response":"Lorem ipsum...",
-                "view_point":"front", 
-                "object_name": "person", 
-                "time_of_day":"morning", 
-                "sky_condition":"clear", 
-                "weather_condition":"sunny",
-            },
-
-            "label":{
-                "actor_id": data['driver_id'],
-                "?eye_inst": eye_inst,
-                "?mouth_inst":mouth_inst,
-                "age":data["age_inst"], 
-                "face":data["facecharacteristics_instance"], 
-                "sex":data["sex_inst"], 
-                "demographic": data["demographic_instance"], 
-                "accessories": data["acc_inst"], 
-                "fatigue":data['fatigue'], 
-                "attention":data['attention'], 
-                "unresponsive":data['?unresp_inst'],
-                "bounding_box":"...", 
-                "bounding_polygon":"...", 
-            }
-        } 
-
-        json_file = filepath + f"/label_{index}.json"
-        with self.ontology: 
-            label = self.ontology.Label.instances()[0]
-            with open(json_file, "w") as f:
-                json.dump(actor_data, f, indent=4)
-            label.hasDescription.append(json.dumps(actor_data))
-            label.LabelTargetsActor = [actor]
-
-        logger.debug(f"Label for Actor {actor.name} created succesfully")
-        
 
     def clear_obs(self, obs): 
         with self.ontology: 
@@ -664,92 +614,14 @@ class RuleCreator:
             obs.ObsIsDividedIntoPhS.clear()
 
 
-    def remove_prev_values(self, obs, actor): 
-
+    def remove_prev_values(self, ts_iso_dates): 
+ 
         with self.ontology: 
 
-            # Remove the values from the observations
-            obs.hasAge = [] 
-            obs.hasAccessories = [] 
-            obs.hasSex = [] 
-            obs.hasDemographic = []
-            obs.hasFaceCharacteristics = []
-            obs.ObsIsDividedIntoActor = [] 
-            obs.ObsIsDividedIntoPhS = []
-
-            # Remove the values from the main instances for the physical properties
-            numerical_indi = ['hr_inst', 'hrv_inst', 'rr_inst', 'spo2_inst', 'dr_inst'] 
-            for indi in numerical_indi: 
-                individual = getattr(self.ontology, indi) 
-                individual.PhysiologicalStateDescribesActor = []
-                individual.PhSFromObservations = [] 
-                
-                if "hr_inst" == indi: 
-                    individual.HRis = [] 
-                elif "hrv_inst" == indi: 
-                    individual.HRVis = [] 
-                elif "rr_inst" == indi: 
-                    individual.RRis = [] 
-                elif "spo2_inst" == indi: 
-                    individual.SpO2is = [] 
-                elif "dr_inst" == indi: 
-                    individual.DrowsinessIs = [] 
-
-            string_indi = ['acc_inst', 'demographic_instance', 'sex_inst', 'facecharacteristics_instance']
-            for indi in string_indi:
-                individual = getattr(self.ontology, indi)
-                individual.hasStringValue = []
-
-            age_indi = getattr(self.ontology, "age_inst")
-            age_indi.hasAgeValue = []
-            for group in self.ontology.Age.instances(): 
-                if group.name != "age_inst": 
-                    group.GroupHasAge = [] 
-            
-            sex_indi = getattr(self.ontology, "sex_inst") 
-            for group in self.ontology.Sex.instances(): 
-                if group.name != sex_indi.name: 
-                    group.SexBelongsToPerson = [] 
-
-            actor.ActorHasState = []
-
-            fatigue_indi = getattr(self.ontology, "?fatigue_inst") 
-            fatigue_indi.FatigueIs = [] 
-
-            attention = getattr(self.ontology, "?attention_inst") 
-            attention.AttentionIs = [] 
-
-            unresponsive = getattr(self.ontology, "?unresp_inst") 
-            unresponsive.UnresponsiveIs = [] 
-
-            eyestate = getattr(self.ontology, "?eye_inst") 
-            eyestate.EyeStateIs = [] 
-
-            mouthstate = getattr(self.ontology, "?mouth_inst")
-            mouthstate.MouthStateIs = [] 
-
-            label = self.ontology.Label.instances()[0]
-            label.hasDescription = [] 
-            label.LabelTargetsActor = []
-
-
-    def update_trends(self): 
-        with self.ontology: 
-            current_trend = self.ontology.CurrentReading.instances()[0] 
-            for property in current_trend.get_properties(): 
-                name_for_prev = property.name.replace("Current", "Previous")
-                if "Becomes" in property.name:
-                    continue
-                rule = Imp() 
-                rule.set_as_rule(
-                    f"""
-                    CurrentReading(?current), 
-                    {property.name}(?current, ?reading), 
-                    CurrentReadingBecomesPrevious(?current, ?previous),
-                    PreviousReading(?previous) -> {name_for_prev}(?previous, ?reading)
-                    """
-                )
-
+            for identifier in ts_iso_dates: 
+                for individual in list(self.ontology.individuals()): 
+                    if identifier in individual.name : 
+                        destroy_entity(individual) 
 
 
 

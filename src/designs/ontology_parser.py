@@ -1,9 +1,9 @@
-from os import wait
 from src.tools.appraisal import StepContext
 from src.tools.common import *
 from src.designs.rule_creator import RuleCreator
 from src.tools.logger import get_logger
 from src.tools.metrics import OntologyEvaluator
+from src.tools.trend_analysis import trends, analysis, gci_trends
 
 import uuid
 import pdb
@@ -14,6 +14,7 @@ import pandas as pd
 import tracemalloc
 
 from owlready2 import *
+from collections import defaultdict
 
 logger = get_logger("aiq_onto")
 
@@ -85,8 +86,7 @@ class OntologyParser:
         else: 
             obs = self.ontology.Observations.instances()[0]
         return obs
-
-
+    
     
     def parse_observations(self, dataset_path, batching=True, reasoning_thr=5, save=False):
         """
@@ -102,16 +102,16 @@ class OntologyParser:
         dataset = pd.read_csv(dataset_path)
         filepath = assets_dir + "/labels"
         tracemalloc.start()
-        save_path = os.path.join(assets_dir,"ontologies/snapshot_0.1.owl") if save else None
+        save_path = os.path.join(assets_dir,"ontologies/inference_1_1.owl") if save else None
         last_state = {}
 
         batch_states = []
+        ts_iso_dates = [] 
 
         with StepContext(name='Initialize Onto', catch=(Exception, )): 
             with self.ontology: 
                 
                 # Create instances for Label and Monitoring Sensor 
-                self.rule_parser.create_instances("Label")
                 self.rule_parser.create_instances("MonitoringSensor")
 
                 # Create the main instance for OBS and Actor. 
@@ -124,8 +124,10 @@ class OntologyParser:
                 with StepContext(name="Setting up Rules", catch=(RuntimeError,)):
                     self.rule_parser.set_up_rules()
     
-            self.rule_parser.synchronize_ontology()
-            gc.collect()
+                # with StepContext(name="Analysis GCI trends", catch=(Exception, RuntimeError)): 
+                #     gci_trends(self.ontology)
+
+                self.rule_parser.synchronize_ontology()
 
         # With this process we do NOT account for Obs inside SWRL. 
         with self.ontology:       
@@ -135,9 +137,11 @@ class OntologyParser:
 
                 ts_iso =(iso_format(row['TIME']))
                 ts_iso_date = get_ts_iso_value(ts_iso)
+                
                 # Here we create the PHY instances (hr_instance, hrv_instance, ...) 
                 phy_vocab = create_Physiological_inds(self.ontology, ts_iso_date) 
                 actor_vocab = create_Actor_inds(self.ontology, ts_iso_date) 
+                label = create_Label_ind(self.ontology, ts_iso_date) 
 
                 actor_state = new_actor_state(
                     onto = self.ontology, 
@@ -146,8 +150,8 @@ class OntologyParser:
                     last_state=last_state.get(actor), 
                 )
 
-                logger.info(f"DATASET ROW:{row}")
                 last_state[actor.hasUniqueIdentifier[0]] = actor_state
+
                 with StepContext(name="Dataset -> Observation", catch=(RuntimeError,), verbose=True):
                         # Read the data into Observations. 
                         obs_state = attach_values_to_observations(
@@ -157,31 +161,27 @@ class OntologyParser:
                             row=row, 
                             idx=index
                         )
+
                 with StepContext(name="Process Observation", catch=(IndexError, RuntimeError)): 
 
                     # DON'T use rules to pass the observation values to the states 
                     obs_state = attach_obs_to_phy_state(obs_state,phy_vocab) 
                     obs_state = attach_obs_to_actor_state(obs_state, actor_vocab) 
                     batch_states.append(actor_state)
-
-                    # self.rule_parser.re_create_indi(
-                    #     ts_iso=ts_iso_date, 
-                    #     unique=None, 
-                    #     regenerate=True
-                    # )
+                    ts_iso_dates.append(ts_iso_date)
 
                     # Assign values to the subclasses instances based on the observations
                     self.rule_parser.assign_values(obs_state,"ObsIsDividedIntoPhS","hasNumericalValue")
                     self.rule_parser.assign_values(obs_state,"ObsIsDividedIntoActor","hasStringValue")
-                
+
                 with StepContext(name="Parse Instances to Actor State", catch=(Exception, RuntimeError)): 
                     self.rule_parser.connect_actor_state_to_values(
                         actor_state=actor_state, 
                         phy_vocab=phy_vocab, 
-                        actor_vocab=actor_vocab
+                        actor_vocab=actor_vocab, 
+                        label_inst=label
                     )
-                
-               
+
                 with StepContext(name="Batching Ontology Inference", catch=(RuntimeError,)):
                     need_sync =  (len(batch_states)>= reasoning_thr) or (index == len(dataset)-1)
                     
@@ -189,35 +189,31 @@ class OntologyParser:
                         gc.collect() 
 
                         # Run the reasoner to update the ontology with the new values                       # Run the reasoner to update the ontology with the new values     
-                        self.rule_parser.synchronize_ontology()
+                        # self.rule_parser.synchronize_ontology()
                         
                         # Create the description of the actor and save it in JSON format
                         with StepContext(name="Crate Label", catch=(RuntimeError,)):
-                            for j, _ in enumerate(batch_states): 
-                                self.rule_parser.create_label(actor, filepath, index=index-len(batch_states) +1 +j)
-                
+                                pdb.set_trace()
+                                data = self.rule_parser.create_labels(actor, filepath, len(batch_states))
+
+                        self.ev.metrics.snapshot_memory()
+                        self.ev.snapshot_size()
+                        self.ev.check_functional_violations()
+                        self.ev.undefined_label_ratios()
+                        self.ev.run_cq()
+                        self.ev.label_distributions()
+                        self.ev.crosstab()
+                        self.print_results()
                         batch_states.clear() 
-
-                pdb.set_trace()
-                self.rule_parser.clear_obs(obs)  
-            # Remove the previous values from the ontology to avoid conflicts
-            # self.rule_parser.remove_prev_values(obs, actor)
-
-        # Save the parsed ontology to a file for vizualization of the rules' results. 
-                    # self.save_onto(0)    
-        #self.rule_parser.determine_trends() 
-
-        self.__print_results()
-
-
-
+                        self.rule_parser.remove_prev_values(ts_iso_date)
+                        self.rule_parser.clear_obs(obs)  
+                        
 
         logger.info("[checked] Memory Allocated")
         logger.info(tracemalloc.get_traced_memory())
         tracemalloc.stop()
         return f"Ontology finished processing dataset observations."
         
-
 
     def save_onto(self, index, file_path="assets/ontologies/snapshot_2.owl"): 
 
@@ -228,13 +224,16 @@ class OntologyParser:
             logger.info(f"[checked] Ontology Saved at {index}.")
 
 
-    def __print_results(self): 
-        logger.info("Reason times (s):", self.ev.metrics.reason_times)
-        logger.info("Throughput (states/s):", self.ev.metrics.throughput)
-        logger.info("Memory (KB):", self.ev.metrics.mem_snapshots[-1] if self.ev.metrics.mem_snapshots else None)
-        logger.info("Undefined ratios:", self.ev.metrics.undefined_ratios[-1] if self.ev.metrics.undefined_ratios else None)
-        logger.info("Functional violations (last):", self.ev.metrics.functional_violations[-1] if self.ev.metrics.functional_violations else None)
-        logger.info("Label distributions:", self.ev.metrics.distributions)
-        logger.info("Crosstabs sample:", {k: list(v.items())[:5] for k, v in self.ev.metrics.crosstabs.items()})
+    def print_results(self): 
+        logger.info(f"Reason times (s): {self.ev.metrics.reason_times}")
+        logger.info(f"Throughput (states/s): {self.ev.metrics.throughput}")
+        logger.info(f"Memory (KB): {self.ev.metrics.mem_snapshots[-1] if self.ev.metrics.mem_snapshots else None}")
+        logger.info(f"Undefined ratios: {self.ev.metrics.undefined_ratios[-1] if self.ev.metrics.undefined_ratios else None}")
+        logger.info(f"Functional violations (last): {self.ev.metrics.functional_violations[-1] if self.ev.metrics.functional_violations else None}")
+        logger.info(f"Label distributions: {self.ev.metrics.distributions}")
+        crostab = defaultdict()
+        for k, v in self.ev.metrics.crosstabs.items():
+            crostab[k] = list(v.items())[:5]
+        logger.info(f"Crosstabs sample: {crostab}")
 
             

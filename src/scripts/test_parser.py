@@ -21,7 +21,9 @@ def main():
         ind_generator.create_individuals()
 
     message = parser.parse_observations(dataset_path=dataset_file)
-    print(message)
+    logger.info(message)
+    parser.print_results()
+
 
 if __name__ == "__main__":
     main()

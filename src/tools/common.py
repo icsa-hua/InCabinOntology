@@ -131,12 +131,7 @@ def create_Physiological_inds(onto, ts_iso):
     spo2_instance.phyValidAt.append(ts_iso)
     drowsiness_instance = onto.Drowsiness(f'drowsiness_instance_{ts_iso}')
     drowsiness_instance.phyValidAt.append(ts_iso)
-    # fatigue_instance = onto.Fatigue(f'fatigue_instance_{ts_iso}') 
-    # fatigue_instance.phyValidAt.append(ts_iso)
-    # attention_instance = onto.AttentionLevels(f'attention_instance_{ts_iso}')
-    # attention_instance.phyValidAt.append(ts_iso)
-    # unresponsiveness = onto.Unresponsiveness(f'unresponsiveness_{ts_iso}') 
-    # unresponsiveness.phyValidAt.append(ts_iso)
+
 
     return {
             'hr': hr_instance, 
@@ -144,9 +139,7 @@ def create_Physiological_inds(onto, ts_iso):
             'rr': rr_instance, 
             'spo2': spo2_instance, 
             'drowsiness': drowsiness_instance, 
-            # 'fatigue': fatigue_instance, 
-            # 'attention': attention_instance, 
-            # 'unresponsiveness':unresponsiveness 
+
     }
 
 
@@ -171,6 +164,10 @@ def create_Actor_inds(onto, ts_iso):
             "sex": sex_instance, 
             "temp": temp_instance
     }
+
+
+def create_Label_ind(onto, ts_iso):
+    return onto.Label(f'label_{ts_iso}')
 
 
 def attach_obs_to_phy_state(obs_state, phy_vocab): 
@@ -405,76 +402,11 @@ def check_elderly_state(onto):
     print("\nHigh_SpO2 entity:", High_SpO2, "is class:", getattr(High_SpO2, "is_a", None) is not None and hasattr(High_SpO2, "instances"))
 
 
-def find_name(name, onto): 
-    print(onto) 
-    print(name)
-    print(onto[name])
-    return onto[name] 
-
-def get_ontology_constants(onto): 
-
-    return {
-        "ActorState": find_name("ActorState", onto),
-        "hasHR": find_name("ActorStateHasPhysiologicalState", onto), 
-        "hasHRV": find_name("ActorStateHasPhysiologicalState", onto), 
-        "hasRR": find_name("ActorStateHasPhysiologicalState", onto), 
-        "hasSpO2": find_name("ActorStateHasPhysiologicalState", onto), 
-        "hasDrowsiness": find_name("ActorStateHasPhysiologicalState", onto), 
-        "hasFatigue": find_name("ActorStateHasFatigue", onto), 
-        "hasAttention": find_name("ActorStateHasAttention", onto), 
-        "hasUnresponsiveness":find_name("ActorStateHasUnresponsiveness", onto), 
-        "HRis": find_name("HRis", onto), 
-        "HRVis": find_name("HRVis", onto), 
-        "RRis": find_name("RRis", onto), 
-        "SpO2is": find_name("SpO2is", onto), 
-        "DrowsinessIs": find_name("DrowsinessIs", onto), 
-        "HR": find_name("HR", onto),
-        "HRV": find_name("HRV", onto),
-        "RR": find_name("RR", onto),
-        "SpO2": find_name("SpO2", onto),
-        "Drowsiness": find_name("Drowsiness", onto),
-        "FatigueIs": find_name("FatigueIs", onto), 
-        "AttentionIs": find_name("AttentionIs", onto), 
-        "UnresponsivenessIs": find_name("UnresponsiveIs", onto), 
-        "Fatigue": find_name("Fatigue", onto), 
-        "Attention": find_name("Attention", onto), 
-        "Unresponsiveness": find_name("Unresponsiveness", onto),
-
-        "moderate_hr_instance": find_name("Moderate_HR", onto), 
-        "high_hr_instance": find_name("High_HRV", onto), 
-        "moderate_rr_instance": find_name("Moderate_RR", onto), 
-        "normal_spo2_instance": find_name("Normal_SpO2", onto), 
-        "level_3_kss_instance": find_name("Level_3_KSS", onto), 
-        "awake_instance": find_name("awake_instance", onto), 
-        "responsive_instance": find_name("responsive_instance", onto), 
-        "attentive_instance": find_name("attentive_instance",onto), 
-
-    }
 
 
-def add_signature_gci(
-        onto:Any=None,
-        vocab:dict = {}, 
-        hr_level_cls:Any=None,
-        hrv_level_cls:Any=None, 
-        rr_level_cls:Any=None, 
-        spo2_level_cls:Any=None, 
-        kss_level_cls:Any=None, 
-        fatigue_ind:Any=None, 
-        attention_ind:Any=None, 
-        unresp_ind:Any=None)->None: 
 
-    lhs = (vocab["ActorState"]
-           & vocab["hasHR"].some(vocab["HR"] & vocab["HRis"].value(hr_level_cls)) 
-           & vocab["hasHRV"].some(vocab["HRV"] & vocab["HRVis"].value(hrv_level_cls)) 
-           & vocab["hasRR"].some(vocab["RR"] & vocab["RRis"].value(rr_level_cls)) 
-           & vocab["hasSpO2"].some(vocab["SpO2"] & vocab["SpO2is"].value(spo2_level_cls)) 
-           & vocab["hasDrowsiness"].some(vocab["Drowsiness"] & vocab["DrowsinessIs"].value(kss_level_cls)) 
-    )
 
-    vocab["ActorState"].is_a.append(lhs >> vocab["hasFatigue"].value(fatigue_ind)) 
-    vocab["ActorState"].is_a.append(lhs >> vocab["hasAttention"].value(attention_ind)) 
-    vocab["ActorState"].is_a.append(lhs >> vocab["hasUnresponsiveness"].value(unresp_ind))
+
 
 
 

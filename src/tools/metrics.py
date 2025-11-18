@@ -14,7 +14,6 @@ def timer():
 class OntologyMetrics:
     def __init__(self):
         self.reason_times = []      # seconds per sync
-        self.reason_batches = []    # #states ingested at that sync
         self.throughput = []        # states/sec at each sync
         self.mem_snapshots = []     # (current_kb, peak_kb)
         self.instance_counts = []   # dict[class_name -> count]
@@ -70,9 +69,6 @@ class OntologyEvaluator:
         return getattr(self.onto, self.DP[name])
 
     def sync_reasoner(self, batch_states=0, infer_data=True, infer_obj=True):
-        """
-        Runs Pellet once; records time + throughput.
-        """
 
         with timer() as elapsed:
             # Garbage collect Python side before calling Java reasoner
@@ -83,7 +79,6 @@ class OntologyEvaluator:
             )
         dt = elapsed()
         self.metrics.reason_times.append(dt)
-        self.metrics.reason_batches.append(batch_states)
         if batch_states:
             self.metrics.throughput.append(batch_states / dt)
         else:
@@ -268,48 +263,7 @@ class OntologyEvaluator:
         return self.metrics.crosstabs
 
 
-    def process_dataset(
-        self, rows, ingest_row_fn, label_fn=None,
-        batch_size=50, take_memory_every=5
-    ):
-        """
-        rows: iterable of dict-like objects (already read from CSV)
-        ingest_row_fn(onto, row) -> created ActorState (or None)
-            You implement: create state, attach values/links; DO NOT call reasoner here.
-        label_fn(onto, state) -> None
-            Optional: create JSON label (after reasoning).
-        """
-        tracemalloc.start()
-        batch = []
-        total = 0
-
-        for i, row in enumerate(rows, 1):
-            st = ingest_row_fn(self.onto, row)
-            if st is not None:
-                batch.append(st)
-                total += 1
-
-            if (i % batch_size == 0) or (i == len(rows)):
-                # Reasoner sync (one per batch)
-                self.sync_reasoner(batch_states=len(batch))
-                # Optional label emission, post-inference
-                if label_fn:
-                    for s in batch: label_fn(self.onto, s)
- 
-                # Snapshots
-                self.metrics.snapshot_memory()
-                self.snapshot_size()
-                self.check_functional_violations()
-                self.undefined_label_ratios()
-                self.run_cq()
-                self.label_distributions()
-                self.crosstab()
-
-                # Reset batch
-                batch.clear()
-
-        tracemalloc.stop()
-        return self.metrics
+   
 
 # === Example usage (sketch) ===================================================
 # from owlready2 import get_ontology
