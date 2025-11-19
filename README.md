@@ -9,19 +9,18 @@ Specifically to infer physiological, cognitive and behavioral state of a vehicle
 ![clean-branch-4D](https://github.com/user-attachments/assets/c16c4034-c624-41dd-8cb7-ad284425a7d4)
 
 ## Ontology Structure (Short summary) 
-[X] __ActorState__: Snapshot of the driver at specific moments (4D-time slice) 
+[!] __ActorState__: Snapshot of the driver at specific moments (4D-time slice) 
 Each state contains exactly one first-order individual (not class) of each attribute:
 * HR, HRV, RR, SpO2, Drowsiness
 * Fatigue, Attention, Unresponsiveness 
 * EyeState, MouthState
 * Demographics 
-[X] __Physiological Attributes__: A raw data value for the physiological parameters is used to categorize them into a threshold-classified level and then link them back to one actor states
+[!] __Physiological Attributes__: A raw data value for the physiological parameters is used to categorize them into a threshold-classified level and then link them back to one actor states
 `GCIs enforce that as: HR with value X -> classification Y`
-
-[X] From physiological + behavioral data the ontology infers Fatigue/Attention/Unresponsiveness into classification individuals
-[X] __4D-DL Time Slice Architecture__: 4D Endurant/Perdurant 
-[X] General Concept Inclusions (GCIs) in Manchester Syntax (reduces Java Heap load ~ more stable than SWRL) 
-[X] Semantic Web Rule Language (SWRL) finalize special cases through post-inference implications 
+[!] From physiological + behavioral data the ontology infers Fatigue/Attention/Unresponsiveness into classification individuals
+[!] __4D-DL Time Slice Architecture__: 4D Endurant/Perdurant 
+[!] General Concept Inclusions (GCIs) in Manchester Syntax (reduces Java Heap load ~ more stable than SWRL) 
+[!] Semantic Web Rule Language (SWRL) finalize special cases through post-inference implications 
 
 ## Requirements
 * python3 >= 3.10  
@@ -58,4 +57,5 @@ Resulting Labels are as follows:
 
 
    
+
 
