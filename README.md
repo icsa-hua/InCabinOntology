@@ -1,7 +1,9 @@
-# InCabinOntology
-In cabin ontology for driver's health monitoring, using a 4D architecture to parse time series physiological measurements, through a DL approach. The ontology uses SWRL logical reasoning enhanced with GCI contextual reasoning to determine the Fatigue/Attention/Unresponsiveness of the driver. Validation includes CQ and consistency reporting, through a series of SPARQL statements that determine the completeness and accuracy plus adaptability (indirectly). 
+# InCabinOntology 
 ![Version](https://img.shields.io/badge/version-0.3.0-brightgreen.svg)
+
+In cabin ontology for driver's health mon itoring, using a 4D architecture to parse time series physiological measurements, through a DL approach. The ontology uses SWRL logical reasoning enhanced with GCI contextual reasoning to determine the Fatigue/Attention/Unresponsiveness of the driver. Validation includes CQ and consistency reporting, through a series of SPARQL statements that determine the completeness and accuracy plus adaptability (indirectly). 
 Specifically to infer physiological, cognitive and behavioral state of a vehicle driver using: 
+
 A) Physiological signals (HR, HRV, RR, SpO2, Drowsiness (KSS)) 
 B) Behavioral indicators (eye state, mouth state) 
 C) High-Level states (fatigue, attention, unresponsiveness) 
@@ -61,6 +63,7 @@ Resulting Labels are as follows:
 
 
    
+
 
 
 
