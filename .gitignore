@@ -1,14 +1,21 @@
 labels/*
 *.docx
 *.png
-*.owl
+*.rdf
 labels
 data
 scripts/__pycache__
 aiq_env
 onto_env
 AIQ_In_Cabin_Health_Assessment_Ontology.egg-info
-scripts/dataset.py
-logs
 NOTES.md
+assets/data
+assets/labels
+assets/logs
+in_cabin_domain.rdf
+trial_onto.owl 
+trial_onto_1.owl 
+updated_ontology.owl 
+snapshot.owl 
+
 
