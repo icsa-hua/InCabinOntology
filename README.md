@@ -52,11 +52,15 @@ python src/scripts/test_parser.py
 5. (Optional) To see the results of the ontology inference in a more easy-to-understand way use Protege and open the ontologies. 
 *** 
 Resulting Labels are as follows: 
+
+
+
 <img width="521" height="533" alt="Screenshot 2025-11-19 at 16 07 08" src="https://github.com/user-attachments/assets/f07c06ea-2c60-4c1a-b38c-9c4738ec6b5c" />
 
 
 
    
+
 
 
 
