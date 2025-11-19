@@ -1,32 +1,39 @@
 # InCabinOntology
-An in cabin ontology for in cabin vehicle environment. 
-![Version](https://img.shields.io/badge/version-0.2.0-brightgreen.svg)
+In cabin ontology for driver's health monitoring, using a 4D architecture to parse time series physiological measurements, through a DL approach. The ontology uses SWRL logical reasoning enhanced with GCI contextual reasoning to determine the Fatigue/Attention/Unresponsiveness of the driver. Validation includes CQ and consistency reporting, through a series of SPARQL statements that determine the completeness and accuracy plus adaptability (indirectly). ![Version](https://img.shields.io/badge/version-0.3.0-brightgreen.svg)
+Specifically to infer physiological, cognitive and behavioral state of a vehicle driver using: 
+* Physiological signals (HR, HRV, RR, SpO2, Drowsiness (KSS)) 
+* Behavioral indicators (eye state, mouth state) 
+* High-Level states (fatigue, attention, unresponsiveness) 
+* Demographic characteristics (age, biological sex, accessories, face characteristics) 
+![Version](https://img.shields.io/badge/version-0.3.0-brightgreen.svg)
+![clean-branch-4D](https://github.com/user-attachments/assets/c16c4034-c624-41dd-8cb7-ad284425a7d4)
 
-## Overview
-This repository creates an OWL representation or ontology for an in-cabin vehicle environment, set to have sensors
-which capture the state of the driver.
+## Ontology Structure (Short summary) 
+[X] __ActorState__: Snapshot of the driver at specific moments (4D-time slice) 
+Each state contains exactly one first-order individual (not class) of each attribute:
+* HR, HRV, RR, SpO2, Drowsiness
+* Fatigue, Attention, Unresponsiveness 
+* EyeState, MouthState
+* Demographics 
+[X] __Physiological Attributes__: A raw data value for the physiological parameters is used to categorize them into a threshold-classified level and then link them back to one actor states
+`GCIs enforce that as: HR with value X -> classification Y`
 
-![ontology-main](https://github.com/user-attachments/assets/c16c4034-c624-41dd-8cb7-ad284425a7d4)
+[X] From physiological + behavioral data the ontology infers Fatigue/Attention/Unresponsiveness into classification individuals
+[X] __4D-DL Time Slice Architecture__: 4D Endurant/Perdurant 
+[X] General Concept Inclusions (GCIs) in Manchester Syntax (reduces Java Heap load ~ more stable than SWRL) 
+[X] Semantic Web Rule Language (SWRL) finalize special cases through post-inference implications 
 
-## Components
-- **/data** &rarr; Stores the datasets used for testing the ontology capabilities.  
-- **/scipts** &rarr; (`Python scripts`) Stores the python scripts to create and parse SWRL rules in the ontology 
-to allow numerical and logical reasoning.
-- **/labels** &rarr; Stores the results of reasoning in the ontology in JSON format. 
-- **/ontologies** &rarr; Stores the ontologies in OWL format. `in_cabin_ontology.rdf` is the original ontology 
-used in the reasoning, whereas the `updated_ontology.owl` is an the result of processing the SWRL rules. 
-
- 
-## Technologies
-The main technologies used for this project are: 
-* Python &rarr; used for creating the SWRL rules and executing the reasoning.
-* Protege &rarr; used for crafting the ontology and visualising it along with the reasoning results.
-* owlready2 &rarr; used for creating the ontology in python 
+## Requirements
+* python3 >= 3.10  
+* pellet reasoner (bundled with Protege)  
+* owlready2 >=0.46 
+* rdflib >= 7.1.3 
+* reportlab >= 4.4.5 (optional) 
 
 ## SetUp
 1. Clone the repository:
 ```sh
-git clone -b ontology-parser https://github.com/icsa-hua/InCabinOntology.git
+git clone -b clean-branch-4D https://github.com/icsa-hua/InCabinOntology.git
 ```
 
 2. Navigate to the project directory:
@@ -34,20 +41,16 @@ git clone -b ontology-parser https://github.com/icsa-hua/InCabinOntology.git
 cd InCabinOntology
 ```
 
-3. Install the dependencies:
+3. Install the package with `setup.py`:
 ```sh
-pip install -r requirements.txt
+pip3 install -e . 
 ```
 
-4. To execute the ontology reasoning, run:
+4. To execute the ontology reasoning with the default ontology and ontology, run:
 ```sh
-python test_parser.py 
+python src/scripts/test_parser.py 
 ```
-&rarr; To see the ontology before reasoning: 
-4. Open Protege
-5. File->Open->Select in_cabin_ontology.rdf
-6. Do the same for the updated_ontology.owl 
-
+5. (Optional) To see the results of the ontology inference in a more easy-to-understand way use Protege and open the ontologies. 
 *** 
 Resulting Labels are as follows: 
 ![Screenshot 2025-02-05 142432](https://github.com/user-attachments/assets/aea12cb3-9e27-4c3e-8098-5acb3fca3a0d)
