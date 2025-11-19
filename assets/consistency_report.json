@@ -1,0 +1,116 @@
+{
+  "version": "1.0.0",
+  "checks": {
+    "state_identity": {
+      "missing_actor_states": [
+        "DriverState_006e88f707294d2597670c37d0ed996a",
+        "DriverState_c0a187de39c7466bbf49ba0102afd70f",
+        "DriverState_62b16285b0174646b1b5cb64aeb5aec2",
+        "DriverState_f7d1d628477b434997d6c903beed5604",
+        "DriverState_895298e1179f4fd0a4e458b390457cde"
+      ],
+      "missing_time_states": [],
+      "duplicate_keys_count": 0,
+      "duplicates": []
+    },
+    "orphans": {
+      "count": 5,
+      "states": [
+        "DriverState_006e88f707294d2597670c37d0ed996a",
+        "DriverState_c0a187de39c7466bbf49ba0102afd70f",
+        "DriverState_62b16285b0174646b1b5cb64aeb5aec2",
+        "DriverState_f7d1d628477b434997d6c903beed5604",
+        "DriverState_895298e1179f4fd0a4e458b390457cde"
+      ]
+    },
+    "time_alignment": {
+      "mismatches": [],
+      "count": 0
+    },
+    "per_state_channels": {
+      "count": 0,
+      "details": []
+    },
+    "uncategorized_physio": {
+      "HR": [],
+      "HRV": [],
+      "RR": [],
+      "SpO2": []
+    },
+    "multi_membership": {
+      "HR": [],
+      "HRV": [],
+      "RR": [],
+      "SpO2": []
+    },
+    "fatigue_cardinality": {
+      "per_state": [],
+      "is_values": [
+        [
+          "awake_instance",
+          0
+        ],
+        [
+          "awake_instance",
+          0
+        ],
+        [
+          "sleep_instance",
+          0
+        ],
+        [
+          "drowsinesssuspected_instance",
+          0
+        ],
+        [
+          "drowsinesssuspected_instance",
+          0
+        ]
+      ]
+    },
+    "attention_cardinality": {
+      "per_state": [],
+      "is_values": [
+        [
+          "attentive_instance",
+          0
+        ],
+        [
+          "attentive_instance",
+          0
+        ],
+        [
+          "inattentive_instance",
+          0
+        ],
+        [
+          "undefined_instance",
+          0
+        ],
+        [
+          "attentive_instance",
+          0
+        ]
+      ]
+    },
+    "unresp_cardinality": {
+      "per_state": [],
+      "is_values": []
+    },
+    "accessories": {
+      "group_multiple_temperatures": [],
+      "untyped_accessories": [],
+      "unlinked_temp_for_accessory": []
+    },
+    "reused_physio_instances": []
+  },
+  "notes": [],
+  "counts": {
+    "ActorStates": 5,
+    "Actors": 50,
+    "HR": 9,
+    "HRV": 9,
+    "RR": 9,
+    "SpO2": 8
+  }
+}

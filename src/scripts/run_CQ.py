@@ -30,9 +30,8 @@ def save_sparql_results_to_pdf(output_path, results_dict):
     # Body
     for name, rows in results_dict.items():
         story.append(Paragraph(f"<b>{name}</b>", styles["Heading3"]))
-
-        if not rows:
-            story.append(Paragraph("✔ No inconsistencies found.", styles["BodyText"]))
+        if not rows or len(rows) <=2:
+            story.append(Paragraph("✅ No inconsistencies found.", styles["BodyText"]))
         else:
             story.append(Paragraph(
                 f"❌ {len(rows)} inconsistencies found.", styles["BodyText"]
@@ -121,19 +120,19 @@ messages = {}
 
 
 for name, q in queries:
-    messages[name] = "" 
-    messages[name] += f"Running {name}..."
+    messages[name] = []
+    messages[name].append(f"Running {name}...")
     print(f"Running {name}...")
     res = g.query(q)
     rows = list(res)
     if rows:
-        messages[name] += f"❌ Inconsistencies found ({len(rows)} rows)"
+        messages[name].append(f"❌ Inconsistencies found ({len(rows)} rows)")
         print(f"❌ Inconsistencies found ({len(rows)} rows)")
         for r in rows[:5]:  # show first few
-            messages[name] += f"{r}"
+            messages[name].append(f"{r}")
             print("  ", r)
     else:
-        messages[name] += "✅ No issues"
+        messages[name].append( "✅ No issues")
         print("✅ No issues")
     print()
 
