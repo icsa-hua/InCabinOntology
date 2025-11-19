@@ -461,7 +461,7 @@ if __name__ == "__main__":
     assets_dir = get_assets_path() 
     path = sys.argv[1] if len(sys.argv) > 1 else f"{assets_dir}/ontologies/snapshot_2.owl"
     res = run_consistency_checks(path, config=None, verbose=True)
-    out = Path(f"{str(assets_dir)}consistency_report.json")
+    out = Path(f"{str(assets_dir)}/consistency_report.json")
     out.write_text(json.dumps(res, indent=2, default=str))
     print(f"Saved JSON report to {out}")
 

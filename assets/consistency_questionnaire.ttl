@@ -1,0 +1,522 @@
+
+
+@prefix : <http://test.org/in_cabin_domain#> . 
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+
+# ============================================================
+# Consistency Questionnaire (SPARQL Queries)
+# Stored as comments inside a Turtle (.ttl) file
+# ============================================================
+
+
+# ------------------------
+# Q1. Missing physiological attributes
+# ------------------------
+# SELECT ?state WHERE {
+#   ?state rdf:type :ActorState .
+#   OPTIONAL { ?state :ActorStateHasPhysiologicalState ?hr . ?hr rdf:type :HR . }
+#   OPTIONAL { ?state :ActorStateHasPhysiologicalState ?hrv . ?hrv rdf:type :HRV . }
+#   OPTIONAL { ?state :ActorStateHasPhysiologicalState ?rr . ?rr rdf:type :RR . }
+#   OPTIONAL { ?state :ActorStateHasPhysiologicalState ?spo2 . ?spo2 rdf:type :SpO2 . }
+#   OPTIONAL { ?state :ActorStateHasPhysiologicalState ?drow . ?drow rdf:type :Drowsiness . }
+#   FILTER ( !BOUND(?hr) || !BOUND(?hrv) || !BOUND(?rr) || !BOUND(?spo2) || !BOUND(?drow) )
+# }
+
+# ------------------------
+# Q2. Multiple HR per ActorState
+# ------------------------
+# SELECT DISTINCT ?state WHERE {
+#   ?state rdf:type :ActorState ;
+#          :ActorStateHasPhysiologicalState ?hr1, ?hr2 .
+#   ?hr1 rdf:type :HR . ?hr2 rdf:type :HR .
+#   FILTER (?hr1 != ?hr2)
+# }
+
+# ------------------------
+# Q3. Multiple HRV per ActorState
+# ------------------------
+# SELECT DISTINCT ?state WHERE {
+#   ?state rdf:type :ActorState ;
+#          :ActorStateHasPhysiologicalState ?h1, ?h2 .
+#   ?h1 rdf:type :HRV . ?h2 rdf:type :HRV .
+#   FILTER (?h1 != ?h2)
+# }
+
+# ------------------------
+# Q4. Multiple RR per ActorState
+# ------------------------
+# SELECT DISTINCT ?state WHERE {
+#   ?state rdf:type :ActorState ;
+#          :ActorStateHasPhysiologicalState ?r1, ?r2 .
+#   ?r1 rdf:type :RR . ?r2 rdf:type :RR .
+#   FILTER (?r1 != ?r2)
+# }
+
+# ------------------------
+# Q5. Multiple SpO2 per ActorState
+# ------------------------
+# SELECT DISTINCT ?state WHERE {
+#   ?state rdf:type :ActorState ;
+#          :ActorStateHasPhysiologicalState ?o1, ?o2 .
+#   ?o1 rdf:type :SpO2 . ?o2 rdf:type :SpO2 .
+#   FILTER (?o1 != ?o2)
+# }
+
+# ------------------------
+# Q6. Multiple Drowsiness per ActorState
+# ------------------------
+# SELECT DISTINCT ?state WHERE {
+#   ?state rdf:type :ActorState ;
+#          :ActorStateHasPhysiologicalState ?d1, ?d2 .
+#   ?d1 rdf:type :Drowsiness . ?d2 rdf:type :Drowsiness .
+#   FILTER (?d1 != ?d2)
+# }
+
+# ------------------------
+# Q7. Missing high-level attributes
+# ------------------------
+# SELECT ?state WHERE {
+#   ?state rdf:type :ActorState .
+#   OPTIONAL { ?state :ActorStateHasFatigue ?fat . }
+#   OPTIONAL { ?state :ActorStateHasAttention ?att . }
+#   OPTIONAL { ?state :ActorStateHasUnresponsiveness ?unresp . }
+#   OPTIONAL { ?state :ActorHasEyeState ?eye . }
+#   OPTIONAL { ?state :ActorHasMouthState ?mouth . }
+#   OPTIONAL { ?state :ActorStateHasAge ?age . }
+#   OPTIONAL { ?state :ActorStateHasSex ?sex . }
+#   OPTIONAL { ?state :ActorStateHasAccessories ?acc . }
+#   OPTIONAL { ?state :ActorStateHasDemographicCharacteristics ?demo . }
+#   OPTIONAL { ?state :ActorStateHasFaceCharacteristics ?face . }
+#   FILTER (!BOUND(?fat) || !BOUND(?att) || !BOUND(?unresp)
+#        || !BOUND(?eye) || !BOUND(?mouth)
+#        || !BOUND(?age) || !BOUND(?sex)
+#        || !BOUND(?acc) || !BOUND(?demo) || !BOUND(?face))
+# }
+
+
+# ------------------------
+# Q8. Multiple Fatigue per ActorState
+# ------------------------
+# SELECT DISTINCT ?state
+# WHERE {
+#   ?state rdf:type :ActorState ;
+#          :ActorStateHasFatigue ?f1, ?f2 .
+#   FILTER (?f1 != ?f2)
+# }
+
+# ------------------------
+# Q9. Multiple Attention per ActorState
+# ------------------------
+# SELECT DISTINCT ?state
+# WHERE {
+#   ?state rdf:type :ActorState ;
+#          :ActorStateHasAttention ?a1, ?a2 .
+#   FILTER (?a1 != ?a2)
+# }
+
+
+# ------------------------
+# Q10. Multiple Unresponsiveness per ActorState
+# ------------------------
+# SELECT DISTINCT ?state
+# WHERE {
+#   ?state rdf:type :ActorState ;
+#          :ActorStateHasUnresponsiveness ?u1, ?u2 .
+#   FILTER (?u1 != ?u2)
+# }
+
+# ------------------------
+# Q11. Multiple EyeState per ActorState
+# ------------------------
+# SELECT DISTINCT ?state
+# WHERE {
+#   ?state rdf:type :ActorState ;
+#          :ActorHasEyeState ?e1, ?e2 .
+#   FILTER (?e1 != ?e2)
+# }
+
+# ------------------------
+# Q12. Multiple MouthState per ActorState
+# ------------------------
+# SELECT DISTINCT ?state
+# WHERE {
+#   ?state rdf:type :ActorState ;
+#          :ActorHasMouthState ?m1, ?m2 .
+#   FILTER (?m1 != ?m2)
+# }
+
+# ------------------------
+# Q13. Multiple Age or Sex per ActorState
+# ------------------------
+# SELECT DISTINCT ?state
+# WHERE {
+#   ?state rdf:type :ActorState .
+#   {
+#     ?state :ActorStateHasAge ?a1, ?a2 .
+#     FILTER (?a1 != ?a2)
+#   }
+#   UNION
+#   {
+#     ?state :ActorStateHasSex ?s1, ?s2 .
+#     FILTER (?s1 != ?s2)
+#   }
+# }
+
+# ------------------------
+# Q14. Multiple Accessories/Demographic/FaceCharacteristics per ActorState
+# ------------------------
+# SELECT DISTINCT ?state
+# WHERE {
+#   ?state rdf:type :ActorState .
+#   {
+#     ?state :ActorStateHasAccessories ?x1, ?x2 .
+#     FILTER (?x1 != ?x2)
+#   }
+#   UNION
+#   {
+#     ?state :ActorStateHasDemographicCharacteristics ?d1, ?d2 .
+#     FILTER (?d1 != ?d2)
+#   }
+#   UNION
+#   {
+#     ?state :ActorStateHasFaceCharacteristics ?f1, ?f2 .
+#     FILTER (?f1 != ?f2)
+#   }
+# }
+
+# ------------------------
+# Q15-A. HR instances classified into more than one HR-level class 
+# ------------------------
+# SELECT DISTINCT ?hr
+# WHERE {
+#   ?hr rdf:type :HR .
+#
+#   ?hr rdf:type ?c1 .
+#   ?hr rdf:type ?c2 .
+#
+#   FILTER (?c1 != ?c2)
+#   FILTER (?c1 IN (:Very_Low_HR, :Low_HR, :Moderate_HR, :High_HR))
+#   FILTER (?c2 IN (:Very_Low_HR, :Low_HR, :Moderate_HR, :High_HR))
+# }
+
+# ------------------------
+# Q15-B. HRV instances classified into more than one HRV-level class 
+# ------------------------
+# SELECT DISTINCT ?hrv
+# WHERE {
+#   ?hrv rdf:type :HRV .
+#
+#   ?hrv rdf:type ?c1 .
+#   ?hrv rdf:type ?c2 .
+#
+#   FILTER (?c1 != ?c2)
+#   FILTER (?c1 IN (:Very_Low_HRV, :Low_HRV, :Moderate_HRV, :High_HRV))
+#   FILTER (?c2 IN (:Very_Low_HRV, :Low_HRV, :Moderate_HRV, :High_HRV))
+# }
+
+# ------------------------
+# Q15-C. RR instances classified into more than one RR-level class 
+# ------------------------
+# SELECT DISTINCT ?rr
+# WHERE {
+#   ?rr rdf:type :RR .
+#
+#   ?rr rdf:type ?c1 .
+#   ?rr rdf:type ?c2 .
+#
+#   FILTER (?c1 != ?c2)
+#   FILTER (?c1 IN (:Very_Low_RR, :Low_RR, :Moderate_RR, :High_RR))
+#   FILTER (?c2 IN (:Very_Low_RR, :Low_RR, :Moderate_RR, :High_RR))
+# }
+
+# ------------------------
+# Q15-D. SpO2 instances classified into more than one SpO2-level class 
+# ------------------------
+# SELECT DISTINCT ?spo2
+# WHERE {
+#   ?spo2 rdf:type :SpO2 .
+#
+#   ?spo2 rdf:type ?c1 .
+#   ?spo2 rdf:type ?c2 .
+#
+#   FILTER (?c1 != ?c2)
+#   FILTER (?c1 IN (:Critical_SpO2, :Low_SpO2, :Normal_SpO2 ))
+#   FILTER (?c2 IN (:Critical_SpO2, :Low_SpO2, :Normal_SpO2 ))
+# }
+
+# ------------------------
+# Q15-E. Drowsiness instances classified into more than one Drowsiness-level class 
+# ------------------------
+# SELECT DISTINCT ?dr
+# WHERE {
+#   ?dr rdf:type :Drowsiness .
+#
+#   ?dr rdf:type ?c1 .
+#   ?dr rdf:type ?c2 .
+#
+#   FILTER (?c1 != ?c2)
+#   FILTER (?c1 IN (:Level_3_KSS, :Level_5_KSS, :Level_7_KSS, :Level_9_KSS ))
+#   FILTER (?c2 IN (:Level_3_KSS, :Level_5_KSS, :Level_7_KSS, :Level_9_KSS ))
+# }
+
+# ------------------------
+# Q16-A. HR without any HR-level classification
+# ------------------------
+# SELECT ?hr
+# WHERE {
+#   ?hr rdf:type :HR .
+#
+#   OPTIONAL {
+#     ?hr rdf:type ?c .
+#     FILTER (?c IN (:Very_Low_HR, :Low_HR, :Moderate_HR, :High_HR))
+#   }
+#   FILTER (!BOUND(?c))
+# }
+
+# ------------------------
+# Q16-B. HRV without any HR-level classification
+# ------------------------
+# SELECT ?hrv
+# WHERE {
+#   ?hrv rdf:type :HRV .
+#
+#   OPTIONAL {
+#     ?hrv rdf:type ?c .
+#     FILTER (?c IN (:Very_Low_HRV, :Low_HRV, :Moderate_HRV, :High_HRV))
+#   }
+#   FILTER (!BOUND(?c))
+# }
+
+# ------------------------
+# Q16-C. RR without any RR-level classification
+# ------------------------
+# SELECT ?rr
+# WHERE {
+#   ?rr rdf:type :RR .
+#
+#   OPTIONAL {
+#     ?rr rdf:type ?c .
+#     FILTER (?c IN (:Very_Low_RR, :Low_RR, :Moderate_RR, :High_RR))
+#   }
+#   FILTER (!BOUND(?c))
+# }
+
+# ------------------------
+# Q16-D. SpO2 without any SpO2-level classification
+# ------------------------
+# SELECT ?spo2
+# WHERE {
+#   ?spo2 rdf:type :SpO2 .
+#
+#   OPTIONAL {
+#     ?spo2 rdf:type ?c .
+#     FILTER (?c IN (:Critical_SpO2, :Low_SpO2, :Normal_SpO2 ))
+#   }
+#   FILTER (!BOUND(?c))
+# }
+
+# ------------------------
+# Q16-E. Drowsiness without any Drowsiness-level classification
+# ------------------------
+# SELECT ?dr
+# WHERE {
+#   ?dr rdf:type :Drowsiness .
+#
+#   OPTIONAL {
+#     ?dr rdf:type ?c .
+#     FILTER (?c IN (:Level_3_KSS, :Level_5_KSS, :Level_7_KSS, :Level_9_KSS))
+#   }
+#   FILTER (!BOUND(?c))
+# }
+
+# ------------------------
+# Q17. HRV instances with >1 HRV level
+# ------------------------
+# SELECT DISTINCT ?h
+# WHERE {
+#   ?h rdf:type :HRV .
+#   ?h rdf:type ?c1 .
+#   ?h rdf:type ?c2 .
+#   FILTER (?c1 != ?c2)
+#   FILTER (?c1 IN (:Very_Low_HRV, :Low_HRV, :Moderate_HRV, :High_HRV))
+#   FILTER (?c2 IN (:Very_Low_HRV, :Low_HRV, :Moderate_HRV, :High_HRV))
+# }
+
+# ------------------------
+# Q18. RR instances with >1 RR level
+# ------------------------
+# SELECT DISTINCT ?r
+# WHERE {
+#   ?r rdf:type :RR .
+#   ?r rdf:type ?c1 .
+#   ?r rdf:type ?c2 .
+#   FILTER (?c1 != ?c2)
+#   FILTER (?c1 IN (:Very_Low_RR, :Low_RR, :Moderate_RR, :High_RR))
+#   FILTER (?c2 IN (:Very_Low_RR, :Low_RR, :Moderate_RR, :High_RR))
+# }
+
+# ------------------------
+# Q19. SpO2 instances with >1 SpO2 level
+# ------------------------
+# SELECT DISTINCT ?o
+# WHERE {
+#   ?o rdf:type :SpO2 .
+#   ?o rdf:type ?c1 .
+#   ?o rdf:type ?c2 .
+#   FILTER (?c1 != ?c2)
+#   FILTER (?c1 IN (:Low_SpO2, :Normal_SpO2, :Critical_SpO2))
+#   FILTER (?c2 IN (:Low_SpO2, :Normal_SpO2, :Critical_SpO2))
+# }
+
+# ------------------------
+# Q20. Drowsiness instances with >1 Drowsiness level
+# ------------------------
+# SELECT DISTINCT ?d
+# WHERE {
+#   ?d rdf:type :Drowsiness .
+#   ?d rdf:type ?c1 .
+#   ?d rdf:type ?c2 .
+#   FILTER (?c1 != ?c2)
+#   FILTER (?c1 IN (:Level_3_KSS, :Level_5_KSS, :Level_7_KSS, :Level_9_KSS))
+#   FILTER (?c2 IN (:Level_3_KSS, :Level_5_KSS, :Level_7_KSS, :Level_9_KSS))
+# }
+
+# ------------------------
+# Q21. Violation "Sleep=> Inattentive & Unresponsive"
+# ------------------------
+# SELECT ?state ?fat ?att ?unresp
+# WHERE {
+#   ?state rdf:type :ActorState ;
+#          :ActorStateHasFatigue :sleep_instance .
+#
+#   OPTIONAL { ?state :ActorStateHasAttention ?att . }
+#   OPTIONAL { ?state :ActorStateHasUnresponsiveness ?unresp . }
+#
+#   FILTER ( !BOUND(?att) || ?att != :inattentive_instance
+#         || !BOUND(?unresp) || ?unresp != :unresponsive_instance )
+# }
+
+# ------------------------
+# Q22. Violation "Drowsy & attentive=> at-risk unresponsiveness"
+# ------------------------
+# SELECT ?state ?unresp
+# WHERE {
+#   ?state rdf:type :ActorState ;
+#          :ActorStateHasFatigue :drowsinesssuspected_instance ;
+#          :ActorStateHasAttention :attentive_instance .
+#
+#   OPTIONAL { ?state :ActorStateHasUnresponsiveness ?unresp . }
+#
+#   FILTER ( !BOUND(?unresp) || ?unresp != :undefined_atrisk_instance )
+# }
+
+# ------------------------
+# Q23. Violation "Sleep or unresponsiveness => eyes closed & mouth open"
+# ------------------------
+# SELECT ?state ?fat ?unresp ?eye ?mouth
+# WHERE {
+#   ?state rdf:type :ActorState .
+#
+#   OPTIONAL { ?state :ActorStateHasFatigue ?fat . }
+#   OPTIONAL { ?state :ActorStateHasUnresponsiveness ?unresp . }
+#   OPTIONAL { ?state :ActorHasEyeState ?eye . }
+#   OPTIONAL { ?state :ActorHasMouthState ?mouth . }
+#
+#   FILTER (
+#     ( (?fat = :sleep_instance) || (?unresp = :unresponsive_instance) )
+#     &&
+#     ( !BOUND(?eye) || ?eye != :eyes_closed_instance
+#       || !BOUND(?mouth) || ?mouth != :mouth_open_instance )
+#   )
+# }
+
+# ------------------------
+# Q24. Is any state missing its threshold profile?
+# ------------------------
+# SELECT ?state
+# WHERE {
+#   ?state rdf:type :ActorState .
+#   OPTIONAL { ?state :StateHasThresholdProfile ?tp . }
+#   FILTER ( !BOUND(?tp) )
+# }
+
+# ------------------------
+# Q25. Are there any threshold profiles not used by an Actor State? 
+# ------------------------
+# SELECT ?tp
+# WHERE {
+#   ?tp rdf:type :ThresholdProfile .
+#   FILTER NOT EXISTS {
+#     ?state rdf:type :ActorState ;
+#            :StateHasThresholdProfile ?tp .
+#   }
+# }
+
+# ------------------------
+# Q26. Detect future categories accidentally left unmapped
+# ------------------------
+# SELECT ?cat
+# WHERE {
+#   ?cat rdf:type owl:Class .
+#   FILTER(STRSTARTS(STR(?cat), STR(:HR_)) 
+#       || STRSTARTS(STR(?cat), STR(:HRV_))
+#       || STRSTARTS(STR(?cat), STR(:RR_))
+#       || STRSTARTS(STR(?cat), STR(:SpO2_))
+#       || STRSTARTS(STR(?cat), STR(:Drowsiness_)))
+#   FILTER NOT EXISTS { ?rule ?p ?cat }
+# }
+
+# ------------------------
+# Q27. Show if new data falls outside modeled thresholds.
+# ------------------------
+# SELECT ?phys ?value
+# WHERE {
+#   ?phys :hasRawValue ?value .
+#   FILTER( ?value < :global_min_threshold || ?value > :global_max_threshold )
+# }
+
+# ------------------------
+# Q28. Check if new states appear without corresponding GCI or SWRL effects.
+# ------------------------
+# SELECT ?state
+# WHERE {
+#   ?state rdf:type :ActorState .
+#   FILTER NOT EXISTS {
+#     ?state :ActorStateHasFatigue ?fat .
+#   }
+# }
+
+# ------------------------
+# Q29. Future adaptability often breaks. 
+# ------------------------
+# SELECT ?profile
+# WHERE {
+#   ?profile rdf:type :ThresholdProfile .
+#   OPTIONAL { ?profile :profileForAge ?age . }
+#   OPTIONAL { ?profile :profileForSex ?sex . }
+#   FILTER ( !BOUND(?age) || !BOUND(?sex) )
+# }
+#
+
+# ------------------------
+# Q30. Unexpected extensions 
+# ------------------------
+# SELECT ?type
+# WHERE {
+#   ?ind rdf:type ?type .
+#   FILTER NOT EXISTS {
+#     FILTER(?type IN (:HR, :HRV, :RR, :SpO2, :Drowsiness))
+#   }
+# }
+
+
+
+
+
+
+
+
+
+
+
