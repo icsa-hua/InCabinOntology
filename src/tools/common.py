@@ -132,7 +132,6 @@ def create_Physiological_inds(onto, ts_iso):
     drowsiness_instance = onto.Drowsiness(f'drowsiness_instance_{ts_iso}')
     drowsiness_instance.phyValidAt.append(ts_iso)
 
-
     return {
             'hr': hr_instance, 
             'hrv': hrv_instance, 

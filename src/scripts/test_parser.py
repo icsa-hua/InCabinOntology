@@ -2,7 +2,10 @@ from src.designs.ontology_parser import OntologyParser
 from src.designs.individuals_generation import IndGenerator
 from src.tools.logger import get_logger 
 
+import os
+
 from owlready2 import * 
+
 
 logger = get_logger("aiq_onto")
 

@@ -3,7 +3,7 @@ from src.tools.common import *
 from src.designs.rule_creator import RuleCreator
 from src.tools.logger import get_logger
 from src.tools.metrics import OntologyEvaluator
-from src.tools.trend_analysis import trends, analysis, gci_trends
+# from src.tools.trend_analysis import trends, analysis, gci_trends
 
 import uuid
 import pdb
@@ -28,7 +28,6 @@ class OntologyParser:
         """
         The constructor for the OntologyParser class.
         """
-
         self.ontology_path = ontology_path
         self.ontology = self.load_ontology()
         self.graph = None 
@@ -45,24 +44,7 @@ class OntologyParser:
         return ontology
     
 
-    def search_class_ontology(self, target_class_name):
-        """
-        Search if the Target class ("Target" in ths case) exists in the ontology
-        NOTE: only used for debugging purposes
-        """
-        target_class = None
-        for cls in self.ontology.classes():
-            if cls.name == target_class_name :
-                target_class = cls 
-                break 
-        
-        if target_class is None:
-            raise ValueError(f"Target class '{target_class_name}' not found in the ontology.")
-        return target_class
-
-
     def get_or_create_actor(self): 
-        #TODO: If actor is already inside the ontology as an individual we need to access the UID and find it inside the dataset. 
 
         id = uuid.uuid4().hex
         if not self.ontology.Actor.instances(): 
@@ -80,7 +62,6 @@ class OntologyParser:
 
 
     def get_or_create_obs(self): 
-        # Create the main instance of the Observations class
         if not self.ontology.Observations.instances(): 
             obs = self.ontology.Observations(f"observation_{0}")
         else: 
@@ -89,6 +70,7 @@ class OntologyParser:
     
     
     def parse_observations(self, dataset_path, batching=True, reasoning_thr=5, save=False):
+        
         """
         This method parses the observations from the given dataset and creates instances of the Observation class.
         Then translates the rules established in the ontology with the reasoner and saves the results.
@@ -98,6 +80,7 @@ class OntologyParser:
           - batching: If we want to opt for batching multiple rows together and calling the reasoner once 
           - reasoning_thr: The multitude of objects to reason
         """
+
         assets_dir = get_assets_path()
         dataset = pd.read_csv(dataset_path)
         filepath = assets_dir + "/labels"
@@ -127,7 +110,7 @@ class OntologyParser:
                 # with StepContext(name="Analysis GCI trends", catch=(Exception, RuntimeError)): 
                 #     gci_trends(self.ontology)
 
-                self.rule_parser.synchronize_ontology()
+            self.rule_parser.synchronize_ontology()
 
         # With this process we do NOT account for Obs inside SWRL. 
         with self.ontology:       
@@ -190,10 +173,10 @@ class OntologyParser:
 
                         # Run the reasoner to update the ontology with the new values                       # Run the reasoner to update the ontology with the new values     
                         # self.rule_parser.synchronize_ontology()
+                        self.ev.sync_reasoner(len(batch_states))
                         
                         # Create the description of the actor and save it in JSON format
                         with StepContext(name="Crate Label", catch=(RuntimeError,)):
-                                pdb.set_trace()
                                 data = self.rule_parser.create_labels(actor, filepath, len(batch_states))
 
                         self.ev.metrics.snapshot_memory()
@@ -204,11 +187,13 @@ class OntologyParser:
                         self.ev.label_distributions()
                         self.ev.crosstab()
                         self.print_results()
+
+                        pdb.set_trace()
                         batch_states.clear() 
                         self.rule_parser.remove_prev_values(ts_iso_date)
-                        self.rule_parser.clear_obs(obs)  
+                
+                self.rule_parser.clear_obs(obs)  
                         
-
         logger.info("[checked] Memory Allocated")
         logger.info(tracemalloc.get_traced_memory())
         tracemalloc.stop()
@@ -216,7 +201,6 @@ class OntologyParser:
         
 
     def save_onto(self, index, file_path="assets/ontologies/snapshot_2.owl"): 
-
         if index == 0 or index % 10 == 0: 
             parent_directory = os.getcwd() 
             save_path = f"{parent_directory}/{file_path}" 

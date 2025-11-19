@@ -92,7 +92,8 @@ class RuleCreator:
         Uses the PELLET reasoner to infer property values and synchronize the ontology, 
         as only PELLET supports numerical conditions for SWRL rules. 
         """
-        sync_reasoner_pellet(infer_property_values=True, infer_data_property_values=True)
+        with self.ontology: 
+            sync_reasoner_pellet(infer_property_values=True, infer_data_property_values=True)
 
 
     def create_instances(self, ind_class, ts_iso=None, unique=None, regenerate=False): 
@@ -488,9 +489,6 @@ class RuleCreator:
 
     def set_up_rules(self): 
 
-        # with StepContext(name="Connect_State_To_Values", catch=(RuntimeError,)):
-        #     self.connect_actor_to_values()
-
         with StepContext(name="Preprocess_Temp_Age_Gender", catch=(RuntimeError,)):
             self.__determine_age()
             self.__determine_gender()
@@ -509,19 +507,11 @@ class RuleCreator:
         with StepContext(name="Create All GCI statements", catch=(RuntimeError, Exception)): 
             self.__determine_ftg_att_unr()
 
-
         with StepContext(name="Define Fatigue Rules", catch=(RuntimeError,)):
             self.__determine_eye_mouth_state()
 
 
-        # self.set_up_trends()
-        # self.update_trends()
-
-        # self.determine_trends() 
-
-
-
-    def create_labels(self, actor, filepath:str,  index:int, batch_size:int): 
+    def create_labels(self, actor, filepath:str,  batch_size:int): 
         """
         This function creates a label, describing the actor based on the results 
         of the SWRL rules in the ontology. Requires reasoner to previously have 
@@ -531,23 +521,24 @@ class RuleCreator:
             filepath (str): The filepath to the ontology file.
             index (int): The index of the ontology file.
         """
-        
 
-        act_states = actor.ActorhasState
+        act_states = actor.ActorhasState[:-1]
         
         if len(act_states) != batch_size: 
             raise RuntimeError("The batch size and the number of actor states is different")
+        
         chars = { pos:val.ActorStateHasCharacteristics for pos, val in enumerate(act_states)}
         phys = { pos:val.ActorStateHasPhysiologicalState for pos, val in enumerate(act_states)}
         
         data = defaultdict() 
 
         for ind, act_st in enumerate(act_states): 
+            data[act_st] = {}
             for char in chars[ind]:
-                data[act_st][char.name] = char.hasStringValue[0] if char.name != "age_instance" else char.hasAgeValue[0] 
+                data[act_st][char.name.split('_')[0]] = char.hasStringValue[0] if char.name != "age_instance" else char.hasAgeValue[0] 
 
-            for phy in phys: 
-                data[act_st][phy.name] = phy.hasNumericalValue[0] 
+            for phy in phys[ind]: 
+                    data[act_st][phy.name.split('_')[0]] = phy.hasNumericalValue[0] 
 
             data[act_st]['age'] = act_st.ActorStateHasAge.AgeBelongsToGroup.name.split("_")[0] 
             data[act_st]['sex'] = act_st.ActorStateHasSex.SexBelongsToGroup.name.split("_")[0] 
@@ -556,9 +547,9 @@ class RuleCreator:
             data[act_st]['attention'] = act_st.ActorStateHasAttention.name.split("_")[0]
             data[act_st]['unresp_inst'] = act_st.ActorStateHasUnresponsiveness.name.split("_")[0]
             data[act_st]['driver_id'] = act_st.name
-            eye_inst = act_st.ActorHasEyeState[0].EyeStateIs[0].name.split("_")[0] 
+            eye_inst = act_st.ActorHasEyeState.EyeStateIs[0].name.split("_")[0] 
             data[act_st]['eye_state']  = eye_inst.replace("state", "")
-            data[act_st]['mouth_state'] = act_st.ActorHasMouthState[0].MouthStateIs[0].name.split("_")[0]
+            data[act_st]['mouth_state'] = act_st.ActorHasMouthState.MouthStateIs[0].name.split("_")[0]
 
             actor_data = {
                 "prompt_details": {
@@ -575,12 +566,12 @@ class RuleCreator:
 
                 "label":{
                     "actor_id":data[act_st]['driver_id'] ,
-                    "?eye_inst": data[act_st]['eye_state'],
-                    "?mouth_inst":data[act_st]['mouth_state'],
-                    "age":data[act_st]["age_inst"], 
-                    "face":data[act_st]["facecharacteristics_instance"], 
+                    "eye_inst": data[act_st]['eye_state'],
+                    "mouth_inst":data[act_st]['mouth_state'],
+                    "age":data[act_st]["age"], 
+                    "face":data[act_st]["facecharacteristics"], 
                     "sex":data[act_st]['sex'], 
-                    "demographic": data[act_st]["demographic_instance"], 
+                    "demographic": data[act_st]["demographic"], 
                     "accessories": data[act_st]['accessories'], 
                     "fatigue":data[act_st]['fatigue'], 
                     "attention":data[act_st]['attention'], 
@@ -617,7 +608,6 @@ class RuleCreator:
     def remove_prev_values(self, ts_iso_dates): 
  
         with self.ontology: 
-
             for identifier in ts_iso_dates: 
                 for individual in list(self.ontology.individuals()): 
                     if identifier in individual.name : 

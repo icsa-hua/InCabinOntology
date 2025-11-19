@@ -1,5 +1,6 @@
+from os import wait
 import time, tracemalloc, gc
-
+import pdb
 from owlready2 import sync_reasoner_pellet
 from collections import Counter, defaultdict
 from contextlib import contextmanager
@@ -48,6 +49,7 @@ class OntologyEvaluator:
             "prev_state": "prevState",
             "ActorStateHasFatigue": "ActorStateHasFatigue",
             "ActorStateHasAttention": "ActorStateHasAttention",
+            "ActorStateHasUnresponsiveness": "ActorStateHasUnresponsiveness",
             "ActorHasEyeState": "ActorHasEyeState",
             "ActorHasMouthState": "ActorHasMouthState",
             "HRis": "HRis", "HRVis": "HRVis", "RRis": "RRis", "SpO2is": "SpO2is", "DrowsinessIs": "DrowsinessIs",
@@ -55,7 +57,7 @@ class OntologyEvaluator:
         self.DP = {"value": "hasNumericalValue"}
 
         self.functional_label_props = [
-            self.OP["ActorStateHasFatigue"], self.OP["ActorStateHasAttention"],
+            self.OP["ActorStateHasFatigue"], self.OP["ActorStateHasAttention"], self.OP["ActorStateHasUnresponsiveness"],
             self.OP["ActorHasEyeState"], self.OP["ActorHasMouthState"]
         ]
 
@@ -151,18 +153,21 @@ class OntologyEvaluator:
                     undef += 1
                     continue
                 # check if any value is one of the undefined bucket names
-                if any(v.name in undefined_names for v in vals):
-                    undef += 1
-            return round(100.0 * undef / total, 2)
+                if isinstance(vals, list):
+                    if any(v.name in undefined_names for v in vals):
+                        undef += 2
+                else:
+                    if vals.name in undefined_names: 
+                        undef += 2
 
-        ratios["Fatigue"]   = pct_undefined(self.OP["ActorStateHasFatigue"], {"UndefinedState"})
-        ratios["Attention"] = pct_undefined(self.OP["ActorStateHasAttention"], {"Undefined"})
-        ratios["Unresponsiveness"] = pct_undefined(self.OP["ActorStateHasUnresponsiveness"], {"Imminent"})
-        ratios["Eye"]       = pct_undefined(self.OP["ActorHasEyeState"], {"SlowClosure"})
-        ratios["Mouth"]     = pct_undefined(self.OP["ActorHasMouthState"], {"Yawning"})
+            return round(100.0 * undef / total, 2)
+        ratios["Fatigue"]   = pct_undefined(self.OP["ActorStateHasFatigue"], {"undefinedState"})
+        ratios["Attention"] = pct_undefined(self.OP["ActorStateHasAttention"], {"undefined"})
+        ratios["Unresponsiveness"] = pct_undefined(self.OP["ActorStateHasUnresponsiveness"], {"undefined_atrisk"})
+        ratios["Eye"]       = pct_undefined(self.OP["ActorHasEyeState"], {"slowClosure"})
+        ratios["Mouth"]     = pct_undefined(self.OP["ActorHasMouthState"], {"yawning"})
         self.metrics.undefined_ratios.append(ratios)
         return ratios
-
 
     def run_cq(self):
         """
@@ -176,17 +181,21 @@ class OntologyEvaluator:
         State = self.C("ActorState")
         sleep = getattr(self.onto, "Sleep", None) 
         eye_closed = getattr(self.onto, "ClosedState", None)
-
+        
         # Q1
         n_sleep = 0
         for s in State.instances():
-            if sleep and sleep in getattr(s, self.OP["ActorStateHasFatigue"], []):
+            vals = getattr(s, self.OP["ActorStateHasFatigue"]) 
+            if vals is None: continue 
+            if sleep and sleep.name.lower() in vals.name:
                 n_sleep += 1
         results.append(("CQ_sleep_states", n_sleep, True))
 
         n_eye_closed = 0
         for s in State.instances():
-            if eye_closed and eye_closed in getattr(s, self.OP["ActorHasEyeState"], []):
+            vals = getattr(s, self.OP["ActorHasEyeState"])
+            if vals is None: continue
+            if eye_closed and eye_closed.name.lower() in vals.name:
                 n_eye_closed += 1
         results.append(("CQ_eye_closed_count", n_eye_closed, True))
 
@@ -202,19 +211,20 @@ class OntologyEvaluator:
         dist = {
             "Fatigue": Counter(),
             "AttentionLevels": Counter(),
+            "Unresponsiveness": Counter(),
             "EyeState": Counter(),
             "MouthState": Counter()
         }
         for s in State.instances():
             for key, prop in [("Fatigue", self.OP["ActorStateHasFatigue"]),
-                              ("Attention", self.OP["ActorStateHasAttention"]),
+                              ("AttentionLevels", self.OP["ActorStateHasAttention"]),
                               ("Unresponsiveness", self.OP["ActorStateHasUnresponsiveness"]),
-                              ("Eye", self.OP["ActorHasEyeState"]),
-                              ("Mouth", self.OP["ActorHasMouthState"])]:
+                              ("EyeState", self.OP["ActorHasEyeState"]),
+                              ("MouthState", self.OP["ActorHasMouthState"])]:
 
-                vals = getattr(s, prop, [])
+                vals = getattr(s, prop)
                 if vals:
-                    for v in vals: dist[key][v.name] += 1
+                    dist[key][vals.name] += 1
                 else:
                     dist[key]["<missing>"] += 1
 
@@ -238,26 +248,37 @@ class OntologyEvaluator:
         tab_kss_eye = Counter()
 
         for s in State.instances():
-            # find the HRV node linked to this state
-            hrv_nodes = [x for x in getattr(s, self.OP["ActorStateHasPhysiologicalState"], []) if isinstance(x, self.C("HRV"))]
-            fat_vals  = getattr(s, fat, [])
-            eye_vals  = getattr(s, eye, [])
 
             # HRV vs Fatigue
+            hrv_nodes = [x for x in getattr(s, self.OP["ActorStateHasPhysiologicalState"], []) if isinstance(x, self.C("HRV"))]
+            if len(hrv_nodes) > 1: 
+                raise RuntimeError("HRV has been attributed multiple times to the actor state") 
+            hrv_nodes = hrv_nodes[0] 
+
+            fat_vals  = getattr(s, fat)
+            if fat_vals: 
+                fat_vals = fat_vals.name.split("_")[0] 
+
             if hrv_nodes and fat_vals:
-                # assume HRVis(hrv_node, <category_individual>) exists
-                cats = getattr(hrv_nodes[0], hrvis, [])
-                for c in cats:
-                    for f in fat_vals:
-                        tab_hrv_fat[(c.name, f.name)] += 1
+                cats = getattr(hrv_nodes, hrvis) 
+                cats = cats.name.split("_")[0] 
+                tab_hrv_fat[(cats, fat_vals)] += 1
 
             # KSS vs Eye
-            kss_nodes = [x for x in getattr(s, self.OP["ActorStateHasPhysiologicalState"], []) if isinstance(x, self.C("Drowsiness"))]
+            kss_nodes = [x for x in getattr(s, self.OP["ActorStateHasPhysiologicalState"]) if isinstance(x, self.C("Drowsiness"))]
+            if len(kss_nodes) > 1: 
+                raise RuntimeError("KSS levels have to be functional for each actor state") 
+            kss_nodes = kss_nodes[0] 
+
+            eye_vals  = getattr(s, eye)
+            if eye_vals: 
+                eye_vals = eye_vals.EyeStateIs[0].name.split("_")[0] 
+
             if kss_nodes and eye_vals:
-                cats = getattr(kss_nodes[0], kssis, [])
-                for c in cats:
-                    for e in eye_vals:
-                        tab_kss_eye[(c.name, e.name)] += 1
+                cats = getattr(kss_nodes, kssis)
+                cats = cats.name.split("_")[:-1] 
+                cats = "_".join(cats)
+                tab_kss_eye[(cats, eye_vals)] += 1
 
         self.metrics.crosstabs = {"HRV_vs_Fatigue": tab_hrv_fat, "KSS_vs_Eye": tab_kss_eye}
         return self.metrics.crosstabs
