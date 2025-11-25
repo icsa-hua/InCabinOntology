@@ -543,13 +543,38 @@ class RuleCreator:
             data[act_st]['age'] = act_st.ActorStateHasAge.AgeBelongsToGroup.name.split("_")[0] 
             data[act_st]['sex'] = act_st.ActorStateHasSex.SexBelongsToGroup.name.split("_")[0] 
             data[act_st]['accessories'] = act_st.ActorStateHasAccessories.AccessoriesIncludeWearables.name.split("_")[0] 
-            data[act_st]['fatigue'] = act_st.ActorStateHasFatigue.name.split("_")[0]
-            data[act_st]['attention'] = act_st.ActorStateHasAttention.name.split("_")[0]
-            data[act_st]['unresp_inst'] = act_st.ActorStateHasUnresponsiveness.name.split("_")[0]
+            try: 
+
+                data[act_st]['fatigue'] = act_st.ActorStateHasFatigue.name.split("_")[0]
+            except: 
+                pdb.set_trace()
+            try:
+                data[act_st]['attention'] = act_st.ActorStateHasAttention.name.split("_")[0]
+            except: 
+                print("Attention") 
+                pdb.set_trace()
+            try: 
+                data[act_st]['unresponsiveness'] = act_st.ActorStateHasUnresponsiveness.name.split("_")[0]
+            except:
+                print("Unresponsiveness")
+                pdb.set_trace()
             data[act_st]['driver_id'] = act_st.name
-            eye_inst = act_st.ActorHasEyeState.EyeStateIs[0].name.split("_")[0] 
+
+            try: 
+                eye_inst = act_st.ActorHasEyeState.EyeStateIs[0].name.split("_")[0] 
+            except: 
+                logger.warn("WARNING: Eye instance for this actor state could not be determined") 
+                logger.debug(f"The actorState has {data[act_st]['fatigue']} | {data[act_st]['attention']} | {data[act_st]['unresponsiveness']}") 
+                eye_inst = "openstate" 
             data[act_st]['eye_state']  = eye_inst.replace("state", "")
-            data[act_st]['mouth_state'] = act_st.ActorHasMouthState.MouthStateIs[0].name.split("_")[0]
+            
+            try: 
+
+                data[act_st]['mouth_state'] = act_st.ActorHasMouthState.MouthStateIs[0].name.split("_")[0]
+            except: 
+                logger.warn("WARNING: Mouth instance for this actor state could not be determined") 
+                logger.debug(f"The actorState has {data[act_st]['fatigue']} | {data[act_st]['attention']} | {data[act_st]['unresponsiveness']}") 
+                data[act_st]['mouth_state'] = "open"  
 
             actor_data = {
                 "prompt_details": {
@@ -575,7 +600,7 @@ class RuleCreator:
                     "accessories": data[act_st]['accessories'], 
                     "fatigue":data[act_st]['fatigue'], 
                     "attention":data[act_st]['attention'], 
-                    "unresponsive":data[act_st]['unresp_inst'],
+                    "unresponsiveness":data[act_st]['unresponsiveness'],
                     "bounding_box":"...", 
                     "bounding_polygon":"...", 
                 }
@@ -605,14 +630,13 @@ class RuleCreator:
             obs.ObsIsDividedIntoPhS.clear()
 
 
-    def remove_prev_values(self, ts_iso_dates): 
+    def remove_prev_values(self, ts_iso_dates, actor_states): 
  
         with self.ontology: 
             for identifier in ts_iso_dates: 
                 for individual in list(self.ontology.individuals()): 
-                    if identifier in individual.name : 
+                    if identifier in individual.name or  individual in actor_states: 
                         destroy_entity(individual) 
-
 
 
 

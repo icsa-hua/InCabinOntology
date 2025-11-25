@@ -42,7 +42,6 @@ dot.node('DataContainer', 'DataContainer', shape='box', style='filled', fillcolo
 dot.node('ActorState', 'ActorState', shape='ellipse', style='filled', fillcolor='beige')
 dot.node('Label', 'Label', shape='ellipse', style='filled', fillcolor='lightblue')
 dot.node('MetaData', 'MetaData', shape='ellipse', style='filled', fillcolor='lightblue')
-dot.node('TemporalContext', 'TemporalContext', shape='ellipse', style='filled', fillcolor='lightgreen')
 dot.node('WeatherCondition', 'WeatherCondition', shape='ellipse', style='filled', fillcolor='lightgreen')
 
 dot.node('Observations', 'Observations', shape='ellipse', style='filled', fillcolor='beige')
@@ -57,7 +56,7 @@ dot.node('DrowsinessSuspected', 'DrowsinessSuspected', shape='ellipse', style='f
 dot.node('UndefinedState', 'UndefinedState', shape='ellipse', style='filled', fillcolor='beige')
 
 dot.node('Responsive', 'Responsive', shape='ellipse', style='filled', fillcolor='beige')
-dot.node('AtRisk', 'AtRisk', shape='ellipse', style='filled', fillcolor='beige')
+dot.node('Undefined_AtRisk', 'Undefined_AtRisk', shape='ellipse', style='filled', fillcolor='beige')
 dot.node('Imminent', 'Imminent', shape='ellipse', style='filled', fillcolor='beige')
 dot.node('Unresponsive', 'Unresponsive', shape='ellipse', style='filled', fillcolor='beige')
 

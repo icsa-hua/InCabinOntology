@@ -272,7 +272,10 @@ class OntologyEvaluator:
 
             eye_vals  = getattr(s, eye)
             if eye_vals: 
-                eye_vals = eye_vals.EyeStateIs[0].name.split("_")[0] 
+                try:
+                    eye_vals = eye_vals.EyeStateIs[0].name.split("_")[0] 
+                except:
+                    import pdb;pdb.set_trace()
 
             if kss_nodes and eye_vals:
                 cats = getattr(kss_nodes, kssis)
