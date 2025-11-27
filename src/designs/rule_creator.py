@@ -609,15 +609,13 @@ class RuleCreator:
             } 
 
             json_file = filepath + f"/label_{ind}.json"
-            if not os.path.exists(filepath): 
-                os.mkdir(filepath)
+            os.makedirs(filepath, exist_ok=True)
 
             with self.ontology: 
                 label = act_st.ActorIsTargetedByLabel
                 with open(json_file, "w") as f:
                     json.dump(actor_data, f, indent=4)
                 label.hasDescription.append(json.dumps(actor_data))
-                
 
             logger.debug(f"Label for Actor {actor.name} created succesfully")
         
