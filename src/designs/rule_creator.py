@@ -196,7 +196,7 @@ class RuleCreator:
             for rule in age_rules:                
                 Imp().set_as_rule(
                     f"""
-                    ActorState(?act_state), validAt(?act_state, ?s),
+                    ActorState(?act_state),
                     ActorStateHasAge(?act_state, ?age_inst),
                     hasAgeValue(?age_inst, ?age_value),
                     {rule[1]}(?age_value, {rule[2]})
