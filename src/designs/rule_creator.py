@@ -187,10 +187,11 @@ class RuleCreator:
         if self.ontology.Age is not None: 
 
             age_rules = [
-                ("Young", "lessThanOrEqual", 18),
-                ("Middle-Aged", "greaterThanOrEqual", 18, "lessThanOrEqual", 65),
-                ("Elderly", "greaterThan", 65)
+                ("Young", "greaterThanOrEqual", 0, "lessThan", 18),
+                ("Middle-Aged", "greaterThanOrEqual", 18, "lessThan", 65),
+                ("Elderly", "greaterThanOrEqual", 65, "lessThanOrEqual", 110)
             ]
+
 
             for rule in age_rules:                
                 Imp().set_as_rule(
@@ -607,6 +608,9 @@ class RuleCreator:
             } 
 
             json_file = filepath + f"/label_{ind}.json"
+            if not os.path.exists(filepath): 
+                os.mkdir(filepath)
+
             with self.ontology: 
                 label = act_st.ActorIsTargetedByLabel
                 with open(json_file, "w") as f:

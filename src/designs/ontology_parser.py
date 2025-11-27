@@ -202,7 +202,7 @@ class OntologyParser:
                             self.ev.run_cq()
                             self.ev.label_distributions()
                             self.ev.crosstab()
-                        
+                        pdb.set_trace()                        
                         self.save_onto(0, "assets/ontologies/snapshot_after_inference.owl")
                         self.rule_parser.remove_prev_values(ts_iso_dates, batch_states)
                         batch_states.clear() 
