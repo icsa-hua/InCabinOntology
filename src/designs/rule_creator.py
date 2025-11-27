@@ -226,7 +226,7 @@ class RuleCreator:
 
                 Imp().set_as_rule(
                     f"""
-                    ActorState(?act_state), validAt(?act_state, ?s), 
+                    ActorState(?act_state), 
                     ActorStateHasSex(?act_state, ?sex_inst),
                     hasStringValue(?sex_inst, ?sex_value),
                     stringEqualIgnoreCase(?sex_value, "{val}"),
