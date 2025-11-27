@@ -475,9 +475,6 @@ class RuleCreator:
         self.create_instances("RR", ts_iso=ts_iso, unique=unique, regenerate=regenerate)
         self.create_instances("SpO2", ts_iso=ts_iso, unique=unique, regenerate=regenerate)
         self.create_instances("Drowsiness", ts_iso=ts_iso, unique=unique, regenerate=regenerate)
-        # self.create_instances("Fatigue", ts_iso=ts_iso, unique=unique, regenerate=regenerate)
-        # self.create_instances("AttentionLevels", ts_iso=ts_iso, unique=unique, regenerate=regenerate)
-        # self.create_instances("Unresponsiveness", ts_iso=ts_iso, unique=unique, regenerate=regenerate)
         self.create_instances("EyeState", ts_iso=ts_iso, unique=unique, regenerate=regenerate)
         self.create_instances("MouthState", ts_iso=ts_iso, unique=unique, regenerate=regenerate)
         self.create_instances("Accessories", ts_iso=ts_iso, unique=unique, regenerate=regenerate)
@@ -540,27 +537,31 @@ class RuleCreator:
 
             for phy in phys[ind]: 
                     data[act_st][phy.name.split('_')[0]] = phy.hasNumericalValue[0] 
-
+            
+            data[act_st]['driver_id'] = act_st.name
             data[act_st]['age'] = act_st.ActorStateHasAge.AgeBelongsToGroup.name.split("_")[0] 
             data[act_st]['sex'] = act_st.ActorStateHasSex.SexBelongsToGroup.name.split("_")[0] 
             data[act_st]['accessories'] = act_st.ActorStateHasAccessories.AccessoriesIncludeWearables.name.split("_")[0] 
+           
             try: 
 
                 data[act_st]['fatigue'] = act_st.ActorStateHasFatigue.name.split("_")[0]
             except: 
-                pdb.set_trace()
+                logger.warn("WARNING: fatigue instance for this actor state could not be determined") 
+                data[act_st]['fatigue'] = "undefinedstate"
+
             try:
                 data[act_st]['attention'] = act_st.ActorStateHasAttention.name.split("_")[0]
             except: 
-                print("Attention") 
-                pdb.set_trace()
+                logger.warn("WARNING: attention instance for this actor state could not be determined")
+                data[act_st]['attention'] = "undefined"
+
             try: 
                 data[act_st]['unresponsiveness'] = act_st.ActorStateHasUnresponsiveness.name.split("_")[0]
             except:
-                print("Unresponsiveness")
-                pdb.set_trace()
-            data[act_st]['driver_id'] = act_st.name
-
+                logger.warn("WARNING: unresponsiveness instance for this actor state could not be determined")
+                data[act_st]['unresponsiveness'] = "undefined_atrisk"
+            
             try: 
                 eye_inst = act_st.ActorHasEyeState.EyeStateIs[0].name.split("_")[0] 
             except: 
