@@ -2567,6 +2567,46 @@ It holds the data created after processing the observations captured by the sens
   <rdfs:subClassOf rdf:resource="#ActorState_Very_Low_RR"/>
 </owl:Class>
 
+<owl:Class rdf:about="#ActorState_LowHR_ModerateHRV_ModerateRR_NormalSpO2_LVL3">
+  <rdfs:subClassOf rdf:resource="#ActorState"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#ActorStateHasFatigue"/>
+      <owl:hasValue rdf:resource="#drowsinesssuspected_instance"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#ActorStateHasAttention"/>
+      <owl:hasValue rdf:resource="#attentive_instance"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#ActorStateHasUnresponsiveness"/>
+      <owl:hasValue rdf:resource="#undefined_atrisk_instance"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:intersectionOf rdf:parseType="Collection">
+        <rdf:Description rdf:about="#ActorState"/>
+        <rdf:Description rdf:about="#ActorState_Low_HR"/>
+        <rdf:Description rdf:about="#ActorState_Moderate_HRV"/>
+        <rdf:Description rdf:about="#ActorState_Moderate_RR"/>
+        <rdf:Description rdf:about="#ActorState_Normal_SpO2"/>
+        <rdf:Description rdf:about="#ActorState_Drowsiness_Level_3"/>
+      </owl:intersectionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+  <rdfs:subClassOf rdf:resource="#ActorState_Drowsiness_Level_3"/>
+  <rdfs:subClassOf rdf:resource="#ActorState_Low_HR"/>
+  <rdfs:subClassOf rdf:resource="#ActorState_Moderate_HRV"/>
+  <rdfs:subClassOf rdf:resource="#ActorState_Normal_SpO2"/>
+  <rdfs:subClassOf rdf:resource="#ActorState_Moderate_RR"/>
+  <rdfs:subClassOf rdf:resource="#ActorState_Very_Low_RR"/>
+</owl:Class>
+
 <owl:Class rdf:about="#ActorState_LowHR_VeryLowHRV_HighRR_NormalSpO2_LVL3">
   <rdfs:subClassOf rdf:resource="#ActorState"/>
   <rdfs:subClassOf>
@@ -3907,6 +3947,46 @@ It holds the data created after processing the observations captured by the sens
   <rdfs:subClassOf rdf:resource="#ActorState_Moderate_HRV"/>
   <rdfs:subClassOf rdf:resource="#ActorState_Moderate_HR"/>
   <rdfs:subClassOf rdf:resource="#ActorState_Normal_SpO2"/>
+  <rdfs:subClassOf rdf:resource="#ActorState_Moderate_RR"/>
+  <rdfs:subClassOf rdf:resource="#ActorState_Very_Low_RR"/>
+</owl:Class>
+
+<owl:Class rdf:about="#ActorState_ModerateHR_VeryLowHRV_ModerateRR_LowSpO2_LVL3">
+  <rdfs:subClassOf rdf:resource="#ActorState"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#ActorStateHasFatigue"/>
+      <owl:hasValue rdf:resource="#drowsinesssuspected_instance"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#ActorStateHasAttention"/>
+      <owl:hasValue rdf:resource="#undefined_instance"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#ActorStateHasUnresponsiveness"/>
+      <owl:hasValue rdf:resource="#undefined_atrisk_instance"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:intersectionOf rdf:parseType="Collection">
+        <rdf:Description rdf:about="#ActorState"/>
+        <rdf:Description rdf:about="#ActorState_Moderate_HR"/>
+        <rdf:Description rdf:about="#ActorState_Very_Low_HRV"/>
+        <rdf:Description rdf:about="#ActorState_Moderate_RR"/>
+        <rdf:Description rdf:about="#ActorState_Low_SpO2"/>
+        <rdf:Description rdf:about="#ActorState_Drowsiness_Level_3"/>
+      </owl:intersectionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+  <rdfs:subClassOf rdf:resource="#ActorState_Drowsiness_Level_3"/>
+  <rdfs:subClassOf rdf:resource="#ActorState_Low_SpO2"/>
+  <rdfs:subClassOf rdf:resource="#ActorState_Moderate_HR"/>
+  <rdfs:subClassOf rdf:resource="#ActorState_Very_Low_HRV"/>
   <rdfs:subClassOf rdf:resource="#ActorState_Moderate_RR"/>
   <rdfs:subClassOf rdf:resource="#ActorState_Very_Low_RR"/>
 </owl:Class>
@@ -5558,7 +5638,7 @@ It holds the data created after processing the observations captured by the sens
 
 <owl:NamedIndividual rdf:about="#driver">
   <rdf:type rdf:resource="#Actor"/>
-  <hasUniqueIdentifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9672314f0c3a4775bf39d26780c0c3be</hasUniqueIdentifier>
+  <hasUniqueIdentifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">e8e8666000cd4d7f9251c298c2b9b963</hasUniqueIdentifier>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#hot_high_hr_elderly_female">

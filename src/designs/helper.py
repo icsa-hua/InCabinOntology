@@ -53,7 +53,6 @@ def single_attribute_pattern_classes(onto):
                               )]  
 
         # RR DIFFERENT CATEGORIES
-
         class ActorState_High_RR(onto.ActorState):
             equivalent_to = [(onto.ActorState
                                 & onto.ActorStateHasPhysiologicalState.some( onto.RR & onto.RRis.value(onto.high_rr_instance))
@@ -73,7 +72,6 @@ def single_attribute_pattern_classes(onto):
             equivalent_to = [(onto.ActorState
                                 & onto.ActorStateHasPhysiologicalState.some( onto.RR & onto.RRis.value(onto.moderate_rr_instance))
                               )]   
-
 
         # SpO2 DIFFERENT CATEGORIES
         class ActorState_Normal_SpO2(onto.ActorState):
@@ -112,6 +110,7 @@ def single_attribute_pattern_classes(onto):
                                 & onto.ActorStateHasPhysiologicalState.some( onto.Drowsiness & onto.DrowsinessIs.value(onto.level_9_kss_instance))
             )] 
 
+        # unified signature 1 
         class ActorState_HighHR_LowHRV_HighRR_NormalSpO2_LVL3(onto.ActorState): 
             equivalent_to = [(
                 onto.ActorState 
@@ -127,7 +126,7 @@ def single_attribute_pattern_classes(onto):
                     onto.ActorStateHasAttention.value(onto.attentive_instance), 
                     onto.ActorStateHasUnresponsiveness.value(onto.undefined_atrisk_instance)
                 ]
-
+        # unified signature 2 
         class ActorState_HighHR_LowHRV_VeryLowRR_NormalSpO2_LVL3(onto.ActorState): 
             equivalent_to = [(
                 onto.ActorState 
@@ -143,7 +142,7 @@ def single_attribute_pattern_classes(onto):
                     onto.ActorStateHasAttention.value(onto.attentive_instance), 
                     onto.ActorStateHasUnresponsiveness.value(onto.responsive_instance)
                 ]
-
+        # unified signature 3 
         class ActorState_HighHR_VeryLowHRV_HighRR_LowSpO2_LVL3(onto.ActorState): 
             equivalent_to = [(
                 onto.ActorState 
@@ -413,6 +412,23 @@ def single_attribute_pattern_classes(onto):
 
             is_a = [
                     onto.ActorStateHasFatigue.value(onto.undefinedstate_instance), 
+                    onto.ActorStateHasAttention.value(onto.attentive_instance), 
+                    onto.ActorStateHasUnresponsiveness.value(onto.undefined_atrisk_instance)
+                ]
+                
+        # unified signature 018    
+        class ActorState_LowHR_ModerateHRV_ModerateRR_NormalSpO2_LVL3(onto.ActorState): 
+            equivalent_to = [(
+                onto.ActorState 
+                & ActorState_Low_HR
+                & ActorState_Moderate_HRV
+                & ActorState_Moderate_RR 
+                & ActorState_Normal_SpO2
+                & ActorState_Drowsiness_Level_3 
+                )]
+
+            is_a = [
+                    onto.ActorStateHasFatigue.value(onto.drowsinesssuspected_instance), 
                     onto.ActorStateHasAttention.value(onto.attentive_instance), 
                     onto.ActorStateHasUnresponsiveness.value(onto.undefined_atrisk_instance)
                 ]
@@ -1000,6 +1016,25 @@ def single_attribute_pattern_classes(onto):
                     onto.ActorStateHasAttention.value(onto.attentive_instance), 
                     onto.ActorStateHasUnresponsiveness.value(onto.undefined_atrisk_instance)
                 ]
+            
+
+        # ADDED EXTRA 1 
+        class ActorState_ModerateHR_VeryLowHRV_ModerateRR_LowSpO2_LVL3(onto.ActorState): 
+            equivalent_to = [(
+                onto.ActorState 
+                & ActorState_Moderate_HR
+                & ActorState_Very_Low_HRV
+                & ActorState_Moderate_RR 
+                & ActorState_Low_SpO2
+                & ActorState_Drowsiness_Level_3 
+                )]
+
+            is_a = [
+                    onto.ActorStateHasFatigue.value(onto.drowsinesssuspected_instance), 
+                    onto.ActorStateHasAttention.value(onto.undefined_instance), 
+                    onto.ActorStateHasUnresponsiveness.value(onto.undefined_atrisk_instance)
+                ]
+
             
         # unified signature 53 
         class ActorState_ModerateHR_VeryLowHRV_ModerateRR_LowSpO2_LVL5(onto.ActorState): 

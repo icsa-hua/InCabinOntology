@@ -82,7 +82,8 @@ class OntologyParser:
 
         assets_dir = get_assets_path()
         dataset = pd.read_csv(dataset_path)
-        
+        # small preprocess 
+        dataset = global_preprocessing(dataset)
         filepath = assets_dir + "/labels"
         tracemalloc.start()
         save_path = os.path.join(assets_dir,"ontologies/inference_1_1.owl") if save else None
@@ -178,11 +179,7 @@ class OntologyParser:
                     if need_sync: 
                         gc.collect() 
 
-                        # Run the reasoner to update the ontology with the new values                       # Run the reasoner to update the ontology with the new values     
-                        # self.rule_parser.synchronize_ontology()
-                        print("INDEX AT THIS MOMENT (ONLY GOD KNOWS): ", index)
-                        if index == 24: 
-                            pdb.set_trace()
+                        # Run the reasoner to update the ontology with the new values                       
                         self.ev.sync_reasoner(len(batch_states))
                         
                         # Create the description of the actor and save it in JSON format

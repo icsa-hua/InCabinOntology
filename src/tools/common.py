@@ -2,8 +2,9 @@ import pdb
 import os 
 import re
 import uuid
+import pandas as pd 
 
-from typing import Any
+from typing import Any, Optional
 from owlready2 import Imp
 from owlready2 import * 
 from datetime import datetime, timezone
@@ -401,6 +402,25 @@ def check_elderly_state(onto):
     print("\nHigh_SpO2 entity:", High_SpO2, "is class:", getattr(High_SpO2, "is_a", None) is not None and hasattr(High_SpO2, "instances"))
 
 
+def global_preprocessing(dataset:Optional[pd.DataFrame]=None): 
+
+    if dataset is None: 
+        raise ValueError("The dataset is Empty Or no dataset was provided")
+    try: 
+        groups = dataset.groupby([
+            "Sex", "Demographic", "Age", "Accessories"
+            ])
+        
+        indi_gr = next(iter(groups))[1]
+        # Make the Characteristics the same for all instances 
+        
+        # This does NOT alter ontology behavior, but since the dataset is mixed 
+        # it looks better. 
+        indi_gr['Characteristics'] = 'LongHair' 
+        return indi_gr
+
+    except: 
+        raise RuntimeError("The time-indexed dataset cannot be grouped")
 
 
 
