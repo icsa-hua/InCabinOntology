@@ -543,8 +543,7 @@ class RuleCreator:
             data[act_st]['sex'] = act_st.ActorStateHasSex.SexBelongsToGroup.name.split("_")[0] 
             data[act_st]['accessories'] = act_st.ActorStateHasAccessories.AccessoriesIncludeWearables.name.split("_")[0] 
            
-            try: 
-
+            try:
                 data[act_st]['fatigue'] = act_st.ActorStateHasFatigue.name.split("_")[0]
             except: 
                 logger.warn("WARNING: fatigue instance for this actor state could not be determined") 

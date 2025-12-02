@@ -70,7 +70,7 @@ def single_attribute_pattern_classes(onto):
 
         class ActorState_Very_Low_RR(onto.ActorState):
             equivalent_to = [(onto.ActorState
-                                & onto.ActorStateHasPhysiologicalState.some( onto.RR & onto.RRis.value(onto.moderate_rr_instance))
+                                & onto.ActorStateHasPhysiologicalState.some( onto.RR & onto.RRis.value(onto.very_low_rr_instance))
                               )]   
 
         # SpO2 DIFFERENT CATEGORIES
@@ -827,7 +827,7 @@ def single_attribute_pattern_classes(onto):
                     onto.ActorStateHasAttention.value(onto.undefined_instance), 
                     onto.ActorStateHasUnresponsiveness.value(onto.unresponsive_instance)
                 ]
-            
+        # unified signature 00039    
         class ActorState_VeryLowHR_ModerateHRV_ModerateRR_NormalSpO2_LVL3(onto.ActorState): 
             equivalent_to = [(
                 onto.ActorState 
@@ -836,6 +836,23 @@ def single_attribute_pattern_classes(onto):
                 & ActorState_Moderate_RR 
                 & ActorState_Normal_SpO2
                 & ActorState_Drowsiness_Level_3 
+                )]
+
+            is_a = [
+                    onto.ActorStateHasFatigue.value(onto.undefinedstate_instance), 
+                    onto.ActorStateHasAttention.value(onto.undefined_instance), 
+                    onto.ActorStateHasUnresponsiveness.value(onto.undefined_atrisk_instance)
+                ]
+            
+        # unified signature 000039    
+        class ActorState_VeryLowHR_ModerateHRV_ModerateRR_NormalSpO2_LVL5(onto.ActorState): 
+            equivalent_to = [(
+                onto.ActorState 
+                & ActorState_Very_Low_HR
+                & ActorState_Moderate_HRV
+                & ActorState_Moderate_RR 
+                & ActorState_Normal_SpO2
+                & ActorState_Drowsiness_Level_5 
                 )]
 
             is_a = [
@@ -1635,8 +1652,25 @@ def single_attribute_pattern_classes(onto):
                     onto.ActorStateHasUnresponsiveness.value(onto.unresponsive_instance)
                 ]
             
-         # unified signature 81 
-        # class ActorState_VeryLowHR_HighHRV_LowRR_NormalSpO2_LVL3(onto.ActorState): 
+        # unified signature 81 
+        class ActorState_VeryLowHR_HighHRV_LowRR_NormalSpO2_LVL3(onto.ActorState): 
+            equivalent_to = [(
+                onto.ActorState 
+                & ActorState_Very_Low_HR
+                & ActorState_High_HRV
+                & ActorState_Low_RR 
+                & ActorState_Normal_SpO2
+                & ActorState_Drowsiness_Level_3 
+                )]
+
+            is_a = [
+                    onto.ActorStateHasFatigue.value(onto.drowsinesssuspected_instance), 
+                    onto.ActorStateHasAttention.value(onto.undefined_instance), 
+                    onto.ActorStateHasUnresponsiveness.value(onto.undefined_atrisk_instance)
+                ]
+            
+        # unified signature 82
+        # class ActorState_VeryLowHR_HighHRV_LowRR_LowSpO2_LVL7(onto.ActorState): 
         #     equivalent_to = [(
         #         onto.ActorState 
         #         & ActorState_Very_Low_HR
@@ -1649,7 +1683,7 @@ def single_attribute_pattern_classes(onto):
         #     is_a = [
         #             onto.ActorStateHasFatigue.value(onto.drowsinesssuspected_instance), 
         #             onto.ActorStateHasAttention.value(onto.undefined_instance), 
-        #             onto.ActorStateHasUnresponsiveness.value(onto.undefined_atrisk_instance)
+        #             onto.ActorStateHasUnresponsiveness.value(onto.unresponsive_instance)
         #         ]
             
     logger.debug("All GCIs set correctly")    
