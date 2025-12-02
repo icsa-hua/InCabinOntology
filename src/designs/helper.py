@@ -794,6 +794,56 @@ def single_attribute_pattern_classes(onto):
                 ]
 
 
+        # unified signature 039
+        class ActorState_VeryLowHR_ModerateHRV_ModerateRR_NormalSpO2_LVL7(onto.ActorState): 
+            equivalent_to = [(
+                onto.ActorState 
+                & ActorState_Very_Low_HR
+                & ActorState_Moderate_HRV
+                & ActorState_Moderate_RR 
+                & ActorState_Normal_SpO2
+                & ActorState_Drowsiness_Level_7 
+                )]
+
+            is_a = [
+                    onto.ActorStateHasFatigue.value(onto.undefinedstate_instance), 
+                    onto.ActorStateHasAttention.value(onto.undefined_instance), 
+                    onto.ActorStateHasUnresponsiveness.value(onto.imminent_instance)
+                ]
+
+        # unified signature 0039
+        class ActorState_VeryLowHR_ModerateHRV_ModerateRR_LowSpO2_LVL7(onto.ActorState): 
+            equivalent_to = [(
+                onto.ActorState 
+                & ActorState_Very_Low_HR
+                & ActorState_Moderate_HRV
+                & ActorState_Moderate_RR 
+                & ActorState_Low_SpO2
+                & ActorState_Drowsiness_Level_7 
+                )]
+
+            is_a = [
+                    onto.ActorStateHasFatigue.value(onto.undefinedstate_instance), 
+                    onto.ActorStateHasAttention.value(onto.undefined_instance), 
+                    onto.ActorStateHasUnresponsiveness.value(onto.unresponsive_instance)
+                ]
+            
+        class ActorState_VeryLowHR_ModerateHRV_ModerateRR_NormalSpO2_LVL3(onto.ActorState): 
+            equivalent_to = [(
+                onto.ActorState 
+                & ActorState_Very_Low_HR
+                & ActorState_Moderate_HRV
+                & ActorState_Moderate_RR 
+                & ActorState_Normal_SpO2
+                & ActorState_Drowsiness_Level_3 
+                )]
+
+            is_a = [
+                    onto.ActorStateHasFatigue.value(onto.undefinedstate_instance), 
+                    onto.ActorStateHasAttention.value(onto.undefined_instance), 
+                    onto.ActorStateHasUnresponsiveness.value(onto.undefined_atrisk_instance)
+                ]
+
         # unified signature 40 
         class ActorState_VeryLowHR_VeryLowHRV_VeryLowRR_NormalSpO2_LVL3(onto.ActorState): 
             equivalent_to = [(
@@ -1585,6 +1635,23 @@ def single_attribute_pattern_classes(onto):
                     onto.ActorStateHasUnresponsiveness.value(onto.unresponsive_instance)
                 ]
             
+         # unified signature 81 
+        # class ActorState_VeryLowHR_HighHRV_LowRR_NormalSpO2_LVL3(onto.ActorState): 
+        #     equivalent_to = [(
+        #         onto.ActorState 
+        #         & ActorState_Very_Low_HR
+        #         & ActorState_High_HRV
+        #         & ActorState_Low_RR 
+        #         & ActorState_Normal_SpO2
+        #         & ActorState_Drowsiness_Level_3 
+        #         )]
+
+        #     is_a = [
+        #             onto.ActorStateHasFatigue.value(onto.drowsinesssuspected_instance), 
+        #             onto.ActorStateHasAttention.value(onto.undefined_instance), 
+        #             onto.ActorStateHasUnresponsiveness.value(onto.undefined_atrisk_instance)
+        #         ]
+            
     logger.debug("All GCIs set correctly")    
 
 
@@ -1851,6 +1918,21 @@ def eye_mouth_state_rules():
         ActorStateHasFatigue(?act_st, undefinedstate_instance), 
         ActorStateHasAttention(?act_st, inattentive_instance), 
         ActorStateHasUnresponsiveness(?act_st, undefined_atrisk_instance), 
+        ActorHasEyeState(?act_st, ?eye_st), 
+        ActorHasMouthState(?act_st, ?mouth_st)
+        -> 
+        EyeStateIs(?eye_st, openstate_instance), 
+        MouthStateIs(?mouth_st, open_instance)
+
+    """
+    )
+
+    Imp().set_as_rule(
+    """
+        ActorState(?act_st), 
+        ActorStateHasFatigue(?act_st, awake_instance), 
+        ActorStateHasAttention(?act_st, undefined_instance), 
+        ActorStateHasUnresponsiveness(?act_st, responsive_instance), 
         ActorHasEyeState(?act_st, ?eye_st), 
         ActorHasMouthState(?act_st, ?mouth_st)
         -> 

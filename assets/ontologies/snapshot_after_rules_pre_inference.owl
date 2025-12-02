@@ -3434,6 +3434,126 @@ It holds the data created after processing the observations captured by the sens
   <rdfs:subClassOf rdf:resource="#ActorState_Very_Low_RR"/>
 </owl:Class>
 
+<owl:Class rdf:about="#ActorState_VeryLowHR_ModerateHRV_ModerateRR_NormalSpO2_LVL7">
+  <rdfs:subClassOf rdf:resource="#ActorState"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#ActorStateHasFatigue"/>
+      <owl:hasValue rdf:resource="#undefinedstate_instance"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#ActorStateHasAttention"/>
+      <owl:hasValue rdf:resource="#undefined_instance"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#ActorStateHasUnresponsiveness"/>
+      <owl:hasValue rdf:resource="#imminent_instance"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:intersectionOf rdf:parseType="Collection">
+        <rdf:Description rdf:about="#ActorState"/>
+        <rdf:Description rdf:about="#ActorState_Very_Low_HR"/>
+        <rdf:Description rdf:about="#ActorState_Moderate_HRV"/>
+        <rdf:Description rdf:about="#ActorState_Moderate_RR"/>
+        <rdf:Description rdf:about="#ActorState_Normal_SpO2"/>
+        <rdf:Description rdf:about="#ActorState_Drowsiness_Level_7"/>
+      </owl:intersectionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+  <rdfs:subClassOf rdf:resource="#ActorState_Drowsiness_Level_7"/>
+  <rdfs:subClassOf rdf:resource="#ActorState_Moderate_HRV"/>
+  <rdfs:subClassOf rdf:resource="#ActorState_Normal_SpO2"/>
+  <rdfs:subClassOf rdf:resource="#ActorState_Very_Low_HR"/>
+  <rdfs:subClassOf rdf:resource="#ActorState_Moderate_RR"/>
+  <rdfs:subClassOf rdf:resource="#ActorState_Very_Low_RR"/>
+</owl:Class>
+
+<owl:Class rdf:about="#ActorState_VeryLowHR_ModerateHRV_ModerateRR_LowSpO2_LVL7">
+  <rdfs:subClassOf rdf:resource="#ActorState"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#ActorStateHasFatigue"/>
+      <owl:hasValue rdf:resource="#undefinedstate_instance"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#ActorStateHasAttention"/>
+      <owl:hasValue rdf:resource="#undefined_instance"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#ActorStateHasUnresponsiveness"/>
+      <owl:hasValue rdf:resource="#unresponsive_instance"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:intersectionOf rdf:parseType="Collection">
+        <rdf:Description rdf:about="#ActorState"/>
+        <rdf:Description rdf:about="#ActorState_Very_Low_HR"/>
+        <rdf:Description rdf:about="#ActorState_Moderate_HRV"/>
+        <rdf:Description rdf:about="#ActorState_Moderate_RR"/>
+        <rdf:Description rdf:about="#ActorState_Low_SpO2"/>
+        <rdf:Description rdf:about="#ActorState_Drowsiness_Level_7"/>
+      </owl:intersectionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+  <rdfs:subClassOf rdf:resource="#ActorState_Drowsiness_Level_7"/>
+  <rdfs:subClassOf rdf:resource="#ActorState_Low_SpO2"/>
+  <rdfs:subClassOf rdf:resource="#ActorState_Moderate_HRV"/>
+  <rdfs:subClassOf rdf:resource="#ActorState_Very_Low_HR"/>
+  <rdfs:subClassOf rdf:resource="#ActorState_Moderate_RR"/>
+  <rdfs:subClassOf rdf:resource="#ActorState_Very_Low_RR"/>
+</owl:Class>
+
+<owl:Class rdf:about="#ActorState_VeryLowHR_ModerateHRV_ModerateRR_NormalSpO2_LVL3">
+  <rdfs:subClassOf rdf:resource="#ActorState"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#ActorStateHasFatigue"/>
+      <owl:hasValue rdf:resource="#undefinedstate_instance"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#ActorStateHasAttention"/>
+      <owl:hasValue rdf:resource="#undefined_instance"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#ActorStateHasUnresponsiveness"/>
+      <owl:hasValue rdf:resource="#undefined_atrisk_instance"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:intersectionOf rdf:parseType="Collection">
+        <rdf:Description rdf:about="#ActorState"/>
+        <rdf:Description rdf:about="#ActorState_Very_Low_HR"/>
+        <rdf:Description rdf:about="#ActorState_Moderate_HRV"/>
+        <rdf:Description rdf:about="#ActorState_Moderate_RR"/>
+        <rdf:Description rdf:about="#ActorState_Normal_SpO2"/>
+        <rdf:Description rdf:about="#ActorState_Drowsiness_Level_3"/>
+      </owl:intersectionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+  <rdfs:subClassOf rdf:resource="#ActorState_Drowsiness_Level_3"/>
+  <rdfs:subClassOf rdf:resource="#ActorState_Moderate_HRV"/>
+  <rdfs:subClassOf rdf:resource="#ActorState_Normal_SpO2"/>
+  <rdfs:subClassOf rdf:resource="#ActorState_Very_Low_HR"/>
+  <rdfs:subClassOf rdf:resource="#ActorState_Moderate_RR"/>
+  <rdfs:subClassOf rdf:resource="#ActorState_Very_Low_RR"/>
+</owl:Class>
+
 <owl:Class rdf:about="#ActorState_VeryLowHR_VeryLowHRV_VeryLowRR_NormalSpO2_LVL3">
   <rdfs:subClassOf rdf:resource="#ActorState"/>
   <rdfs:subClassOf>
@@ -5638,7 +5758,7 @@ It holds the data created after processing the observations captured by the sens
 
 <owl:NamedIndividual rdf:about="#driver">
   <rdf:type rdf:resource="#Actor"/>
-  <hasUniqueIdentifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">e8e8666000cd4d7f9251c298c2b9b963</hasUniqueIdentifier>
+  <hasUniqueIdentifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">efdd06a0b340482caf98ca42c31653ba</hasUniqueIdentifier>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#hot_high_hr_elderly_female">
@@ -6975,6 +7095,98 @@ It holds the data created after processing the observations captured by the sens
 <swrl:Variable rdf:about="urn:swrl#mouth_st"/>
 
 <swrl:Variable rdf:about="urn:swrl#eye_inst"/>
+
+<swrl:Imp>
+  <swrl:body>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="#ActorState"/>
+          <swrl:argument1 rdf:resource="urn:swrl#act_st"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest>
+        <rdf:Description>
+          <rdf:first>
+            <swrl:IndividualPropertyAtom>
+              <swrl:propertyPredicate rdf:resource="#ActorStateHasFatigue"/>
+              <swrl:argument1 rdf:resource="urn:swrl#act_st"/>
+              <swrl:argument2 rdf:resource="#awake_instance"/>
+            </swrl:IndividualPropertyAtom>
+          </rdf:first>
+          <rdf:rest>
+            <rdf:Description>
+              <rdf:first>
+                <swrl:IndividualPropertyAtom>
+                  <swrl:propertyPredicate rdf:resource="#ActorStateHasAttention"/>
+                  <swrl:argument1 rdf:resource="urn:swrl#act_st"/>
+                  <swrl:argument2 rdf:resource="#undefined_instance"/>
+                </swrl:IndividualPropertyAtom>
+              </rdf:first>
+              <rdf:rest>
+                <rdf:Description>
+                  <rdf:first>
+                    <swrl:IndividualPropertyAtom>
+                      <swrl:propertyPredicate rdf:resource="#ActorStateHasUnresponsiveness"/>
+                      <swrl:argument1 rdf:resource="urn:swrl#act_st"/>
+                      <swrl:argument2 rdf:resource="#responsive_instance"/>
+                    </swrl:IndividualPropertyAtom>
+                  </rdf:first>
+                  <rdf:rest>
+                    <rdf:Description>
+                      <rdf:first>
+                        <swrl:IndividualPropertyAtom>
+                          <swrl:propertyPredicate rdf:resource="#ActorHasEyeState"/>
+                          <swrl:argument1 rdf:resource="urn:swrl#act_st"/>
+                          <swrl:argument2 rdf:resource="urn:swrl#eye_st"/>
+                        </swrl:IndividualPropertyAtom>
+                      </rdf:first>
+                      <rdf:rest>
+                        <rdf:Description>
+                          <rdf:first>
+                            <swrl:IndividualPropertyAtom>
+                              <swrl:propertyPredicate rdf:resource="#ActorHasMouthState"/>
+                              <swrl:argument1 rdf:resource="urn:swrl#act_st"/>
+                              <swrl:argument2 rdf:resource="urn:swrl#mouth_st"/>
+                            </swrl:IndividualPropertyAtom>
+                          </rdf:first>
+                          <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                        </rdf:Description>
+                      </rdf:rest>
+                    </rdf:Description>
+                  </rdf:rest>
+                </rdf:Description>
+              </rdf:rest>
+            </rdf:Description>
+          </rdf:rest>
+        </rdf:Description>
+      </rdf:rest>
+    </rdf:Description>
+  </swrl:body>
+  <swrl:head>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:IndividualPropertyAtom>
+          <swrl:propertyPredicate rdf:resource="#EyeStateIs"/>
+          <swrl:argument1 rdf:resource="urn:swrl#eye_st"/>
+          <swrl:argument2 rdf:resource="#openstate_instance"/>
+        </swrl:IndividualPropertyAtom>
+      </rdf:first>
+      <rdf:rest>
+        <rdf:Description>
+          <rdf:first>
+            <swrl:IndividualPropertyAtom>
+              <swrl:propertyPredicate rdf:resource="#MouthStateIs"/>
+              <swrl:argument1 rdf:resource="urn:swrl#mouth_st"/>
+              <swrl:argument2 rdf:resource="#open_instance"/>
+            </swrl:IndividualPropertyAtom>
+          </rdf:first>
+          <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+        </rdf:Description>
+      </rdf:rest>
+    </rdf:Description>
+  </swrl:head>
+</swrl:Imp>
 
 <swrl:Imp>
   <swrl:body>
