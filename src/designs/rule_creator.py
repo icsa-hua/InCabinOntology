@@ -509,7 +509,7 @@ class RuleCreator:
             self.__determine_eye_mouth_state()
 
 
-    def create_labels(self, actor, filepath:str,  batch_size:int): 
+    def create_labels(self, actor, filepath:str,  batch_size:int, index:int): 
         """
         This function creates a label, describing the actor based on the results 
         of the SWRL rules in the ontology. Requires reasoner to previously have 
@@ -607,7 +607,7 @@ class RuleCreator:
                 }
             } 
 
-            json_file = filepath + f"/label_{ind}.json"
+            json_file = filepath + f"/label_{index+ind}.json"
             os.makedirs(filepath, exist_ok=True)
 
             with self.ontology: 

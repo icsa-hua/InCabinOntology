@@ -68,7 +68,7 @@ class OntologyParser:
         return obs
     
     
-    def parse_observations(self, dataset_path, batching=True, reasoning_thr=5, save=False):
+    def parse_observations(self, dataset_path, reasoning_thr=5, save=False):
         
         """
         This method parses the observations from the given dataset and creates instances of the Observation class.
@@ -82,11 +82,11 @@ class OntologyParser:
 
         assets_dir = get_assets_path()
         dataset = pd.read_csv(dataset_path)
+
         # small preprocess 
         dataset = global_preprocessing(dataset)
         filepath = assets_dir + "/labels"
         tracemalloc.start()
-        save_path = os.path.join(assets_dir,"ontologies/inference_1_1.owl") if save else None
         last_state = {}
         trend_analysis_flag = False
         batch_states = []
@@ -184,13 +184,13 @@ class OntologyParser:
                         
                         # Create the description of the actor and save it in JSON format
                         with StepContext(name="Crate Label", catch=(RuntimeError,)):
-                            data = self.rule_parser.create_labels(actor, filepath, len(batch_states))
+                            data = self.rule_parser.create_labels(actor, filepath, len(batch_states), index=index)
 
                         with StepContext(name="Trend Analysis", catch=(RuntimeError, )): 
                             if trend_analysis_flag:
                                 analysis(trends(), data)
 
-                        with StepContext(name="Prepare Batched Results", catch=(RuntimeError,)): 
+                        with StepContext(name="Prepare Batched Results", catch=(RuntimeError,), verbose=True): 
                             self.ev.metrics.snapshot_memory()
                             self.ev.snapshot_size()
                             self.ev.check_functional_violations()
@@ -198,7 +198,8 @@ class OntologyParser:
                             self.ev.run_cq()
                             self.ev.label_distributions()
                             self.ev.crosstab()
-                            
+                            self.ev.metrics.set_batch_size(len(batch_states))
+
                         self.save_onto(0, "assets/ontologies/snapshot_after_inference.owl")
                         self.rule_parser.remove_prev_values(ts_iso_dates, batch_states)
                         batch_states.clear() 
@@ -206,7 +207,7 @@ class OntologyParser:
 
                 if index == 200: 
                     break
-        self.print_results()
+
         logger.info("[checked] Memory Allocated")
         logger.info(tracemalloc.get_traced_memory())
         tracemalloc.stop()

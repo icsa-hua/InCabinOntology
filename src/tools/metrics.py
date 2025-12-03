@@ -1,6 +1,6 @@
-from os import wait
 import time, tracemalloc, gc
 import pdb
+
 from owlready2 import sync_reasoner_pellet
 from collections import Counter, defaultdict
 from contextlib import contextmanager
@@ -24,6 +24,7 @@ class OntologyMetrics:
         self.cq_results = []        # list of (query_name, rows, ok)
         self.distributions = {}     # {name: Counter}
         self.crosstabs = {}         # {name: Counter((x,y) -> count)}
+        self.batch_sizes = []      # number of states per reasoning batch
 
     def snapshot_memory(self):
         curr, peak = tracemalloc.get_traced_memory()
@@ -79,6 +80,7 @@ class OntologyEvaluator:
                 infer_property_values=infer_obj,
                 infer_data_property_values=infer_data
             )
+
         dt = elapsed()
         self.metrics.reason_times.append(dt)
         if batch_states:
@@ -134,6 +136,11 @@ class OntologyEvaluator:
         self.metrics.functional_violations.append(results)
 
         return results
+    
+    
+    def set_batch_size(self, size):
+        self.metrics.batch_sizes.append(size)
+
 
     def undefined_label_ratios(self):
         """
@@ -161,9 +168,9 @@ class OntologyEvaluator:
                         undef += 2
 
             return round(100.0 * undef / total, 2)
-        ratios["Fatigue"]   = pct_undefined(self.OP["ActorStateHasFatigue"], {"undefinedState"})
-        ratios["Attention"] = pct_undefined(self.OP["ActorStateHasAttention"], {"undefined"})
-        ratios["Unresponsiveness"] = pct_undefined(self.OP["ActorStateHasUnresponsiveness"], {"undefined_atrisk"})
+        ratios["Fatigue"]   = pct_undefined(self.OP["ActorStateHasFatigue"], {"UndefinedState"})
+        ratios["Attention"] = pct_undefined(self.OP["ActorStateHasAttention"], {"Undefined"})
+        ratios["Unresponsiveness"] = pct_undefined(self.OP["ActorStateHasUnresponsiveness"], {"Undefined_AtRisk"})
         ratios["Eye"]       = pct_undefined(self.OP["ActorHasEyeState"], {"slowClosure"})
         ratios["Mouth"]     = pct_undefined(self.OP["ActorHasMouthState"], {"yawning"})
         self.metrics.undefined_ratios.append(ratios)
@@ -288,33 +295,3 @@ class OntologyEvaluator:
 
 
    
-
-# === Example usage (sketch) ===================================================
-# from owlready2 import get_ontology
-# onto = get_ontology("path/to/your.owl").load()
-# ev = OntologyEvaluator(onto)
-
-# def ingest_row_fn(onto, row):
-#     # 1) Make a new ActorState (and prevState link), attach physio values, profile, etc.
-#     State = onto.ActorState(f"State_{row['ts']}".replace(":","_").replace(" ","_"))
-#     State.validAt = [row['ts']]  # ensure correct xsd:dateTime or dateTimeStamp
-#     # attach physio nodes/values (HR, HRV, RR, SpO2, Drowsiness) and link via ActorStateHasPhysiologicalState
-#     # StateHasThresholdProfile = [tp_...]
-#     return State
-
-# def label_fn(onto, state):
-#     # Emit your JSON label using the inferred properties on `state`
-#     pass
-
-# rows = [...]  # your dataset as list of dicts
-# metrics = ev.process_dataset(rows, ingest_row_fn, label_fn, batch_size=100)
-
-# # After run, inspect:
-# print("Reason times (s):", ev.metrics.reason_times)
-# print("Throughput (states/s):", ev.metrics.throughput)
-# print("Memory (KB):", ev.metrics.mem_snapshots[-1] if ev.metrics.mem_snapshots else None)
-# print("Undefined ratios:", ev.metrics.undefined_ratios[-1] if ev.metrics.undefined_ratios else None)
-# print("Functional violations (last):", ev.metrics.functional_violations[-1] if ev.metrics.functional_violations else None)
-# print("Label distributions:", ev.metrics.distributions)
-# print("Crosstabs sample:", {k: list(v.items())[:5] for k, v in ev.metrics.crosstabs.items()})
-
