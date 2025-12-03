@@ -1217,7 +1217,7 @@ def single_attribute_pattern_classes(onto):
                 )]
 
             is_a = [
-                    onto.ActorStateHasFatigue.value(onto.undefinedstate_instance), 
+                    onto.ActorStateHasFatigue.value(onto.sleep_instance), 
                     onto.ActorStateHasAttention.value(onto.inattentive_instance), 
                     onto.ActorStateHasUnresponsiveness.value(onto.undefined_atrisk_instance)
                 ]

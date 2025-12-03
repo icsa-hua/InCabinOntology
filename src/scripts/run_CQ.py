@@ -47,7 +47,7 @@ def save_sparql_results_to_pdf(output_path, results_dict):
 # Load the ontology
 g = Graph() 
 parent_path = os.getcwd() 
-ontology_path = os.path.join(parent_path, "assets/ontologies/snapshot_2.owl")
+ontology_path = os.path.join(parent_path, "assets/ontologies/snapshot_after_inference.owl")
 g.parse(ontology_path)
 
 
@@ -114,7 +114,7 @@ def load_queries_from_ttl(path):
 
 
 # Execute Queries
-ttl_file = os.path.join(parent_path, "assets/consistency_questionnaire.ttl")
+ttl_file = os.path.join(parent_path, "assets/consistency_questionnaire_0.2.ttl")
 queries = load_queries_from_ttl(ttl_file)
 messages = {} 
 

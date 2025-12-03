@@ -47,7 +47,6 @@ def list_loggers(show_handlers=False):
         eff = logging.getLevelName(obj.getEffectiveLevel()) 
         hs = [type(h).__name__ for h in obj.handlers] 
         rows.append((name, level, eff, obj.propagate, hs)) 
-    print(rows)
     rows.sort() 
     for name, level, eff, prop, hs in rows: 
         line = f"{name:40} level={level:7} effective={eff:7}, propagate={prop:7}"

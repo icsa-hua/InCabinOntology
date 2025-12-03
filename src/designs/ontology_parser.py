@@ -189,6 +189,7 @@ class OntologyParser:
                         with StepContext(name="Trend Analysis", catch=(RuntimeError, )): 
                             if trend_analysis_flag:
                                 analysis(trends(), data)
+                        
 
                         with StepContext(name="Prepare Batched Results", catch=(RuntimeError,), verbose=True): 
                             self.ev.metrics.snapshot_memory()
@@ -198,15 +199,18 @@ class OntologyParser:
                             self.ev.run_cq()
                             self.ev.label_distributions()
                             self.ev.crosstab()
-                            self.ev.metrics.set_batch_size(len(batch_states))
-
+                            self.ev.set_batch_size(len(batch_states))
+                        
+                        self.ev.sync_reasoner(len(batch_states))
                         self.save_onto(0, "assets/ontologies/snapshot_after_inference.owl")
+                        logger.warn("WARNING: keep saving after inference")
+
                         self.rule_parser.remove_prev_values(ts_iso_dates, batch_states)
+
                         batch_states.clear() 
+
                     self.rule_parser.clear_obs(obs)  
 
-                if index == 200: 
-                    break
 
         logger.info("[checked] Memory Allocated")
         logger.info(tracemalloc.get_traced_memory())

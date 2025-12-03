@@ -4357,7 +4357,7 @@ It holds the data created after processing the observations captured by the sens
   <rdfs:subClassOf>
     <owl:Restriction>
       <owl:onProperty rdf:resource="#ActorStateHasFatigue"/>
-      <owl:hasValue rdf:resource="#undefinedstate_instance"/>
+      <owl:hasValue rdf:resource="#sleep_instance"/>
     </owl:Restriction>
   </rdfs:subClassOf>
   <rdfs:subClassOf>
@@ -5784,7 +5784,7 @@ It holds the data created after processing the observations captured by the sens
 
 <owl:NamedIndividual rdf:about="#driver">
   <rdf:type rdf:resource="#Actor"/>
-  <hasUniqueIdentifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">239bd40d019a4c2aaae61439cb24f8fe</hasUniqueIdentifier>
+  <hasUniqueIdentifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">62bc2489ff7e47a38c07580de1c34e75</hasUniqueIdentifier>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#hot_high_hr_elderly_female">

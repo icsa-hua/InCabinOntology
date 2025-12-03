@@ -1,4 +1,4 @@
-content = """
+
 
 @prefix : <http://test.org/in_cabin_domain#> . 
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -634,7 +634,7 @@ content = """
 # ------------------------
 # SELECT ?state WHERE {
 #   ?state rdf:type :ActorState .
-#   ?label rdf:type :Label .
+#
 #   {
 #     ?state :ActorStateHasFatigue ?fatigueInd .
 #     ?fatigueInd rdf:type :Sleep .
@@ -653,16 +653,10 @@ content = """
 # Q39. Every Label must target at least one ActorState
 # ------------------------
 # SELECT ?label WHERE {
-#   ?label rdf:type :Label . 
+#   ?label rdf:type :Label ;
 #   ?state rdf:type :ActorState .
 #
 #   FILTER NOT EXISTS { ?label :LabelTargetsActor ?state . }
 # }
 
 
-"""
-import os
-path = os.getcwd() + "/assets/consistency_questionnaire_0.2.ttl"
-with open(path, "w") as f:
-    f.write(content)
-print(f"SUCCESS [checked]: file was created in {path}.")
