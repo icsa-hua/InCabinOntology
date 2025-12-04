@@ -86,8 +86,8 @@
 #   OPTIONAL { ?state :ActorStateHasAge ?age . }
 #   OPTIONAL { ?state :ActorStateHasSex ?sex . }
 #   OPTIONAL { ?state :ActorStateHasAccessories ?acc . }
-#   OPTIONAL { ?state :ActorStateHasDemographicCharacteristics ?demo . }
-#   OPTIONAL { ?state :ActorStateHasFaceCharacteristics ?face . }
+#   OPTIONAL { ?state :ActorStateHasCharacteristics ?demo . }
+#   OPTIONAL { ?state :ActorStateHasCharacteristics ?face . }
 #   FILTER (!BOUND(?fat) || !BOUND(?att) || !BOUND(?unresp)
 #        || !BOUND(?eye) || !BOUND(?mouth)
 #        || !BOUND(?age) || !BOUND(?sex)
@@ -175,12 +175,12 @@
 #   }
 #   UNION
 #   {
-#     ?state :ActorStateHasDemographicCharacteristics ?d1, ?d2 .
+#     ?state :ActorStateHasCharacteristics ?d1, ?d2 .
 #     FILTER (?d1 != ?d2)
 #   }
 #   UNION
 #   {
-#     ?state :ActorStateHasFaceCharacteristics ?f1, ?f2 .
+#     ?state :ActorStateHasCharacteristics ?f1, ?f2 .
 #     FILTER (?f1 != ?f2)
 #   }
 # }
@@ -337,59 +337,114 @@
 # }
 
 # ------------------------
-# Q17. HRV instances with >1 HRV level
+# Q17-A. HR instances with >1 HR level
+# ------------------------
+# SELECT DISTINCT ?h
+# WHERE {
+#   ?h rdf:type :HR .
+#
+#   # Two (potentially distinct) level individuals reached via HRVis
+#   ?h :HRis ?lv1 .
+#   ?h :HRis ?lv2 .
+#
+#   FILTER (?lv1 != ?lv2)
+#
+#   # Their level classes
+#   ?lv1 rdf:type ?c1 .
+#   ?lv2 rdf:type ?c2 .
+#
+#   FILTER (?c1 != ?c2)
+#   FILTER (?c1 IN (:Very_Low_HR, :Low_HR, :Moderate_HR, :High_HR))
+#   FILTER (?c2 IN (:Very_Low_HR, :Low_HR, :Moderate_HR, :High_HR))
+# }
+
+# ------------------------
+# Q17-B. HRV instances with >1 HRV level
 # ------------------------
 # SELECT DISTINCT ?h
 # WHERE {
 #   ?h rdf:type :HRV .
-#   ?h rdf:type ?c1 .
-#   ?h rdf:type ?c2 .
+#
+#   # Two (potentially distinct) level individuals reached via HRVis
+#   ?h :HRVis ?lv1 .
+#   ?h :HRVis ?lv2 .
+#
+#   FILTER (?lv1 != ?lv2)
+#
+#   # Their level classes
+#   ?lv1 rdf:type ?c1 .
+#   ?lv2 rdf:type ?c2 .
+#
 #   FILTER (?c1 != ?c2)
 #   FILTER (?c1 IN (:Very_Low_HRV, :Low_HRV, :Moderate_HRV, :High_HRV))
 #   FILTER (?c2 IN (:Very_Low_HRV, :Low_HRV, :Moderate_HRV, :High_HRV))
 # }
 
 # ------------------------
-# Q18. RR instances with >1 RR level
+# Q17-C. RR instances with >1 RR level
 # ------------------------
 # SELECT DISTINCT ?r
 # WHERE {
-#   ?r rdf:type :RR .
-#   ?r rdf:type ?c1 .
-#   ?r rdf:type ?c2 .
+#   ?h rdf:type :RR .
+#
+#   # Two (potentially distinct) level individuals reached via HRVis
+#   ?h :RRis ?lv1 .
+#   ?h :RRis ?lv2 .
+#   FILTER (?lv1 != ?lv2)
+#
+#   # Their level classes
+#   ?lv1 rdf:type ?c1 .
+#   ?lv2 rdf:type ?c2 .
+#
 #   FILTER (?c1 != ?c2)
 #   FILTER (?c1 IN (:Very_Low_RR, :Low_RR, :Moderate_RR, :High_RR))
 #   FILTER (?c2 IN (:Very_Low_RR, :Low_RR, :Moderate_RR, :High_RR))
 # }
 
 # ------------------------
-# Q19. SpO2 instances with >1 SpO2 level
+# Q17-D. SpO2 instances with >1 SpO2 level
 # ------------------------
 # SELECT DISTINCT ?o
 # WHERE {
-#   ?o rdf:type :SpO2 .
-#   ?o rdf:type ?c1 .
-#   ?o rdf:type ?c2 .
+#   ?h rdf:type :SpO2 .
+#
+#   # Two (potentially distinct) level individuals reached via HRVis
+#   ?h :SpO2is ?lv1 .
+#   ?h :SpO2is ?lv2 .
+#   FILTER (?lv1 != ?lv2)
+#
+#   # Their level classes
+#   ?lv1 rdf:type ?c1 .
+#   ?lv2 rdf:type ?c2 .
+#
 #   FILTER (?c1 != ?c2)
 #   FILTER (?c1 IN (:Low_SpO2, :Normal_SpO2, :Critical_SpO2))
 #   FILTER (?c2 IN (:Low_SpO2, :Normal_SpO2, :Critical_SpO2))
 # }
 
 # ------------------------
-# Q20. Drowsiness instances with >1 Drowsiness level
+# Q17-E. Drowsiness instances with >1 Drowsiness level
 # ------------------------
 # SELECT DISTINCT ?d
 # WHERE {
-#   ?d rdf:type :Drowsiness .
-#   ?d rdf:type ?c1 .
-#   ?d rdf:type ?c2 .
+#   ?h rdf:type :Drowsiness .
+#
+#   # Two (potentially distinct) level individuals reached via HRVis
+#   ?h :DrowsinessIs ?lv1 .
+#   ?h :DrowsinessIs ?lv2 .
+#
+#   FILTER (?lv1 != ?lv2)
+#   # Their level classes
+#   ?lv1 rdf:type ?c1 .
+#   ?lv2 rdf:type ?c2 .
+#
 #   FILTER (?c1 != ?c2)
 #   FILTER (?c1 IN (:Level_3_KSS, :Level_5_KSS, :Level_7_KSS, :Level_9_KSS))
 #   FILTER (?c2 IN (:Level_3_KSS, :Level_5_KSS, :Level_7_KSS, :Level_9_KSS))
 # }
 
 # ------------------------
-# Q21. Violation "Sleep=> Inattentive & Unresponsive"
+# Q18. Violation "Sleep=> Inattentive & Unresponsive"
 # ------------------------
 # SELECT ?state ?fat ?att ?unresp
 # WHERE {
@@ -404,7 +459,7 @@
 # }
 
 # ------------------------
-# Q22. Violation "Drowsy & attentive=> at-risk unresponsiveness"
+# Q19. Violation "Drowsy & attentive=> at-risk unresponsiveness"
 # ------------------------
 # SELECT ?state ?unresp
 # WHERE {
@@ -418,7 +473,7 @@
 # }
 
 # ------------------------
-# Q23. Violation "Sleep or unresponsiveness => eyes closed & mouth open"
+# Q20. Violation "Sleep or unresponsiveness => eyes closed & mouth open"
 # ------------------------
 # SELECT ?state ?fat ?unresp ?eye ?eyeCat ?mouth
 # WHERE {
@@ -436,7 +491,7 @@
 #   OPTIONAL { ?state :ActorHasMouthState ?mouth . }
 #
 #   FILTER (
-#     ( (?fat = :sleep_instance) || (?unresp = :unresponsive_instance) )
+#     ( (?fat = :Sleep) || (?unresp = :Unresponsive) )
 #     &&
 #     (
 #       !BOUND(?eyeCat) || ?eyeCat != :closedstate_instance ||
@@ -446,7 +501,7 @@
 # }
 
 # ------------------------
-# Q24. Is any state missing its threshold profile?
+# Q21. Is any state missing its threshold profile?
 # ------------------------
 # SELECT ?state
 # WHERE {
@@ -456,7 +511,7 @@
 # }
 
 # ------------------------
-# Q25. Are there any threshold profiles not used by an Actor State? 
+# Q22. Are there any threshold profiles not used by an Actor State? 
 # ------------------------
 # SELECT ?tp
 # WHERE {
@@ -468,7 +523,7 @@
 # }
 
 # ------------------------
-# Q26. Detect future categories accidentally left unmapped
+# Q23. Detect future categories accidentally left unmapped
 # ------------------------
 # SELECT ?cat
 # WHERE {
@@ -482,7 +537,7 @@
 # }
 
 # ------------------------
-# Q27. Show if new data falls outside modeled thresholds.
+# Q24. Show if new data falls outside modeled thresholds.
 # ------------------------
 # SELECT ?phys ?value
 # WHERE {
@@ -491,7 +546,7 @@
 # }
 
 # ------------------------
-# Q28. Check if new states appear without corresponding GCI or SWRL effects.
+# Q25. Check if new states appear without corresponding GCI or SWRL effects.
 # ------------------------
 # SELECT ?state
 # WHERE {
@@ -502,19 +557,19 @@
 # }
 
 # ------------------------
-# Q29. Future adaptability often breaks. 
+# Q26. Future adaptability often breaks. 
 # ------------------------
-# SELECT ?profile
-# WHERE {
-#   ?profile rdf:type :ThresholdProfile .
-#   OPTIONAL { ?profile :profileForAge ?age . }
-#   OPTIONAL { ?profile :profileForSex ?sex . }
-#   FILTER ( !BOUND(?age) || !BOUND(?sex) )
-# }
+SELECT ?profile
+WHERE {
+  ?profile rdf:type :ThresholdProfile .
+  OPTIONAL { ?profile :profileForAge ?age . }
+  OPTIONAL { ?profile :profileForSex ?sex . }
+  FILTER ( !BOUND(?age) || !BOUND(?sex) )
+}
 #
 
 # ------------------------
-# Q30. Unexpected extensions 
+# Q26. Unexpected extensions 
 # ------------------------
 # SELECT ?type
 # WHERE {
@@ -525,7 +580,7 @@
 # }
 
 # ------------------------
-# Q31. Severe drowsiness (Level 9) must imply Imminent or Unresponsive
+# Q27. Severe drowsiness (Level 9) must imply Imminent or Unresponsive
 # ------------------------
 # SELECT ?state WHERE {
 #   ?state rdf:type :ActorState ;
@@ -540,48 +595,46 @@
 #   }
 # }
 
-
-
 # ------------------------
-# Q32. Moderate drowsiness (Level 5) must be classified as DrowsinessSuspected fatigue
+# Q28. Moderate drowsiness (Level 5) must be classified as DrowsinessSuspected fatigue
 # ------------------------
 # SELECT ?state WHERE {
 #   ?state rdf:type :ActorState ;
 #          rdf:type :ActorState_Drowsiness_Level_5 ;
 #          :ActorStateHasFatigue ?fatigueInd .
 #
-#   FILTER NOT EXISTS { ?fatigueInd rdf:type :DrowsinessSuspected }
+#   FILTER NOT EXISTS { ?fatigueInd rdf:type :DrowsinessSuspected . }
 # }
 
-
 # ------------------------
-# Q33. Low drowsiness (Level 3) must be classified as Awake fatigue
+# Q29. Low drowsiness (Level 3) must be classified as Awake fatigue
 # ------------------------
 # SELECT ?state WHERE {
 #   ?state rdf:type :ActorState ;
 #          rdf:type :ActorState_Drowsiness_Level_3 ;
 #          :ActorStateHasFatigue ?fatigueInd .
 #
-#   FILTER NOT EXISTS { ?fatigueInd rdf:type :Awake }
+#   FILTER NOT EXISTS { ?fatigueInd rdf:type :Awake . }
 # }
 
 # ------------------------
-# Q34. Low drowsiness (Level 3) must imply Attentive attention
+# Q30. Low drowsiness (Level 3) must imply Attentive attention
 # ------------------------
 # SELECT ?state WHERE {
 #   ?state rdf:type :ActorState ;
 #          rdf:type :ActorState_Drowsiness_Level_3 ;
 #          :ActorStateHasAttention ?attInd .
 #
-#   FILTER NOT EXISTS { ?attInd rdf:type :Attentive }
+#   FILTER NOT EXISTS { ?attInd rdf:type :Attentive . }
 # }
 
 # ------------------------
-# Q35. High drowsiness (Level 7 or 9) must imply Inattentive attention
+# Q31. High drowsiness (Level 7 or 9) must imply Unresponsiveness or DrowsinessSuspected
 # ------------------------
 # SELECT ?state WHERE {
 #   ?state rdf:type :ActorState ;
-#          :ActorStateHasAttention ?attInd .
+#          :ActorStateHasUnresponsiveness ?unresp ; 
+#          :ActorStateHasFatigue ?ftg . 
 #
 #   {
 #     ?state rdf:type :ActorState_Drowsiness_Level_7 .
@@ -591,12 +644,13 @@
 #     ?state rdf:type :ActorState_Drowsiness_Level_9 .
 #   }
 #
-#   FILTER NOT EXISTS { ?attInd rdf:type :Inattentive }
+#   FILTER NOT EXISTS { ?unresp rdf:type :Unresponsive . }
+#   FILTER NOT EXISTS { ?ftg rdf:type :DrowsinessSuspected . }
 # }
 
 
 # ------------------------
-# Q36. Sleep fatigue must have both eye and mouth state defined
+# Q32. Sleep fatigue must have both eye and mouth state defined
 # ------------------------
 # SELECT ?state WHERE {
 #   ?state rdf:type :ActorState ;
@@ -611,7 +665,7 @@
 
 
 # ------------------------
-# Q37. Awake fatigue must be Responsive and Attentive
+# Q33. Awake fatigue must be Responsive and Attentive
 # ------------------------
 # SELECT ?state WHERE {
 #   ?state rdf:type :ActorState ;
@@ -630,11 +684,11 @@
 # }
 
 # ------------------------
-# Q38. High-risk states (Sleep or Unresponsive) must have at least one Label
+# Q34. High-risk states (Sleep or Unresponsive) must have at least one Label
 # ------------------------
 # SELECT ?state WHERE {
 #   ?state rdf:type :ActorState .
-#
+#   ?label rdf:type :Label .
 #   {
 #     ?state :ActorStateHasFatigue ?fatigueInd .
 #     ?fatigueInd rdf:type :Sleep .
@@ -650,13 +704,12 @@
 
 
 # ------------------------
-# Q39. Every Label must target at least one ActorState
+# Q35. Every Label must target at least one ActorState
 # ------------------------
-# SELECT ?label WHERE {
-#   ?label rdf:type :Label ;
+# SELECT ?state WHERE {
 #   ?state rdf:type :ActorState .
-#
-#   FILTER NOT EXISTS { ?label :LabelTargetsActor ?state . }
+#   ?label rdf:type :Label .
+#   FILTER NOT EXISTS { ?state :ActorIsTargetedByLabel ?label . }
 # }
 
 

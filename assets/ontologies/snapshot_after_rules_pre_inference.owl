@@ -15,7 +15,6 @@
 <owl:ObjectProperty rdf:about="http://test.org.org/in_cabin_domain#ActorIsTargetedByLabel">
   <owl:inverseOf rdf:resource="http://test.org.org/in_cabin_domain#LabelTargetsActor"/>
   <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
   <rdfs:domain rdf:resource="#ActorState"/>
   <rdfs:range rdf:resource="#Label"/>
   <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The driver is described by the label. As an example: 
@@ -23,6 +22,7 @@ middle-aged afghan man with glasses_eyes_closed_mouth_open</rdfs:comment>
 </owl:ObjectProperty>
 
 <owl:ObjectProperty rdf:about="http://test.org.org/in_cabin_domain#LabelTargetsActor">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
   <rdfs:domain rdf:resource="#Label"/>
   <rdfs:range rdf:resource="#ActorState"/>
   <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">This property indicates that the alert is meant for a particular target. This show that each alert is directed at one or more specific targes.
@@ -5784,7 +5784,7 @@ It holds the data created after processing the observations captured by the sens
 
 <owl:NamedIndividual rdf:about="#driver">
   <rdf:type rdf:resource="#Actor"/>
-  <hasUniqueIdentifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">62bc2489ff7e47a38c07580de1c34e75</hasUniqueIdentifier>
+  <hasUniqueIdentifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">0621000850ac44edab7891599597548b</hasUniqueIdentifier>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#hot_high_hr_elderly_female">

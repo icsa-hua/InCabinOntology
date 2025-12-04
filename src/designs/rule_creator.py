@@ -356,8 +356,6 @@ class RuleCreator:
         eye_mouth_state_rules()
 
 
-
-
     def set_up_trends(self):  
         # self.create_instances('CurrentReading')
         # self.create_instances('PreviousReading') 
