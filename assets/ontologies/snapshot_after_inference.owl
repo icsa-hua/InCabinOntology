@@ -5785,7 +5785,7 @@ It holds the data created after processing the observations captured by the sens
 
 <owl:NamedIndividual rdf:about="#driver">
   <rdf:type rdf:resource="#Actor"/>
-  <hasUniqueIdentifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">0621000850ac44edab7891599597548b</hasUniqueIdentifier>
+  <hasUniqueIdentifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9dd2562aa9cc48df851ec117beae179d</hasUniqueIdentifier>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#hot_high_hr_elderly_female">
@@ -6514,16 +6514,16 @@ It holds the data created after processing the observations captured by the sens
 
 <owl:NamedIndividual rdf:about="#observation_0">
   <rdf:type rdf:resource="#Observations"/>
-  <ObsIsDividedIntoPhS rdf:resource="#hr_instance_2024_4_15_0_35_56"/>
-  <ObsIsDividedIntoPhS rdf:resource="#hrv_instance_2024_4_15_0_35_56"/>
-  <ObsIsDividedIntoPhS rdf:resource="#rr_instance_2024_4_15_0_35_56"/>
-  <ObsIsDividedIntoPhS rdf:resource="#spo2_instance_2024_4_15_0_35_56"/>
-  <ObsIsDividedIntoPhS rdf:resource="#drowsiness_instance_2024_4_15_0_35_56"/>
-  <ObsIsDividedIntoActor rdf:resource="#accessories_instance_2024_4_15_0_35_56"/>
-  <ObsIsDividedIntoActor rdf:resource="#age_instance_2024_4_15_0_35_56"/>
-  <ObsIsDividedIntoActor rdf:resource="#demographic_instance_2024_4_15_0_35_56"/>
-  <ObsIsDividedIntoActor rdf:resource="#facecharacteristics_instance_2024_4_15_0_35_56"/>
-  <ObsIsDividedIntoActor rdf:resource="#sex_instance_2024_4_15_0_35_56"/>
+  <ObsIsDividedIntoPhS rdf:resource="#hr_instance_2024_4_15_5_47_53"/>
+  <ObsIsDividedIntoPhS rdf:resource="#hrv_instance_2024_4_15_5_47_53"/>
+  <ObsIsDividedIntoPhS rdf:resource="#rr_instance_2024_4_15_5_47_53"/>
+  <ObsIsDividedIntoPhS rdf:resource="#spo2_instance_2024_4_15_5_47_53"/>
+  <ObsIsDividedIntoPhS rdf:resource="#drowsiness_instance_2024_4_15_5_47_53"/>
+  <ObsIsDividedIntoActor rdf:resource="#accessories_instance_2024_4_15_5_47_53"/>
+  <ObsIsDividedIntoActor rdf:resource="#age_instance_2024_4_15_5_47_53"/>
+  <ObsIsDividedIntoActor rdf:resource="#demographic_instance_2024_4_15_5_47_53"/>
+  <ObsIsDividedIntoActor rdf:resource="#facecharacteristics_instance_2024_4_15_5_47_53"/>
+  <ObsIsDividedIntoActor rdf:resource="#sex_instance_2024_4_15_5_47_53"/>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#high_hr_instance">
@@ -6532,24 +6532,33 @@ It holds the data created after processing the observations captured by the sens
 
 <owl:NamedIndividual rdf:about="#low_hr_instance">
   <rdf:type rdf:resource="#Low_HR"/>
+  <isForHR rdf:resource="#hr_instance_2024_4_15_4_54_56"/>
+  <isForHR rdf:resource="#hr_instance_2024_4_15_4_34_58"/>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#moderate_hr_instance">
   <rdf:type rdf:resource="#Moderate_HR"/>
-  <isForHR rdf:resource="#hr_instance_2024_4_15_0_16_33"/>
-  <isForHR rdf:resource="#hr_instance_2024_4_15_0_24_38"/>
-  <isForHR rdf:resource="#hr_instance_2024_4_15_0_28_49"/>
-  <isForHR rdf:resource="#hr_instance_2024_4_15_0_1_7"/>
-  <isForHR rdf:resource="#hr_instance_2024_4_15_0_35_56"/>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#very_low_hr_instance">
   <rdf:type rdf:resource="#Very_Low_HR"/>
+  <isForHR rdf:resource="#hr_instance_2024_4_15_5_16_43"/>
+  <isForHR rdf:resource="#hr_instance_2024_4_15_3_14_56"/>
+  <isForHR rdf:resource="#hr_instance_2024_4_15_5_47_53"/>
+  <isForHR rdf:resource="#hr_instance_2024_4_15_4_17_24"/>
+  <isForHR rdf:resource="#hr_instance_2024_4_15_2_26_42"/>
+  <isForHR rdf:resource="#hr_instance_2024_4_15_5_14_19"/>
+  <isForHR rdf:resource="#hr_instance_2024_4_15_3_16_46"/>
+  <isForHR rdf:resource="#hr_instance_2024_4_15_2_11_17"/>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#high_hrv_instance">
   <rdf:type rdf:resource="#High_HRV"/>
-  <isForHRV rdf:resource="#hrv_instance_2024_4_15_0_16_33"/>
+  <isForHRV rdf:resource="#hrv_instance_2024_4_15_2_26_42"/>
+  <isForHRV rdf:resource="#hrv_instance_2024_4_15_4_34_58"/>
+  <isForHRV rdf:resource="#hrv_instance_2024_4_15_4_17_24"/>
+  <isForHRV rdf:resource="#hrv_instance_2024_4_15_5_14_19"/>
+  <isForHRV rdf:resource="#hrv_instance_2024_4_15_3_16_46"/>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#low_hrv_instance">
@@ -6558,14 +6567,15 @@ It holds the data created after processing the observations captured by the sens
 
 <owl:NamedIndividual rdf:about="#moderate_hrv_instance">
   <rdf:type rdf:resource="#Moderate_HRV"/>
-  <isForHRV rdf:resource="#hrv_instance_2024_4_15_0_35_56"/>
-  <isForHRV rdf:resource="#hrv_instance_2024_4_15_0_24_38"/>
-  <isForHRV rdf:resource="#hrv_instance_2024_4_15_0_1_7"/>
+  <isForHRV rdf:resource="#hrv_instance_2024_4_15_4_54_56"/>
+  <isForHRV rdf:resource="#hrv_instance_2024_4_15_5_16_43"/>
+  <isForHRV rdf:resource="#hrv_instance_2024_4_15_2_11_17"/>
+  <isForHRV rdf:resource="#hrv_instance_2024_4_15_5_47_53"/>
+  <isForHRV rdf:resource="#hrv_instance_2024_4_15_3_14_56"/>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#very_low_hrv_instance">
   <rdf:type rdf:resource="#Very_Low_HRV"/>
-  <isForHRV rdf:resource="#hrv_instance_2024_4_15_0_28_49"/>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#high_rr_instance">
@@ -6574,19 +6584,24 @@ It holds the data created after processing the observations captured by the sens
 
 <owl:NamedIndividual rdf:about="#low_rr_instance">
   <rdf:type rdf:resource="#Low_RR"/>
+  <isForRR rdf:resource="#rr_instance_2024_4_15_4_54_56"/>
+  <isForRR rdf:resource="#rr_instance_2024_4_15_2_26_42"/>
+  <isForRR rdf:resource="#rr_instance_2024_4_15_4_17_24"/>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#moderate_rr_instance">
   <rdf:type rdf:resource="#Moderate_RR"/>
-  <isForRR rdf:resource="#rr_instance_2024_4_15_0_28_49"/>
-  <isForRR rdf:resource="#rr_instance_2024_4_15_0_1_7"/>
-  <isForRR rdf:resource="#rr_instance_2024_4_15_0_35_56"/>
-  <isForRR rdf:resource="#rr_instance_2024_4_15_0_16_33"/>
-  <isForRR rdf:resource="#rr_instance_2024_4_15_0_24_38"/>
+  <isForRR rdf:resource="#rr_instance_2024_4_15_3_14_56"/>
+  <isForRR rdf:resource="#rr_instance_2024_4_15_3_16_46"/>
+  <isForRR rdf:resource="#rr_instance_2024_4_15_2_11_17"/>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#very_low_rr_instance">
   <rdf:type rdf:resource="#Very_Low_RR"/>
+  <isForRR rdf:resource="#rr_instance_2024_4_15_5_47_53"/>
+  <isForRR rdf:resource="#rr_instance_2024_4_15_4_34_58"/>
+  <isForRR rdf:resource="#rr_instance_2024_4_15_5_16_43"/>
+  <isForRR rdf:resource="#rr_instance_2024_4_15_5_14_19"/>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#critical_spo2_instance">
@@ -6595,36 +6610,46 @@ It holds the data created after processing the observations captured by the sens
 
 <owl:NamedIndividual rdf:about="#low_spo2_instance">
   <rdf:type rdf:resource="#Low_SpO2"/>
-  <isForSpO2 rdf:resource="#spo2_instance_2024_4_15_0_16_33"/>
-  <isForSpO2 rdf:resource="#spo2_instance_2024_4_15_0_28_49"/>
-  <isForSpO2 rdf:resource="#spo2_instance_2024_4_15_0_24_38"/>
-  <isForSpO2 rdf:resource="#spo2_instance_2024_4_15_0_35_56"/>
-  <isForSpO2 rdf:resource="#spo2_instance_2024_4_15_0_1_7"/>
+  <isForSpO2 rdf:resource="#spo2_instance_2024_4_15_5_47_53"/>
+  <isForSpO2 rdf:resource="#spo2_instance_2024_4_15_4_17_24"/>
+  <isForSpO2 rdf:resource="#spo2_instance_2024_4_15_5_16_43"/>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#normal_spo2_instance">
   <rdf:type rdf:resource="#Normal_SpO2"/>
+  <isForSpO2 rdf:resource="#spo2_instance_2024_4_15_4_34_58"/>
+  <isForSpO2 rdf:resource="#spo2_instance_2024_4_15_3_14_56"/>
+  <isForSpO2 rdf:resource="#spo2_instance_2024_4_15_5_14_19"/>
+  <isForSpO2 rdf:resource="#spo2_instance_2024_4_15_2_11_17"/>
+  <isForSpO2 rdf:resource="#spo2_instance_2024_4_15_4_54_56"/>
+  <isForSpO2 rdf:resource="#spo2_instance_2024_4_15_3_16_46"/>
+  <isForSpO2 rdf:resource="#spo2_instance_2024_4_15_2_26_42"/>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#level_3_kss_instance">
   <rdf:type rdf:resource="#Level_3_KSS"/>
-  <isForDrowsiness rdf:resource="#drowsiness_instance_2024_4_15_0_28_49"/>
+  <isForDrowsiness rdf:resource="#drowsiness_instance_2024_4_15_2_26_42"/>
+  <isForDrowsiness rdf:resource="#drowsiness_instance_2024_4_15_2_11_17"/>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#level_5_kss_instance">
   <rdf:type rdf:resource="#Level_5_KSS"/>
-  <isForDrowsiness rdf:resource="#drowsiness_instance_2024_4_15_0_1_7"/>
+  <isForDrowsiness rdf:resource="#drowsiness_instance_2024_4_15_4_34_58"/>
+  <isForDrowsiness rdf:resource="#drowsiness_instance_2024_4_15_3_14_56"/>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#level_7_kss_instance">
   <rdf:type rdf:resource="#Level_7_KSS"/>
-  <isForDrowsiness rdf:resource="#drowsiness_instance_2024_4_15_0_24_38"/>
+  <isForDrowsiness rdf:resource="#drowsiness_instance_2024_4_15_4_17_24"/>
+  <isForDrowsiness rdf:resource="#drowsiness_instance_2024_4_15_5_47_53"/>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#level_9_kss_instance">
   <rdf:type rdf:resource="#Level_9_KSS"/>
-  <isForDrowsiness rdf:resource="#drowsiness_instance_2024_4_15_0_35_56"/>
-  <isForDrowsiness rdf:resource="#drowsiness_instance_2024_4_15_0_16_33"/>
+  <isForDrowsiness rdf:resource="#drowsiness_instance_2024_4_15_5_14_19"/>
+  <isForDrowsiness rdf:resource="#drowsiness_instance_2024_4_15_5_16_43"/>
+  <isForDrowsiness rdf:resource="#drowsiness_instance_2024_4_15_4_54_56"/>
+  <isForDrowsiness rdf:resource="#drowsiness_instance_2024_4_15_3_16_46"/>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#awake_instance">
@@ -6673,15 +6698,17 @@ It holds the data created after processing the observations captured by the sens
 
 <owl:NamedIndividual rdf:about="#closedstate_instance">
   <rdf:type rdf:resource="#ClosedState"/>
-  <isForEyeState rdf:resource="#eye_state_2024_4_15_0_35_56"/>
-  <isForEyeState rdf:resource="#eye_state_2024_4_15_0_16_33"/>
+  <isForEyeState rdf:resource="#eye_state_2024_4_15_2_11_17"/>
+  <isForEyeState rdf:resource="#eye_state_2024_4_15_5_14_19"/>
+  <isForEyeState rdf:resource="#eye_state_2024_4_15_3_14_56"/>
+  <isForEyeState rdf:resource="#eye_state_2024_4_15_5_16_43"/>
+  <isForEyeState rdf:resource="#eye_state_2024_4_15_3_16_46"/>
+  <isForEyeState rdf:resource="#eye_state_2024_4_15_4_54_56"/>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#openstate_instance">
   <rdf:type rdf:resource="#OpenState"/>
-  <isForEyeState rdf:resource="#eye_state_2024_4_15_0_24_38"/>
-  <isForEyeState rdf:resource="#eye_state_2024_4_15_0_28_49"/>
-  <isForEyeState rdf:resource="#eye_state_2024_4_15_0_1_7"/>
+  <isForEyeState rdf:resource="#eye_state_2024_4_15_2_26_42"/>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#slowclosure_instance">
@@ -6690,15 +6717,17 @@ It holds the data created after processing the observations captured by the sens
 
 <owl:NamedIndividual rdf:about="#closed_instance">
   <rdf:type rdf:resource="#Closed"/>
-  <isForMouthState rdf:resource="#mouth_state_2024_4_15_0_28_49"/>
+  <isForMouthState rdf:resource="#mouth_state_2024_4_15_2_26_42"/>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#open_instance">
   <rdf:type rdf:resource="#Open"/>
-  <isForMouthState rdf:resource="#mouth_state_2024_4_15_0_24_38"/>
-  <isForMouthState rdf:resource="#mouth_state_2024_4_15_0_16_33"/>
-  <isForMouthState rdf:resource="#mouth_state_2024_4_15_0_35_56"/>
-  <isForMouthState rdf:resource="#mouth_state_2024_4_15_0_1_7"/>
+  <isForMouthState rdf:resource="#mouth_state_2024_4_15_2_11_17"/>
+  <isForMouthState rdf:resource="#mouth_state_2024_4_15_5_14_19"/>
+  <isForMouthState rdf:resource="#mouth_state_2024_4_15_3_14_56"/>
+  <isForMouthState rdf:resource="#mouth_state_2024_4_15_4_54_56"/>
+  <isForMouthState rdf:resource="#mouth_state_2024_4_15_5_16_43"/>
+  <isForMouthState rdf:resource="#mouth_state_2024_4_15_3_16_46"/>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#yawning_instance">
@@ -6708,11 +6737,16 @@ It holds the data created after processing the observations captured by the sens
 <owl:NamedIndividual rdf:about="#glasses_instance">
   <rdf:type rdf:resource="#Glasses"/>
   <DenotesTemperature rdf:resource="#moderatetemp_instance"/>
-  <WearablesIncludedInAccessories rdf:resource="#accessories_instance_2024_4_15_0_1_7"/>
-  <WearablesIncludedInAccessories rdf:resource="#accessories_instance_2024_4_15_0_16_33"/>
-  <WearablesIncludedInAccessories rdf:resource="#accessories_instance_2024_4_15_0_24_38"/>
-  <WearablesIncludedInAccessories rdf:resource="#accessories_instance_2024_4_15_0_28_49"/>
-  <WearablesIncludedInAccessories rdf:resource="#accessories_instance_2024_4_15_0_35_56"/>
+  <WearablesIncludedInAccessories rdf:resource="#accessories_instance_2024_4_15_4_17_24"/>
+  <WearablesIncludedInAccessories rdf:resource="#accessories_instance_2024_4_15_2_11_17"/>
+  <WearablesIncludedInAccessories rdf:resource="#accessories_instance_2024_4_15_5_14_19"/>
+  <WearablesIncludedInAccessories rdf:resource="#accessories_instance_2024_4_15_2_26_42"/>
+  <WearablesIncludedInAccessories rdf:resource="#accessories_instance_2024_4_15_3_16_46"/>
+  <WearablesIncludedInAccessories rdf:resource="#accessories_instance_2024_4_15_5_16_43"/>
+  <WearablesIncludedInAccessories rdf:resource="#accessories_instance_2024_4_15_3_14_56"/>
+  <WearablesIncludedInAccessories rdf:resource="#accessories_instance_2024_4_15_5_47_53"/>
+  <WearablesIncludedInAccessories rdf:resource="#accessories_instance_2024_4_15_4_34_58"/>
+  <WearablesIncludedInAccessories rdf:resource="#accessories_instance_2024_4_15_4_54_56"/>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#hat_instance">
@@ -6759,11 +6793,16 @@ It holds the data created after processing the observations captured by the sens
 
 <owl:NamedIndividual rdf:about="#male_instance">
   <rdf:type rdf:resource="#Male"/>
-  <GroupIsOfSex rdf:resource="#sex_instance_2024_4_15_0_35_56"/>
-  <GroupIsOfSex rdf:resource="#sex_instance_2024_4_15_0_1_7"/>
-  <GroupIsOfSex rdf:resource="#sex_instance_2024_4_15_0_16_33"/>
-  <GroupIsOfSex rdf:resource="#sex_instance_2024_4_15_0_28_49"/>
-  <GroupIsOfSex rdf:resource="#sex_instance_2024_4_15_0_24_38"/>
+  <GroupIsOfSex rdf:resource="#sex_instance_2024_4_15_5_47_53"/>
+  <GroupIsOfSex rdf:resource="#sex_instance_2024_4_15_2_26_42"/>
+  <GroupIsOfSex rdf:resource="#sex_instance_2024_4_15_4_17_24"/>
+  <GroupIsOfSex rdf:resource="#sex_instance_2024_4_15_3_16_46"/>
+  <GroupIsOfSex rdf:resource="#sex_instance_2024_4_15_5_16_43"/>
+  <GroupIsOfSex rdf:resource="#sex_instance_2024_4_15_2_11_17"/>
+  <GroupIsOfSex rdf:resource="#sex_instance_2024_4_15_3_14_56"/>
+  <GroupIsOfSex rdf:resource="#sex_instance_2024_4_15_5_14_19"/>
+  <GroupIsOfSex rdf:resource="#sex_instance_2024_4_15_4_54_56"/>
+  <GroupIsOfSex rdf:resource="#sex_instance_2024_4_15_4_34_58"/>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#elderly_instance">
@@ -6776,11 +6815,16 @@ It holds the data created after processing the observations captured by the sens
 
 <owl:NamedIndividual rdf:about="#young_instance">
   <rdf:type rdf:resource="#Young"/>
-  <GroupIsOfAge rdf:resource="#age_instance_2024_4_15_0_16_33"/>
-  <GroupIsOfAge rdf:resource="#age_instance_2024_4_15_0_24_38"/>
-  <GroupIsOfAge rdf:resource="#age_instance_2024_4_15_0_35_56"/>
-  <GroupIsOfAge rdf:resource="#age_instance_2024_4_15_0_28_49"/>
-  <GroupIsOfAge rdf:resource="#age_instance_2024_4_15_0_1_7"/>
+  <GroupIsOfAge rdf:resource="#age_instance_2024_4_15_3_14_56"/>
+  <GroupIsOfAge rdf:resource="#age_instance_2024_4_15_5_14_19"/>
+  <GroupIsOfAge rdf:resource="#age_instance_2024_4_15_2_26_42"/>
+  <GroupIsOfAge rdf:resource="#age_instance_2024_4_15_5_16_43"/>
+  <GroupIsOfAge rdf:resource="#age_instance_2024_4_15_4_34_58"/>
+  <GroupIsOfAge rdf:resource="#age_instance_2024_4_15_2_11_17"/>
+  <GroupIsOfAge rdf:resource="#age_instance_2024_4_15_4_17_24"/>
+  <GroupIsOfAge rdf:resource="#age_instance_2024_4_15_3_16_46"/>
+  <GroupIsOfAge rdf:resource="#age_instance_2024_4_15_4_54_56"/>
+  <GroupIsOfAge rdf:resource="#age_instance_2024_4_15_5_47_53"/>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#tp_elderly_female_cold">
@@ -7069,566 +7113,1123 @@ It holds the data created after processing the observations captured by the sens
   <appliesHRVHigh rdf:resource="#moderate_high_hrv_young_male"/>
   <appliesRRHigh rdf:resource="#moderate_high_rr_young_male"/>
   <appliesSpO2High rdf:resource="#moderate_high_spo2_young_male"/>
-  <THRPIsOfActorState rdf:resource="#DriverState_d670ca63fab543c494dc2c8f80e3ffde"/>
-  <THRPIsOfActorState rdf:resource="#DriverState_35fc34e8ab7f4bdaa0a55b860947e205"/>
-  <THRPIsOfActorState rdf:resource="#DriverState_ac1766d740514dbca1c27f5260c477d9"/>
-  <THRPIsOfActorState rdf:resource="#DriverState_0829f6d8e6fe477396be54cb422da3ea"/>
-  <THRPIsOfActorState rdf:resource="#DriverState_1109f38e03194099ab924e37fcd014da"/>
+  <THRPIsOfActorState rdf:resource="#DriverState_3a2dfd20354e419d9aadef742cd9dbbe"/>
+  <THRPIsOfActorState rdf:resource="#DriverState_af8d5f848ea84b9a934c322f8a8d1d66"/>
+  <THRPIsOfActorState rdf:resource="#DriverState_ebf0a4e7ade84435afc23aee357b6e38"/>
+  <THRPIsOfActorState rdf:resource="#DriverState_2598cd3eacce435e9b7c1b8997a029f3"/>
+  <THRPIsOfActorState rdf:resource="#DriverState_e15750ee33824f78a18cc94180225db1"/>
+  <THRPIsOfActorState rdf:resource="#DriverState_22aa6f6a32fc44b58a331349e4bec174"/>
+  <THRPIsOfActorState rdf:resource="#DriverState_73482c219ead484985668955246fd5c5"/>
+  <THRPIsOfActorState rdf:resource="#DriverState_22da562697354fca95e13d5b1c2a929d"/>
+  <THRPIsOfActorState rdf:resource="#DriverState_5d05d060db204c29abe1de31fbd4c838"/>
+  <THRPIsOfActorState rdf:resource="#DriverState_8399d639303842459d86b01ba5440adf"/>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#hr_instance_2024_4_15_0_1_7">
+<owl:NamedIndividual rdf:about="#hr_instance_2024_4_15_2_11_17">
   <rdf:type rdf:resource="#HR"/>
-  <HRis rdf:resource="#moderate_hr_instance"/>
-  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_0_1_7</phyValidAt>
-  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">77</hasNumericalValue>
+  <HRis rdf:resource="#very_low_hr_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_2_11_17</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">63</hasNumericalValue>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#hrv_instance_2024_4_15_0_1_7">
+<owl:NamedIndividual rdf:about="#hrv_instance_2024_4_15_2_11_17">
   <rdf:type rdf:resource="#HRV"/>
   <HRVis rdf:resource="#moderate_hrv_instance"/>
-  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_0_1_7</phyValidAt>
-  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">77</hasNumericalValue>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_2_11_17</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">60</hasNumericalValue>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#rr_instance_2024_4_15_0_1_7">
+<owl:NamedIndividual rdf:about="#rr_instance_2024_4_15_2_11_17">
   <rdf:type rdf:resource="#RR"/>
   <RRis rdf:resource="#moderate_rr_instance"/>
-  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_0_1_7</phyValidAt>
-  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">19</hasNumericalValue>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_2_11_17</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">20</hasNumericalValue>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#spo2_instance_2024_4_15_0_1_7">
+<owl:NamedIndividual rdf:about="#spo2_instance_2024_4_15_2_11_17">
   <rdf:type rdf:resource="#SpO2"/>
-  <SpO2is rdf:resource="#low_spo2_instance"/>
-  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_0_1_7</phyValidAt>
-  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">97</hasNumericalValue>
+  <SpO2is rdf:resource="#normal_spo2_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_2_11_17</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">99</hasNumericalValue>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#drowsiness_instance_2024_4_15_0_1_7">
+<owl:NamedIndividual rdf:about="#drowsiness_instance_2024_4_15_2_11_17">
   <rdf:type rdf:resource="#Drowsiness"/>
-  <DrowsinessIs rdf:resource="#level_5_kss_instance"/>
-  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_0_1_7</phyValidAt>
-  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</hasNumericalValue>
+  <DrowsinessIs rdf:resource="#level_3_kss_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_2_11_17</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</hasNumericalValue>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#accessories_instance_2024_4_15_0_1_7">
+<owl:NamedIndividual rdf:about="#accessories_instance_2024_4_15_2_11_17">
   <rdf:type rdf:resource="#Accessories"/>
   <AccessoriesIncludeWearables rdf:resource="#glasses_instance"/>
   <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Glasses</hasStringValue>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#age_instance_2024_4_15_0_1_7">
+<owl:NamedIndividual rdf:about="#age_instance_2024_4_15_2_11_17">
   <rdf:type rdf:resource="#Age"/>
   <AgeBelongsToGroup rdf:resource="#young_instance"/>
   <hasAgeValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">15</hasAgeValue>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#demographic_instance_2024_4_15_0_1_7">
+<owl:NamedIndividual rdf:about="#demographic_instance_2024_4_15_2_11_17">
   <rdf:type rdf:resource="#Demographic"/>
   <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Afghan</hasStringValue>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#eye_state_2024_4_15_0_1_7">
-  <rdf:type rdf:resource="#EyeState"/>
-  <EyeStateIs rdf:resource="#openstate_instance"/>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#facecharacteristics_instance_2024_4_15_0_1_7">
-  <rdf:type rdf:resource="#FaceCharacteristics"/>
-  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">LongHair</hasStringValue>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#mouth_state_2024_4_15_0_1_7">
-  <rdf:type rdf:resource="#MouthState"/>
-  <MouthStateIs rdf:resource="#open_instance"/>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#sex_instance_2024_4_15_0_1_7">
-  <rdf:type rdf:resource="#Sex"/>
-  <SexBelongsToGroup rdf:resource="#male_instance"/>
-  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Man</hasStringValue>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#temp_instance_2024_4_15_0_1_7">
-  <rdf:type rdf:resource="#WeatherCondition"/>
-  <TemperatureBelongsToGroup rdf:resource="#moderatetemp_instance"/>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#label_2024_4_15_0_1_7">
-  <rdf:type rdf:resource="#Label"/>
-  <hasDescription rdf:datatype="http://www.w3.org/2001/XMLSchema#string">{"prompt_details": {"seed": 681129, "steps": 91, "prompt": "Lorem ipsum...", "response": "Lorem ipsum...", "view_point": "front", "object_name": "person", "time_of_day": "morning", "sky_condition": "clear", "weather_condition": "sunny"}, "label": {"actor_id": "DriverState_ac1766d740514dbca1c27f5260c477d9", "eye_inst": "open", "mouth_inst": "open", "age": "young", "face": "LongHair", "sex": "male", "demographic": "Afghan", "accessories": "glasses", "fatigue": "drowsinesssuspected", "attention": "inattentive", "unresponsiveness": "undefined", "bounding_box": "...", "bounding_polygon": "..."}}</hasDescription>
-  <hasDescription rdf:datatype="http://www.w3.org/2001/XMLSchema#string">{\"prompt_details\": {\"seed\": 681129, \"steps\": 91, \"prompt\": \"Lorem ipsum...\", \"response\": \"Lorem ipsum...\", \"view_point\": \"front\", \"object_name\": \"person\", \"time_of_day\": \"morning\", \"sky_condition\": \"clear\", \"weather_condition\": \"sunny\"}, \"label\": {\"actor_id\": \"DriverState_ac1766d740514dbca1c27f5260c477d9\", \"eye_inst\": \"open\", \"mouth_inst\": \"open\", \"age\": \"young\", \"face\": \"LongHair\", \"sex\": \"male\", \"demographic\": \"Afghan\", \"accessories\": \"glasses\", \"fatigue\": \"drowsinesssuspected\", \"attention\": \"inattentive\", \"unresponsiveness\": \"undefined\", \"bounding_box\": \"...\", \"bounding_polygon\": \"...\"}}</hasDescription>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#DriverState_ac1766d740514dbca1c27f5260c477d9">
-  <rdf:type rdf:resource="#ActorState"/>
-  <StateOfActor rdf:resource="#driver"/>
-  <ActorStateHasPhysiologicalState rdf:resource="#hr_instance_2024_4_15_0_1_7"/>
-  <ActorStateHasPhysiologicalState rdf:resource="#hrv_instance_2024_4_15_0_1_7"/>
-  <ActorStateHasPhysiologicalState rdf:resource="#rr_instance_2024_4_15_0_1_7"/>
-  <ActorStateHasPhysiologicalState rdf:resource="#spo2_instance_2024_4_15_0_1_7"/>
-  <ActorStateHasPhysiologicalState rdf:resource="#drowsiness_instance_2024_4_15_0_1_7"/>
-  <ActorStateHasAge rdf:resource="#age_instance_2024_4_15_0_1_7"/>
-  <ActorStateHasSex rdf:resource="#sex_instance_2024_4_15_0_1_7"/>
-  <ActorStateHasCharacteristics rdf:resource="#demographic_instance_2024_4_15_0_1_7"/>
-  <ActorStateHasCharacteristics rdf:resource="#facecharacteristics_instance_2024_4_15_0_1_7"/>
-  <ActorStateHasAccessories rdf:resource="#accessories_instance_2024_4_15_0_1_7"/>
-  <ActorIsAffectedByTemp rdf:resource="#temp_instance_2024_4_15_0_1_7"/>
-  <ActorHasEyeState rdf:resource="#eye_state_2024_4_15_0_1_7"/>
-  <ActorHasMouthState rdf:resource="#mouth_state_2024_4_15_0_1_7"/>
-  <in_c:ActorIsTargetedByLabel rdf:resource="#label_2024_4_15_0_1_7"/>
-  <rdf:type rdf:resource="#ActorState_ModerateHR_ModerateHRV_ModerateRR_LowSpO2_LVL5"/>
-  <StateHasThresholdProfile rdf:resource="#tp_young_male_moderate"/>
-  <ActorStateHasFatigue rdf:resource="#drowsinesssuspected_instance"/>
-  <ActorStateHasUnresponsiveness rdf:resource="#undefined_atrisk_instance"/>
-  <ActorStateHasAttention rdf:resource="#inattentive_instance"/>
-  <validAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_0_1_7</validAt>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#hr_instance_2024_4_15_0_16_33">
-  <rdf:type rdf:resource="#HR"/>
-  <HRis rdf:resource="#moderate_hr_instance"/>
-  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_0_16_33</phyValidAt>
-  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">75</hasNumericalValue>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#hrv_instance_2024_4_15_0_16_33">
-  <rdf:type rdf:resource="#HRV"/>
-  <HRVis rdf:resource="#high_hrv_instance"/>
-  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_0_16_33</phyValidAt>
-  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">97</hasNumericalValue>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#rr_instance_2024_4_15_0_16_33">
-  <rdf:type rdf:resource="#RR"/>
-  <RRis rdf:resource="#moderate_rr_instance"/>
-  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_0_16_33</phyValidAt>
-  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">21</hasNumericalValue>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#spo2_instance_2024_4_15_0_16_33">
-  <rdf:type rdf:resource="#SpO2"/>
-  <SpO2is rdf:resource="#low_spo2_instance"/>
-  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_0_16_33</phyValidAt>
-  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">97</hasNumericalValue>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#drowsiness_instance_2024_4_15_0_16_33">
-  <rdf:type rdf:resource="#Drowsiness"/>
-  <DrowsinessIs rdf:resource="#level_9_kss_instance"/>
-  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_0_16_33</phyValidAt>
-  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</hasNumericalValue>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#accessories_instance_2024_4_15_0_16_33">
-  <rdf:type rdf:resource="#Accessories"/>
-  <AccessoriesIncludeWearables rdf:resource="#glasses_instance"/>
-  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Glasses</hasStringValue>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#age_instance_2024_4_15_0_16_33">
-  <rdf:type rdf:resource="#Age"/>
-  <AgeBelongsToGroup rdf:resource="#young_instance"/>
-  <hasAgeValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">15</hasAgeValue>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#demographic_instance_2024_4_15_0_16_33">
-  <rdf:type rdf:resource="#Demographic"/>
-  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Afghan</hasStringValue>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#eye_state_2024_4_15_0_16_33">
+<owl:NamedIndividual rdf:about="#eye_state_2024_4_15_2_11_17">
   <rdf:type rdf:resource="#EyeState"/>
   <EyeStateIs rdf:resource="#closedstate_instance"/>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#facecharacteristics_instance_2024_4_15_0_16_33">
+<owl:NamedIndividual rdf:about="#facecharacteristics_instance_2024_4_15_2_11_17">
   <rdf:type rdf:resource="#FaceCharacteristics"/>
   <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">LongHair</hasStringValue>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#mouth_state_2024_4_15_0_16_33">
+<owl:NamedIndividual rdf:about="#mouth_state_2024_4_15_2_11_17">
   <rdf:type rdf:resource="#MouthState"/>
   <MouthStateIs rdf:resource="#open_instance"/>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#sex_instance_2024_4_15_0_16_33">
+<owl:NamedIndividual rdf:about="#sex_instance_2024_4_15_2_11_17">
   <rdf:type rdf:resource="#Sex"/>
   <SexBelongsToGroup rdf:resource="#male_instance"/>
   <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Man</hasStringValue>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#temp_instance_2024_4_15_0_16_33">
+<owl:NamedIndividual rdf:about="#temp_instance_2024_4_15_2_11_17">
   <rdf:type rdf:resource="#WeatherCondition"/>
   <TemperatureBelongsToGroup rdf:resource="#moderatetemp_instance"/>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#label_2024_4_15_0_16_33">
+<owl:NamedIndividual rdf:about="#label_2024_4_15_2_11_17">
   <rdf:type rdf:resource="#Label"/>
-  <hasDescription rdf:datatype="http://www.w3.org/2001/XMLSchema#string">{"prompt_details": {"seed": 873609, "steps": 18, "prompt": "Lorem ipsum...", "response": "Lorem ipsum...", "view_point": "front", "object_name": "person", "time_of_day": "morning", "sky_condition": "clear", "weather_condition": "sunny"}, "label": {"actor_id": "DriverState_0829f6d8e6fe477396be54cb422da3ea", "eye_inst": "closed", "mouth_inst": "open", "age": "young", "face": "LongHair", "sex": "male", "demographic": "Afghan", "accessories": "glasses", "fatigue": "undefinedstate", "attention": "undefined", "unresponsiveness": "unresponsive", "bounding_box": "...", "bounding_polygon": "..."}}</hasDescription>
-  <hasDescription rdf:datatype="http://www.w3.org/2001/XMLSchema#string">{\"prompt_details\": {\"seed\": 873609, \"steps\": 18, \"prompt\": \"Lorem ipsum...\", \"response\": \"Lorem ipsum...\", \"view_point\": \"front\", \"object_name\": \"person\", \"time_of_day\": \"morning\", \"sky_condition\": \"clear\", \"weather_condition\": \"sunny\"}, \"label\": {\"actor_id\": \"DriverState_0829f6d8e6fe477396be54cb422da3ea\", \"eye_inst\": \"closed\", \"mouth_inst\": \"open\", \"age\": \"young\", \"face\": \"LongHair\", \"sex\": \"male\", \"demographic\": \"Afghan\", \"accessories\": \"glasses\", \"fatigue\": \"undefinedstate\", \"attention\": \"undefined\", \"unresponsiveness\": \"unresponsive\", \"bounding_box\": \"...\", \"bounding_polygon\": \"...\"}}</hasDescription>
+  <in_c:LabelTargetsActor rdf:resource="#DriverState_5d05d060db204c29abe1de31fbd4c838"/>
+  <hasDescription rdf:datatype="http://www.w3.org/2001/XMLSchema#string">{"prompt_details": {"seed": 50761, "steps": 81, "prompt": "Lorem ipsum...", "response": "Lorem ipsum...", "view_point": "front", "object_name": "person", "time_of_day": "morning", "sky_condition": "clear", "weather_condition": "sunny"}, "label": {"actor_id": "DriverState_5d05d060db204c29abe1de31fbd4c838", "eye_inst": "closed", "mouth_inst": "open", "age": "young", "face": "LongHair", "sex": "male", "demographic": "Afghan", "accessories": "glasses", "fatigue": "undefinedstate", "attention": "undefined", "unresponsiveness": "undefined", "bounding_box": "...", "bounding_polygon": "..."}}</hasDescription>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#DriverState_0829f6d8e6fe477396be54cb422da3ea">
+<owl:NamedIndividual rdf:about="#DriverState_5d05d060db204c29abe1de31fbd4c838">
   <rdf:type rdf:resource="#ActorState"/>
   <StateOfActor rdf:resource="#driver"/>
-  <ActorStateHasPhysiologicalState rdf:resource="#hr_instance_2024_4_15_0_16_33"/>
-  <ActorStateHasPhysiologicalState rdf:resource="#hrv_instance_2024_4_15_0_16_33"/>
-  <ActorStateHasPhysiologicalState rdf:resource="#rr_instance_2024_4_15_0_16_33"/>
-  <ActorStateHasPhysiologicalState rdf:resource="#spo2_instance_2024_4_15_0_16_33"/>
-  <ActorStateHasPhysiologicalState rdf:resource="#drowsiness_instance_2024_4_15_0_16_33"/>
-  <ActorStateHasAge rdf:resource="#age_instance_2024_4_15_0_16_33"/>
-  <ActorStateHasSex rdf:resource="#sex_instance_2024_4_15_0_16_33"/>
-  <ActorStateHasCharacteristics rdf:resource="#demographic_instance_2024_4_15_0_16_33"/>
-  <ActorStateHasCharacteristics rdf:resource="#facecharacteristics_instance_2024_4_15_0_16_33"/>
-  <ActorStateHasAccessories rdf:resource="#accessories_instance_2024_4_15_0_16_33"/>
-  <ActorIsAffectedByTemp rdf:resource="#temp_instance_2024_4_15_0_16_33"/>
-  <ActorHasEyeState rdf:resource="#eye_state_2024_4_15_0_16_33"/>
-  <ActorHasMouthState rdf:resource="#mouth_state_2024_4_15_0_16_33"/>
-  <in_c:ActorIsTargetedByLabel rdf:resource="#label_2024_4_15_0_16_33"/>
-  <rdf:type rdf:resource="#ActorState_Drowsiness_Level_9"/>
-  <rdf:type rdf:resource="#ActorState_LVL9"/>
-  <rdf:type rdf:resource="#ActorState_High_HRV"/>
-  <rdf:type rdf:resource="#ActorState_Low_SpO2"/>
-  <rdf:type rdf:resource="#ActorState_Moderate_HR"/>
-  <rdf:type rdf:resource="#ActorState_Moderate_RR"/>
-  <StateHasThresholdProfile rdf:resource="#tp_young_male_moderate"/>
-  <ActorStateHasFatigue rdf:resource="#undefinedstate_instance"/>
-  <ActorStateHasUnresponsiveness rdf:resource="#unresponsive_instance"/>
-  <ActorStateHasAttention rdf:resource="#undefined_instance"/>
-  <validAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_0_16_33</validAt>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#hr_instance_2024_4_15_0_24_38">
-  <rdf:type rdf:resource="#HR"/>
-  <HRis rdf:resource="#moderate_hr_instance"/>
-  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_0_24_38</phyValidAt>
-  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">73</hasNumericalValue>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#hrv_instance_2024_4_15_0_24_38">
-  <rdf:type rdf:resource="#HRV"/>
-  <HRVis rdf:resource="#moderate_hrv_instance"/>
-  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_0_24_38</phyValidAt>
-  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">84</hasNumericalValue>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#rr_instance_2024_4_15_0_24_38">
-  <rdf:type rdf:resource="#RR"/>
-  <RRis rdf:resource="#moderate_rr_instance"/>
-  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_0_24_38</phyValidAt>
-  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">20</hasNumericalValue>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#spo2_instance_2024_4_15_0_24_38">
-  <rdf:type rdf:resource="#SpO2"/>
-  <SpO2is rdf:resource="#low_spo2_instance"/>
-  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_0_24_38</phyValidAt>
-  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">97</hasNumericalValue>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#drowsiness_instance_2024_4_15_0_24_38">
-  <rdf:type rdf:resource="#Drowsiness"/>
-  <DrowsinessIs rdf:resource="#level_7_kss_instance"/>
-  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_0_24_38</phyValidAt>
-  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</hasNumericalValue>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#accessories_instance_2024_4_15_0_24_38">
-  <rdf:type rdf:resource="#Accessories"/>
-  <AccessoriesIncludeWearables rdf:resource="#glasses_instance"/>
-  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Glasses</hasStringValue>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#age_instance_2024_4_15_0_24_38">
-  <rdf:type rdf:resource="#Age"/>
-  <AgeBelongsToGroup rdf:resource="#young_instance"/>
-  <hasAgeValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">15</hasAgeValue>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#demographic_instance_2024_4_15_0_24_38">
-  <rdf:type rdf:resource="#Demographic"/>
-  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Afghan</hasStringValue>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#eye_state_2024_4_15_0_24_38">
-  <rdf:type rdf:resource="#EyeState"/>
-  <EyeStateIs rdf:resource="#openstate_instance"/>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#facecharacteristics_instance_2024_4_15_0_24_38">
-  <rdf:type rdf:resource="#FaceCharacteristics"/>
-  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">LongHair</hasStringValue>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#mouth_state_2024_4_15_0_24_38">
-  <rdf:type rdf:resource="#MouthState"/>
-  <MouthStateIs rdf:resource="#open_instance"/>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#sex_instance_2024_4_15_0_24_38">
-  <rdf:type rdf:resource="#Sex"/>
-  <SexBelongsToGroup rdf:resource="#male_instance"/>
-  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Man</hasStringValue>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#temp_instance_2024_4_15_0_24_38">
-  <rdf:type rdf:resource="#WeatherCondition"/>
-  <TemperatureBelongsToGroup rdf:resource="#moderatetemp_instance"/>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#label_2024_4_15_0_24_38">
-  <rdf:type rdf:resource="#Label"/>
-  <hasDescription rdf:datatype="http://www.w3.org/2001/XMLSchema#string">{"prompt_details": {"seed": 750222, "steps": 85, "prompt": "Lorem ipsum...", "response": "Lorem ipsum...", "view_point": "front", "object_name": "person", "time_of_day": "morning", "sky_condition": "clear", "weather_condition": "sunny"}, "label": {"actor_id": "DriverState_35fc34e8ab7f4bdaa0a55b860947e205", "eye_inst": "open", "mouth_inst": "open", "age": "young", "face": "LongHair", "sex": "male", "demographic": "Afghan", "accessories": "glasses", "fatigue": "undefinedstate", "attention": "inattentive", "unresponsiveness": "undefined", "bounding_box": "...", "bounding_polygon": "..."}}</hasDescription>
-  <hasDescription rdf:datatype="http://www.w3.org/2001/XMLSchema#string">{\"prompt_details\": {\"seed\": 750222, \"steps\": 85, \"prompt\": \"Lorem ipsum...\", \"response\": \"Lorem ipsum...\", \"view_point\": \"front\", \"object_name\": \"person\", \"time_of_day\": \"morning\", \"sky_condition\": \"clear\", \"weather_condition\": \"sunny\"}, \"label\": {\"actor_id\": \"DriverState_35fc34e8ab7f4bdaa0a55b860947e205\", \"eye_inst\": \"open\", \"mouth_inst\": \"open\", \"age\": \"young\", \"face\": \"LongHair\", \"sex\": \"male\", \"demographic\": \"Afghan\", \"accessories\": \"glasses\", \"fatigue\": \"undefinedstate\", \"attention\": \"inattentive\", \"unresponsiveness\": \"undefined\", \"bounding_box\": \"...\", \"bounding_polygon\": \"...\"}}</hasDescription>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#DriverState_35fc34e8ab7f4bdaa0a55b860947e205">
-  <rdf:type rdf:resource="#ActorState"/>
-  <StateOfActor rdf:resource="#driver"/>
-  <ActorStateHasPhysiologicalState rdf:resource="#hr_instance_2024_4_15_0_24_38"/>
-  <ActorStateHasPhysiologicalState rdf:resource="#hrv_instance_2024_4_15_0_24_38"/>
-  <ActorStateHasPhysiologicalState rdf:resource="#rr_instance_2024_4_15_0_24_38"/>
-  <ActorStateHasPhysiologicalState rdf:resource="#spo2_instance_2024_4_15_0_24_38"/>
-  <ActorStateHasPhysiologicalState rdf:resource="#drowsiness_instance_2024_4_15_0_24_38"/>
-  <ActorStateHasAge rdf:resource="#age_instance_2024_4_15_0_24_38"/>
-  <ActorStateHasSex rdf:resource="#sex_instance_2024_4_15_0_24_38"/>
-  <ActorStateHasCharacteristics rdf:resource="#demographic_instance_2024_4_15_0_24_38"/>
-  <ActorStateHasCharacteristics rdf:resource="#facecharacteristics_instance_2024_4_15_0_24_38"/>
-  <ActorStateHasAccessories rdf:resource="#accessories_instance_2024_4_15_0_24_38"/>
-  <ActorIsAffectedByTemp rdf:resource="#temp_instance_2024_4_15_0_24_38"/>
-  <ActorHasEyeState rdf:resource="#eye_state_2024_4_15_0_24_38"/>
-  <ActorHasMouthState rdf:resource="#mouth_state_2024_4_15_0_24_38"/>
-  <in_c:ActorIsTargetedByLabel rdf:resource="#label_2024_4_15_0_24_38"/>
-  <rdf:type rdf:resource="#ActorState_ModerateHR_ModerateHRV_ModerateRR_LowSpO2_LVL7"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#hr_instance_2024_4_15_2_11_17"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#hrv_instance_2024_4_15_2_11_17"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#rr_instance_2024_4_15_2_11_17"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#spo2_instance_2024_4_15_2_11_17"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#drowsiness_instance_2024_4_15_2_11_17"/>
+  <ActorStateHasAge rdf:resource="#age_instance_2024_4_15_2_11_17"/>
+  <ActorStateHasSex rdf:resource="#sex_instance_2024_4_15_2_11_17"/>
+  <ActorStateHasCharacteristics rdf:resource="#demographic_instance_2024_4_15_2_11_17"/>
+  <ActorStateHasCharacteristics rdf:resource="#facecharacteristics_instance_2024_4_15_2_11_17"/>
+  <ActorStateHasAccessories rdf:resource="#accessories_instance_2024_4_15_2_11_17"/>
+  <ActorIsAffectedByTemp rdf:resource="#temp_instance_2024_4_15_2_11_17"/>
+  <ActorHasEyeState rdf:resource="#eye_state_2024_4_15_2_11_17"/>
+  <ActorHasMouthState rdf:resource="#mouth_state_2024_4_15_2_11_17"/>
+  <in_c:ActorIsTargetedByLabel rdf:resource="#label_2024_4_15_2_11_17"/>
+  <rdf:type rdf:resource="#ActorState_VeryLowHR_ModerateHRV_ModerateRR_NormalSpO2_LVL3"/>
   <StateHasThresholdProfile rdf:resource="#tp_young_male_moderate"/>
   <ActorStateHasFatigue rdf:resource="#undefinedstate_instance"/>
   <ActorStateHasUnresponsiveness rdf:resource="#undefined_atrisk_instance"/>
-  <ActorStateHasAttention rdf:resource="#inattentive_instance"/>
-  <validAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_0_24_38</validAt>
+  <ActorStateHasAttention rdf:resource="#undefined_instance"/>
+  <validAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_2_11_17</validAt>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#hr_instance_2024_4_15_0_28_49">
+<owl:NamedIndividual rdf:about="#hr_instance_2024_4_15_2_26_42">
   <rdf:type rdf:resource="#HR"/>
-  <HRis rdf:resource="#moderate_hr_instance"/>
-  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_0_28_49</phyValidAt>
-  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">74</hasNumericalValue>
+  <HRis rdf:resource="#very_low_hr_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_2_26_42</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">65</hasNumericalValue>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#hrv_instance_2024_4_15_0_28_49">
+<owl:NamedIndividual rdf:about="#hrv_instance_2024_4_15_2_26_42">
   <rdf:type rdf:resource="#HRV"/>
-  <HRVis rdf:resource="#very_low_hrv_instance"/>
-  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_0_28_49</phyValidAt>
-  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">33</hasNumericalValue>
+  <HRVis rdf:resource="#high_hrv_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_2_26_42</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">197</hasNumericalValue>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#rr_instance_2024_4_15_0_28_49">
+<owl:NamedIndividual rdf:about="#rr_instance_2024_4_15_2_26_42">
   <rdf:type rdf:resource="#RR"/>
-  <RRis rdf:resource="#moderate_rr_instance"/>
-  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_0_28_49</phyValidAt>
-  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">22</hasNumericalValue>
+  <RRis rdf:resource="#low_rr_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_2_26_42</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">15</hasNumericalValue>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#spo2_instance_2024_4_15_0_28_49">
+<owl:NamedIndividual rdf:about="#spo2_instance_2024_4_15_2_26_42">
   <rdf:type rdf:resource="#SpO2"/>
-  <SpO2is rdf:resource="#low_spo2_instance"/>
-  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_0_28_49</phyValidAt>
-  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">97</hasNumericalValue>
+  <SpO2is rdf:resource="#normal_spo2_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_2_26_42</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">99</hasNumericalValue>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#drowsiness_instance_2024_4_15_0_28_49">
+<owl:NamedIndividual rdf:about="#drowsiness_instance_2024_4_15_2_26_42">
   <rdf:type rdf:resource="#Drowsiness"/>
   <DrowsinessIs rdf:resource="#level_3_kss_instance"/>
-  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_0_28_49</phyValidAt>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_2_26_42</phyValidAt>
   <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</hasNumericalValue>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#accessories_instance_2024_4_15_0_28_49">
+<owl:NamedIndividual rdf:about="#accessories_instance_2024_4_15_2_26_42">
   <rdf:type rdf:resource="#Accessories"/>
   <AccessoriesIncludeWearables rdf:resource="#glasses_instance"/>
   <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Glasses</hasStringValue>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#age_instance_2024_4_15_0_28_49">
+<owl:NamedIndividual rdf:about="#age_instance_2024_4_15_2_26_42">
   <rdf:type rdf:resource="#Age"/>
   <AgeBelongsToGroup rdf:resource="#young_instance"/>
   <hasAgeValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">15</hasAgeValue>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#demographic_instance_2024_4_15_0_28_49">
+<owl:NamedIndividual rdf:about="#demographic_instance_2024_4_15_2_26_42">
   <rdf:type rdf:resource="#Demographic"/>
   <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Afghan</hasStringValue>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#eye_state_2024_4_15_0_28_49">
+<owl:NamedIndividual rdf:about="#eye_state_2024_4_15_2_26_42">
   <rdf:type rdf:resource="#EyeState"/>
   <EyeStateIs rdf:resource="#openstate_instance"/>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#facecharacteristics_instance_2024_4_15_0_28_49">
+<owl:NamedIndividual rdf:about="#facecharacteristics_instance_2024_4_15_2_26_42">
   <rdf:type rdf:resource="#FaceCharacteristics"/>
   <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">LongHair</hasStringValue>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#mouth_state_2024_4_15_0_28_49">
+<owl:NamedIndividual rdf:about="#mouth_state_2024_4_15_2_26_42">
   <rdf:type rdf:resource="#MouthState"/>
   <MouthStateIs rdf:resource="#closed_instance"/>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#sex_instance_2024_4_15_0_28_49">
+<owl:NamedIndividual rdf:about="#sex_instance_2024_4_15_2_26_42">
   <rdf:type rdf:resource="#Sex"/>
   <SexBelongsToGroup rdf:resource="#male_instance"/>
   <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Man</hasStringValue>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#temp_instance_2024_4_15_0_28_49">
+<owl:NamedIndividual rdf:about="#temp_instance_2024_4_15_2_26_42">
   <rdf:type rdf:resource="#WeatherCondition"/>
   <TemperatureBelongsToGroup rdf:resource="#moderatetemp_instance"/>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#label_2024_4_15_0_28_49">
+<owl:NamedIndividual rdf:about="#label_2024_4_15_2_26_42">
   <rdf:type rdf:resource="#Label"/>
-  <hasDescription rdf:datatype="http://www.w3.org/2001/XMLSchema#string">{"prompt_details": {"seed": 163413, "steps": 42, "prompt": "Lorem ipsum...", "response": "Lorem ipsum...", "view_point": "front", "object_name": "person", "time_of_day": "morning", "sky_condition": "clear", "weather_condition": "sunny"}, "label": {"actor_id": "DriverState_1109f38e03194099ab924e37fcd014da", "eye_inst": "open", "mouth_inst": "closed", "age": "young", "face": "LongHair", "sex": "male", "demographic": "Afghan", "accessories": "glasses", "fatigue": "drowsinesssuspected", "attention": "undefined", "unresponsiveness": "undefined", "bounding_box": "...", "bounding_polygon": "..."}}</hasDescription>
-  <hasDescription rdf:datatype="http://www.w3.org/2001/XMLSchema#string">{\"prompt_details\": {\"seed\": 163413, \"steps\": 42, \"prompt\": \"Lorem ipsum...\", \"response\": \"Lorem ipsum...\", \"view_point\": \"front\", \"object_name\": \"person\", \"time_of_day\": \"morning\", \"sky_condition\": \"clear\", \"weather_condition\": \"sunny\"}, \"label\": {\"actor_id\": \"DriverState_1109f38e03194099ab924e37fcd014da\", \"eye_inst\": \"open\", \"mouth_inst\": \"closed\", \"age\": \"young\", \"face\": \"LongHair\", \"sex\": \"male\", \"demographic\": \"Afghan\", \"accessories\": \"glasses\", \"fatigue\": \"drowsinesssuspected\", \"attention\": \"undefined\", \"unresponsiveness\": \"undefined\", \"bounding_box\": \"...\", \"bounding_polygon\": \"...\"}}</hasDescription>
+  <in_c:LabelTargetsActor rdf:resource="#DriverState_22da562697354fca95e13d5b1c2a929d"/>
+  <hasDescription rdf:datatype="http://www.w3.org/2001/XMLSchema#string">{"prompt_details": {"seed": 397338, "steps": 65, "prompt": "Lorem ipsum...", "response": "Lorem ipsum...", "view_point": "front", "object_name": "person", "time_of_day": "morning", "sky_condition": "clear", "weather_condition": "sunny"}, "label": {"actor_id": "DriverState_22da562697354fca95e13d5b1c2a929d", "eye_inst": "open", "mouth_inst": "closed", "age": "young", "face": "LongHair", "sex": "male", "demographic": "Afghan", "accessories": "glasses", "fatigue": "drowsinesssuspected", "attention": "undefined", "unresponsiveness": "undefined", "bounding_box": "...", "bounding_polygon": "..."}}</hasDescription>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#DriverState_1109f38e03194099ab924e37fcd014da">
+<owl:NamedIndividual rdf:about="#DriverState_22da562697354fca95e13d5b1c2a929d">
   <rdf:type rdf:resource="#ActorState"/>
   <StateOfActor rdf:resource="#driver"/>
-  <ActorStateHasPhysiologicalState rdf:resource="#hr_instance_2024_4_15_0_28_49"/>
-  <ActorStateHasPhysiologicalState rdf:resource="#hrv_instance_2024_4_15_0_28_49"/>
-  <ActorStateHasPhysiologicalState rdf:resource="#rr_instance_2024_4_15_0_28_49"/>
-  <ActorStateHasPhysiologicalState rdf:resource="#spo2_instance_2024_4_15_0_28_49"/>
-  <ActorStateHasPhysiologicalState rdf:resource="#drowsiness_instance_2024_4_15_0_28_49"/>
-  <ActorStateHasAge rdf:resource="#age_instance_2024_4_15_0_28_49"/>
-  <ActorStateHasSex rdf:resource="#sex_instance_2024_4_15_0_28_49"/>
-  <ActorStateHasCharacteristics rdf:resource="#demographic_instance_2024_4_15_0_28_49"/>
-  <ActorStateHasCharacteristics rdf:resource="#facecharacteristics_instance_2024_4_15_0_28_49"/>
-  <ActorStateHasAccessories rdf:resource="#accessories_instance_2024_4_15_0_28_49"/>
-  <ActorIsAffectedByTemp rdf:resource="#temp_instance_2024_4_15_0_28_49"/>
-  <ActorHasEyeState rdf:resource="#eye_state_2024_4_15_0_28_49"/>
-  <ActorHasMouthState rdf:resource="#mouth_state_2024_4_15_0_28_49"/>
-  <in_c:ActorIsTargetedByLabel rdf:resource="#label_2024_4_15_0_28_49"/>
-  <rdf:type rdf:resource="#ActorState_ModerateHR_VeryLowHRV_ModerateRR_LowSpO2_LVL3"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#hr_instance_2024_4_15_2_26_42"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#hrv_instance_2024_4_15_2_26_42"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#rr_instance_2024_4_15_2_26_42"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#spo2_instance_2024_4_15_2_26_42"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#drowsiness_instance_2024_4_15_2_26_42"/>
+  <ActorStateHasAge rdf:resource="#age_instance_2024_4_15_2_26_42"/>
+  <ActorStateHasSex rdf:resource="#sex_instance_2024_4_15_2_26_42"/>
+  <ActorStateHasCharacteristics rdf:resource="#demographic_instance_2024_4_15_2_26_42"/>
+  <ActorStateHasCharacteristics rdf:resource="#facecharacteristics_instance_2024_4_15_2_26_42"/>
+  <ActorStateHasAccessories rdf:resource="#accessories_instance_2024_4_15_2_26_42"/>
+  <ActorIsAffectedByTemp rdf:resource="#temp_instance_2024_4_15_2_26_42"/>
+  <ActorHasEyeState rdf:resource="#eye_state_2024_4_15_2_26_42"/>
+  <ActorHasMouthState rdf:resource="#mouth_state_2024_4_15_2_26_42"/>
+  <in_c:ActorIsTargetedByLabel rdf:resource="#label_2024_4_15_2_26_42"/>
+  <rdf:type rdf:resource="#ActorState_VeryLowHR_HighHRV_LowRR_NormalSpO2_LVL3"/>
   <StateHasThresholdProfile rdf:resource="#tp_young_male_moderate"/>
   <ActorStateHasFatigue rdf:resource="#drowsinesssuspected_instance"/>
   <ActorStateHasUnresponsiveness rdf:resource="#undefined_atrisk_instance"/>
   <ActorStateHasAttention rdf:resource="#undefined_instance"/>
-  <validAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_0_28_49</validAt>
+  <validAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_2_26_42</validAt>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#hr_instance_2024_4_15_0_35_56">
+<owl:NamedIndividual rdf:about="#hr_instance_2024_4_15_3_14_56">
   <rdf:type rdf:resource="#HR"/>
-  <HRis rdf:resource="#moderate_hr_instance"/>
-  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_0_35_56</phyValidAt>
-  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">74</hasNumericalValue>
+  <HRis rdf:resource="#very_low_hr_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_3_14_56</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">62</hasNumericalValue>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#hrv_instance_2024_4_15_0_35_56">
+<owl:NamedIndividual rdf:about="#hrv_instance_2024_4_15_3_14_56">
   <rdf:type rdf:resource="#HRV"/>
   <HRVis rdf:resource="#moderate_hrv_instance"/>
-  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_0_35_56</phyValidAt>
-  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">46</hasNumericalValue>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_3_14_56</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">79</hasNumericalValue>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#rr_instance_2024_4_15_0_35_56">
+<owl:NamedIndividual rdf:about="#rr_instance_2024_4_15_3_14_56">
   <rdf:type rdf:resource="#RR"/>
   <RRis rdf:resource="#moderate_rr_instance"/>
-  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_0_35_56</phyValidAt>
-  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">21</hasNumericalValue>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_3_14_56</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">20</hasNumericalValue>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#spo2_instance_2024_4_15_0_35_56">
+<owl:NamedIndividual rdf:about="#spo2_instance_2024_4_15_3_14_56">
   <rdf:type rdf:resource="#SpO2"/>
-  <SpO2is rdf:resource="#low_spo2_instance"/>
-  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_0_35_56</phyValidAt>
-  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">97</hasNumericalValue>
+  <SpO2is rdf:resource="#normal_spo2_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_3_14_56</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">100</hasNumericalValue>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#drowsiness_instance_2024_4_15_0_35_56">
+<owl:NamedIndividual rdf:about="#drowsiness_instance_2024_4_15_3_14_56">
   <rdf:type rdf:resource="#Drowsiness"/>
-  <DrowsinessIs rdf:resource="#level_9_kss_instance"/>
-  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_0_35_56</phyValidAt>
-  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</hasNumericalValue>
+  <DrowsinessIs rdf:resource="#level_5_kss_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_3_14_56</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</hasNumericalValue>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#accessories_instance_2024_4_15_0_35_56">
+<owl:NamedIndividual rdf:about="#accessories_instance_2024_4_15_3_14_56">
   <rdf:type rdf:resource="#Accessories"/>
   <AccessoriesIncludeWearables rdf:resource="#glasses_instance"/>
   <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Glasses</hasStringValue>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#age_instance_2024_4_15_0_35_56">
+<owl:NamedIndividual rdf:about="#age_instance_2024_4_15_3_14_56">
   <rdf:type rdf:resource="#Age"/>
   <AgeBelongsToGroup rdf:resource="#young_instance"/>
   <hasAgeValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">15</hasAgeValue>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#demographic_instance_2024_4_15_0_35_56">
+<owl:NamedIndividual rdf:about="#demographic_instance_2024_4_15_3_14_56">
   <rdf:type rdf:resource="#Demographic"/>
   <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Afghan</hasStringValue>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#eye_state_2024_4_15_0_35_56">
+<owl:NamedIndividual rdf:about="#eye_state_2024_4_15_3_14_56">
   <rdf:type rdf:resource="#EyeState"/>
   <EyeStateIs rdf:resource="#closedstate_instance"/>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#facecharacteristics_instance_2024_4_15_0_35_56">
+<owl:NamedIndividual rdf:about="#facecharacteristics_instance_2024_4_15_3_14_56">
   <rdf:type rdf:resource="#FaceCharacteristics"/>
   <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">LongHair</hasStringValue>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#mouth_state_2024_4_15_0_35_56">
+<owl:NamedIndividual rdf:about="#mouth_state_2024_4_15_3_14_56">
   <rdf:type rdf:resource="#MouthState"/>
   <MouthStateIs rdf:resource="#open_instance"/>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#sex_instance_2024_4_15_0_35_56">
+<owl:NamedIndividual rdf:about="#sex_instance_2024_4_15_3_14_56">
   <rdf:type rdf:resource="#Sex"/>
   <SexBelongsToGroup rdf:resource="#male_instance"/>
   <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Man</hasStringValue>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#temp_instance_2024_4_15_0_35_56">
+<owl:NamedIndividual rdf:about="#temp_instance_2024_4_15_3_14_56">
   <rdf:type rdf:resource="#WeatherCondition"/>
   <TemperatureBelongsToGroup rdf:resource="#moderatetemp_instance"/>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#label_2024_4_15_0_35_56">
+<owl:NamedIndividual rdf:about="#label_2024_4_15_3_14_56">
   <rdf:type rdf:resource="#Label"/>
-  <hasDescription rdf:datatype="http://www.w3.org/2001/XMLSchema#string">{"prompt_details": {"seed": 433559, "steps": 70, "prompt": "Lorem ipsum...", "response": "Lorem ipsum...", "view_point": "front", "object_name": "person", "time_of_day": "morning", "sky_condition": "clear", "weather_condition": "sunny"}, "label": {"actor_id": "DriverState_d670ca63fab543c494dc2c8f80e3ffde", "eye_inst": "closed", "mouth_inst": "open", "age": "young", "face": "LongHair", "sex": "male", "demographic": "Afghan", "accessories": "glasses", "fatigue": "undefinedstate", "attention": "undefined", "unresponsiveness": "unresponsive", "bounding_box": "...", "bounding_polygon": "..."}}</hasDescription>
-  <hasDescription rdf:datatype="http://www.w3.org/2001/XMLSchema#string">{\"prompt_details\": {\"seed\": 433559, \"steps\": 70, \"prompt\": \"Lorem ipsum...\", \"response\": \"Lorem ipsum...\", \"view_point\": \"front\", \"object_name\": \"person\", \"time_of_day\": \"morning\", \"sky_condition\": \"clear\", \"weather_condition\": \"sunny\"}, \"label\": {\"actor_id\": \"DriverState_d670ca63fab543c494dc2c8f80e3ffde\", \"eye_inst\": \"closed\", \"mouth_inst\": \"open\", \"age\": \"young\", \"face\": \"LongHair\", \"sex\": \"male\", \"demographic\": \"Afghan\", \"accessories\": \"glasses\", \"fatigue\": \"undefinedstate\", \"attention\": \"undefined\", \"unresponsiveness\": \"unresponsive\", \"bounding_box\": \"...\", \"bounding_polygon\": \"...\"}}</hasDescription>
+  <in_c:LabelTargetsActor rdf:resource="#DriverState_73482c219ead484985668955246fd5c5"/>
+  <hasDescription rdf:datatype="http://www.w3.org/2001/XMLSchema#string">{"prompt_details": {"seed": 721211, "steps": 6, "prompt": "Lorem ipsum...", "response": "Lorem ipsum...", "view_point": "front", "object_name": "person", "time_of_day": "morning", "sky_condition": "clear", "weather_condition": "sunny"}, "label": {"actor_id": "DriverState_73482c219ead484985668955246fd5c5", "eye_inst": "closed", "mouth_inst": "open", "age": "young", "face": "LongHair", "sex": "male", "demographic": "Afghan", "accessories": "glasses", "fatigue": "undefinedstate", "attention": "undefined", "unresponsiveness": "undefined", "bounding_box": "...", "bounding_polygon": "..."}}</hasDescription>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#DriverState_d670ca63fab543c494dc2c8f80e3ffde">
+<owl:NamedIndividual rdf:about="#DriverState_73482c219ead484985668955246fd5c5">
   <rdf:type rdf:resource="#ActorState"/>
   <StateOfActor rdf:resource="#driver"/>
-  <ActorStateHasPhysiologicalState rdf:resource="#hr_instance_2024_4_15_0_35_56"/>
-  <ActorStateHasPhysiologicalState rdf:resource="#hrv_instance_2024_4_15_0_35_56"/>
-  <ActorStateHasPhysiologicalState rdf:resource="#rr_instance_2024_4_15_0_35_56"/>
-  <ActorStateHasPhysiologicalState rdf:resource="#spo2_instance_2024_4_15_0_35_56"/>
-  <ActorStateHasPhysiologicalState rdf:resource="#drowsiness_instance_2024_4_15_0_35_56"/>
-  <ActorStateHasAge rdf:resource="#age_instance_2024_4_15_0_35_56"/>
-  <ActorStateHasSex rdf:resource="#sex_instance_2024_4_15_0_35_56"/>
-  <ActorStateHasCharacteristics rdf:resource="#demographic_instance_2024_4_15_0_35_56"/>
-  <ActorStateHasCharacteristics rdf:resource="#facecharacteristics_instance_2024_4_15_0_35_56"/>
-  <ActorStateHasAccessories rdf:resource="#accessories_instance_2024_4_15_0_35_56"/>
-  <ActorIsAffectedByTemp rdf:resource="#temp_instance_2024_4_15_0_35_56"/>
-  <ActorHasEyeState rdf:resource="#eye_state_2024_4_15_0_35_56"/>
-  <ActorHasMouthState rdf:resource="#mouth_state_2024_4_15_0_35_56"/>
-  <in_c:ActorIsTargetedByLabel rdf:resource="#label_2024_4_15_0_35_56"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#hr_instance_2024_4_15_3_14_56"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#hrv_instance_2024_4_15_3_14_56"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#rr_instance_2024_4_15_3_14_56"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#spo2_instance_2024_4_15_3_14_56"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#drowsiness_instance_2024_4_15_3_14_56"/>
+  <ActorStateHasAge rdf:resource="#age_instance_2024_4_15_3_14_56"/>
+  <ActorStateHasSex rdf:resource="#sex_instance_2024_4_15_3_14_56"/>
+  <ActorStateHasCharacteristics rdf:resource="#demographic_instance_2024_4_15_3_14_56"/>
+  <ActorStateHasCharacteristics rdf:resource="#facecharacteristics_instance_2024_4_15_3_14_56"/>
+  <ActorStateHasAccessories rdf:resource="#accessories_instance_2024_4_15_3_14_56"/>
+  <ActorIsAffectedByTemp rdf:resource="#temp_instance_2024_4_15_3_14_56"/>
+  <ActorHasEyeState rdf:resource="#eye_state_2024_4_15_3_14_56"/>
+  <ActorHasMouthState rdf:resource="#mouth_state_2024_4_15_3_14_56"/>
+  <in_c:ActorIsTargetedByLabel rdf:resource="#label_2024_4_15_3_14_56"/>
+  <rdf:type rdf:resource="#ActorState_VeryLowHR_ModerateHRV_ModerateRR_NormalSpO2_LVL5"/>
+  <StateHasThresholdProfile rdf:resource="#tp_young_male_moderate"/>
+  <ActorStateHasFatigue rdf:resource="#undefinedstate_instance"/>
+  <ActorStateHasUnresponsiveness rdf:resource="#undefined_atrisk_instance"/>
+  <ActorStateHasAttention rdf:resource="#undefined_instance"/>
+  <validAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_3_14_56</validAt>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#hr_instance_2024_4_15_3_16_46">
+  <rdf:type rdf:resource="#HR"/>
+  <HRis rdf:resource="#very_low_hr_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_3_16_46</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">64</hasNumericalValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#hrv_instance_2024_4_15_3_16_46">
+  <rdf:type rdf:resource="#HRV"/>
+  <HRVis rdf:resource="#high_hrv_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_3_16_46</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">182</hasNumericalValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#rr_instance_2024_4_15_3_16_46">
+  <rdf:type rdf:resource="#RR"/>
+  <RRis rdf:resource="#moderate_rr_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_3_16_46</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">21</hasNumericalValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#spo2_instance_2024_4_15_3_16_46">
+  <rdf:type rdf:resource="#SpO2"/>
+  <SpO2is rdf:resource="#normal_spo2_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_3_16_46</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">100</hasNumericalValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#drowsiness_instance_2024_4_15_3_16_46">
+  <rdf:type rdf:resource="#Drowsiness"/>
+  <DrowsinessIs rdf:resource="#level_9_kss_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_3_16_46</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</hasNumericalValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#accessories_instance_2024_4_15_3_16_46">
+  <rdf:type rdf:resource="#Accessories"/>
+  <AccessoriesIncludeWearables rdf:resource="#glasses_instance"/>
+  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Glasses</hasStringValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#age_instance_2024_4_15_3_16_46">
+  <rdf:type rdf:resource="#Age"/>
+  <AgeBelongsToGroup rdf:resource="#young_instance"/>
+  <hasAgeValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">15</hasAgeValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#demographic_instance_2024_4_15_3_16_46">
+  <rdf:type rdf:resource="#Demographic"/>
+  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Afghan</hasStringValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#eye_state_2024_4_15_3_16_46">
+  <rdf:type rdf:resource="#EyeState"/>
+  <EyeStateIs rdf:resource="#closedstate_instance"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#facecharacteristics_instance_2024_4_15_3_16_46">
+  <rdf:type rdf:resource="#FaceCharacteristics"/>
+  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">LongHair</hasStringValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#mouth_state_2024_4_15_3_16_46">
+  <rdf:type rdf:resource="#MouthState"/>
+  <MouthStateIs rdf:resource="#open_instance"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#sex_instance_2024_4_15_3_16_46">
+  <rdf:type rdf:resource="#Sex"/>
+  <SexBelongsToGroup rdf:resource="#male_instance"/>
+  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Man</hasStringValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#temp_instance_2024_4_15_3_16_46">
+  <rdf:type rdf:resource="#WeatherCondition"/>
+  <TemperatureBelongsToGroup rdf:resource="#moderatetemp_instance"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#label_2024_4_15_3_16_46">
+  <rdf:type rdf:resource="#Label"/>
+  <in_c:LabelTargetsActor rdf:resource="#DriverState_af8d5f848ea84b9a934c322f8a8d1d66"/>
+  <hasDescription rdf:datatype="http://www.w3.org/2001/XMLSchema#string">{"prompt_details": {"seed": 217015, "steps": 49, "prompt": "Lorem ipsum...", "response": "Lorem ipsum...", "view_point": "front", "object_name": "person", "time_of_day": "morning", "sky_condition": "clear", "weather_condition": "sunny"}, "label": {"actor_id": "DriverState_af8d5f848ea84b9a934c322f8a8d1d66", "eye_inst": "closed", "mouth_inst": "open", "age": "young", "face": "LongHair", "sex": "male", "demographic": "Afghan", "accessories": "glasses", "fatigue": "undefinedstate", "attention": "undefined", "unresponsiveness": "unresponsive", "bounding_box": "...", "bounding_polygon": "..."}}</hasDescription>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#DriverState_af8d5f848ea84b9a934c322f8a8d1d66">
+  <rdf:type rdf:resource="#ActorState"/>
+  <StateOfActor rdf:resource="#driver"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#hr_instance_2024_4_15_3_16_46"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#hrv_instance_2024_4_15_3_16_46"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#rr_instance_2024_4_15_3_16_46"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#spo2_instance_2024_4_15_3_16_46"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#drowsiness_instance_2024_4_15_3_16_46"/>
+  <ActorStateHasAge rdf:resource="#age_instance_2024_4_15_3_16_46"/>
+  <ActorStateHasSex rdf:resource="#sex_instance_2024_4_15_3_16_46"/>
+  <ActorStateHasCharacteristics rdf:resource="#demographic_instance_2024_4_15_3_16_46"/>
+  <ActorStateHasCharacteristics rdf:resource="#facecharacteristics_instance_2024_4_15_3_16_46"/>
+  <ActorStateHasAccessories rdf:resource="#accessories_instance_2024_4_15_3_16_46"/>
+  <ActorIsAffectedByTemp rdf:resource="#temp_instance_2024_4_15_3_16_46"/>
+  <ActorHasEyeState rdf:resource="#eye_state_2024_4_15_3_16_46"/>
+  <ActorHasMouthState rdf:resource="#mouth_state_2024_4_15_3_16_46"/>
+  <in_c:ActorIsTargetedByLabel rdf:resource="#label_2024_4_15_3_16_46"/>
   <rdf:type rdf:resource="#ActorState_Drowsiness_Level_9"/>
   <rdf:type rdf:resource="#ActorState_LVL9"/>
-  <rdf:type rdf:resource="#ActorState_Low_SpO2"/>
-  <rdf:type rdf:resource="#ActorState_Moderate_HRV"/>
-  <rdf:type rdf:resource="#ActorState_Moderate_HR"/>
+  <rdf:type rdf:resource="#ActorState_High_HRV"/>
   <rdf:type rdf:resource="#ActorState_Moderate_RR"/>
+  <rdf:type rdf:resource="#ActorState_Normal_SpO2"/>
+  <rdf:type rdf:resource="#ActorState_Very_Low_HR"/>
   <StateHasThresholdProfile rdf:resource="#tp_young_male_moderate"/>
   <ActorStateHasFatigue rdf:resource="#undefinedstate_instance"/>
   <ActorStateHasUnresponsiveness rdf:resource="#unresponsive_instance"/>
   <ActorStateHasAttention rdf:resource="#undefined_instance"/>
-  <validAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_0_35_56</validAt>
+  <validAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_3_16_46</validAt>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#hr_instance_2024_4_15_4_17_24">
+  <rdf:type rdf:resource="#HR"/>
+  <HRis rdf:resource="#very_low_hr_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_4_17_24</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">63</hasNumericalValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#hrv_instance_2024_4_15_4_17_24">
+  <rdf:type rdf:resource="#HRV"/>
+  <HRVis rdf:resource="#high_hrv_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_4_17_24</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">112</hasNumericalValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#rr_instance_2024_4_15_4_17_24">
+  <rdf:type rdf:resource="#RR"/>
+  <RRis rdf:resource="#low_rr_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_4_17_24</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">15</hasNumericalValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#spo2_instance_2024_4_15_4_17_24">
+  <rdf:type rdf:resource="#SpO2"/>
+  <SpO2is rdf:resource="#low_spo2_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_4_17_24</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">98</hasNumericalValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#drowsiness_instance_2024_4_15_4_17_24">
+  <rdf:type rdf:resource="#Drowsiness"/>
+  <DrowsinessIs rdf:resource="#level_7_kss_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_4_17_24</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</hasNumericalValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#accessories_instance_2024_4_15_4_17_24">
+  <rdf:type rdf:resource="#Accessories"/>
+  <AccessoriesIncludeWearables rdf:resource="#glasses_instance"/>
+  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Glasses</hasStringValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#age_instance_2024_4_15_4_17_24">
+  <rdf:type rdf:resource="#Age"/>
+  <AgeBelongsToGroup rdf:resource="#young_instance"/>
+  <hasAgeValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">15</hasAgeValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#demographic_instance_2024_4_15_4_17_24">
+  <rdf:type rdf:resource="#Demographic"/>
+  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Afghan</hasStringValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#eye_state_2024_4_15_4_17_24">
+  <rdf:type rdf:resource="#EyeState"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#facecharacteristics_instance_2024_4_15_4_17_24">
+  <rdf:type rdf:resource="#FaceCharacteristics"/>
+  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">LongHair</hasStringValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#mouth_state_2024_4_15_4_17_24">
+  <rdf:type rdf:resource="#MouthState"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#sex_instance_2024_4_15_4_17_24">
+  <rdf:type rdf:resource="#Sex"/>
+  <SexBelongsToGroup rdf:resource="#male_instance"/>
+  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Man</hasStringValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#temp_instance_2024_4_15_4_17_24">
+  <rdf:type rdf:resource="#WeatherCondition"/>
+  <TemperatureBelongsToGroup rdf:resource="#moderatetemp_instance"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#label_2024_4_15_4_17_24">
+  <rdf:type rdf:resource="#Label"/>
+  <in_c:LabelTargetsActor rdf:resource="#DriverState_22aa6f6a32fc44b58a331349e4bec174"/>
+  <hasDescription rdf:datatype="http://www.w3.org/2001/XMLSchema#string">{"prompt_details": {"seed": 851641, "steps": 36, "prompt": "Lorem ipsum...", "response": "Lorem ipsum...", "view_point": "front", "object_name": "person", "time_of_day": "morning", "sky_condition": "clear", "weather_condition": "sunny"}, "label": {"actor_id": "DriverState_22aa6f6a32fc44b58a331349e4bec174", "eye_inst": "open", "mouth_inst": "open", "age": "young", "face": "LongHair", "sex": "male", "demographic": "Afghan", "accessories": "glasses", "fatigue": "undefinedstate", "attention": "undefined", "unresponsiveness": "undefined_atrisk", "bounding_box": "...", "bounding_polygon": "..."}}</hasDescription>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#DriverState_22aa6f6a32fc44b58a331349e4bec174">
+  <rdf:type rdf:resource="#ActorState"/>
+  <StateOfActor rdf:resource="#driver"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#hr_instance_2024_4_15_4_17_24"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#hrv_instance_2024_4_15_4_17_24"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#rr_instance_2024_4_15_4_17_24"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#spo2_instance_2024_4_15_4_17_24"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#drowsiness_instance_2024_4_15_4_17_24"/>
+  <ActorStateHasAge rdf:resource="#age_instance_2024_4_15_4_17_24"/>
+  <ActorStateHasSex rdf:resource="#sex_instance_2024_4_15_4_17_24"/>
+  <ActorStateHasCharacteristics rdf:resource="#demographic_instance_2024_4_15_4_17_24"/>
+  <ActorStateHasCharacteristics rdf:resource="#facecharacteristics_instance_2024_4_15_4_17_24"/>
+  <ActorStateHasAccessories rdf:resource="#accessories_instance_2024_4_15_4_17_24"/>
+  <ActorIsAffectedByTemp rdf:resource="#temp_instance_2024_4_15_4_17_24"/>
+  <ActorHasEyeState rdf:resource="#eye_state_2024_4_15_4_17_24"/>
+  <ActorHasMouthState rdf:resource="#mouth_state_2024_4_15_4_17_24"/>
+  <in_c:ActorIsTargetedByLabel rdf:resource="#label_2024_4_15_4_17_24"/>
+  <rdf:type rdf:resource="#ActorState_Drowsiness_Level_7"/>
+  <rdf:type rdf:resource="#ActorState_High_HRV"/>
+  <rdf:type rdf:resource="#ActorState_Low_RR"/>
+  <rdf:type rdf:resource="#ActorState_Low_SpO2"/>
+  <rdf:type rdf:resource="#ActorState_Very_Low_HR"/>
+  <StateHasThresholdProfile rdf:resource="#tp_young_male_moderate"/>
+  <validAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_4_17_24</validAt>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#hr_instance_2024_4_15_4_34_58">
+  <rdf:type rdf:resource="#HR"/>
+  <HRis rdf:resource="#low_hr_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_4_34_58</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">69</hasNumericalValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#hrv_instance_2024_4_15_4_34_58">
+  <rdf:type rdf:resource="#HRV"/>
+  <HRVis rdf:resource="#high_hrv_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_4_34_58</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">149</hasNumericalValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#rr_instance_2024_4_15_4_34_58">
+  <rdf:type rdf:resource="#RR"/>
+  <RRis rdf:resource="#very_low_rr_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_4_34_58</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">12</hasNumericalValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#spo2_instance_2024_4_15_4_34_58">
+  <rdf:type rdf:resource="#SpO2"/>
+  <SpO2is rdf:resource="#normal_spo2_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_4_34_58</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">100</hasNumericalValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#drowsiness_instance_2024_4_15_4_34_58">
+  <rdf:type rdf:resource="#Drowsiness"/>
+  <DrowsinessIs rdf:resource="#level_5_kss_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_4_34_58</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</hasNumericalValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#accessories_instance_2024_4_15_4_34_58">
+  <rdf:type rdf:resource="#Accessories"/>
+  <AccessoriesIncludeWearables rdf:resource="#glasses_instance"/>
+  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Glasses</hasStringValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#age_instance_2024_4_15_4_34_58">
+  <rdf:type rdf:resource="#Age"/>
+  <AgeBelongsToGroup rdf:resource="#young_instance"/>
+  <hasAgeValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">15</hasAgeValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#demographic_instance_2024_4_15_4_34_58">
+  <rdf:type rdf:resource="#Demographic"/>
+  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Afghan</hasStringValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#eye_state_2024_4_15_4_34_58">
+  <rdf:type rdf:resource="#EyeState"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#facecharacteristics_instance_2024_4_15_4_34_58">
+  <rdf:type rdf:resource="#FaceCharacteristics"/>
+  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">LongHair</hasStringValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#mouth_state_2024_4_15_4_34_58">
+  <rdf:type rdf:resource="#MouthState"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#sex_instance_2024_4_15_4_34_58">
+  <rdf:type rdf:resource="#Sex"/>
+  <SexBelongsToGroup rdf:resource="#male_instance"/>
+  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Man</hasStringValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#temp_instance_2024_4_15_4_34_58">
+  <rdf:type rdf:resource="#WeatherCondition"/>
+  <TemperatureBelongsToGroup rdf:resource="#moderatetemp_instance"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#label_2024_4_15_4_34_58">
+  <rdf:type rdf:resource="#Label"/>
+  <in_c:LabelTargetsActor rdf:resource="#DriverState_ebf0a4e7ade84435afc23aee357b6e38"/>
+  <hasDescription rdf:datatype="http://www.w3.org/2001/XMLSchema#string">{"prompt_details": {"seed": 542965, "steps": 13, "prompt": "Lorem ipsum...", "response": "Lorem ipsum...", "view_point": "front", "object_name": "person", "time_of_day": "morning", "sky_condition": "clear", "weather_condition": "sunny"}, "label": {"actor_id": "DriverState_ebf0a4e7ade84435afc23aee357b6e38", "eye_inst": "open", "mouth_inst": "open", "age": "young", "face": "LongHair", "sex": "male", "demographic": "Afghan", "accessories": "glasses", "fatigue": "undefinedstate", "attention": "undefined", "unresponsiveness": "undefined_atrisk", "bounding_box": "...", "bounding_polygon": "..."}}</hasDescription>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#DriverState_ebf0a4e7ade84435afc23aee357b6e38">
+  <rdf:type rdf:resource="#ActorState"/>
+  <StateOfActor rdf:resource="#driver"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#hr_instance_2024_4_15_4_34_58"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#hrv_instance_2024_4_15_4_34_58"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#rr_instance_2024_4_15_4_34_58"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#spo2_instance_2024_4_15_4_34_58"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#drowsiness_instance_2024_4_15_4_34_58"/>
+  <ActorStateHasAge rdf:resource="#age_instance_2024_4_15_4_34_58"/>
+  <ActorStateHasSex rdf:resource="#sex_instance_2024_4_15_4_34_58"/>
+  <ActorStateHasCharacteristics rdf:resource="#demographic_instance_2024_4_15_4_34_58"/>
+  <ActorStateHasCharacteristics rdf:resource="#facecharacteristics_instance_2024_4_15_4_34_58"/>
+  <ActorStateHasAccessories rdf:resource="#accessories_instance_2024_4_15_4_34_58"/>
+  <ActorIsAffectedByTemp rdf:resource="#temp_instance_2024_4_15_4_34_58"/>
+  <ActorHasEyeState rdf:resource="#eye_state_2024_4_15_4_34_58"/>
+  <ActorHasMouthState rdf:resource="#mouth_state_2024_4_15_4_34_58"/>
+  <in_c:ActorIsTargetedByLabel rdf:resource="#label_2024_4_15_4_34_58"/>
+  <rdf:type rdf:resource="#ActorState_Drowsiness_Level_5"/>
+  <rdf:type rdf:resource="#ActorState_High_HRV"/>
+  <rdf:type rdf:resource="#ActorState_Low_HR"/>
+  <rdf:type rdf:resource="#ActorState_Normal_SpO2"/>
+  <rdf:type rdf:resource="#ActorState_Very_Low_RR"/>
+  <StateHasThresholdProfile rdf:resource="#tp_young_male_moderate"/>
+  <validAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_4_34_58</validAt>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#hr_instance_2024_4_15_4_54_56">
+  <rdf:type rdf:resource="#HR"/>
+  <HRis rdf:resource="#low_hr_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_4_54_56</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">69</hasNumericalValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#hrv_instance_2024_4_15_4_54_56">
+  <rdf:type rdf:resource="#HRV"/>
+  <HRVis rdf:resource="#moderate_hrv_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_4_54_56</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">46</hasNumericalValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#rr_instance_2024_4_15_4_54_56">
+  <rdf:type rdf:resource="#RR"/>
+  <RRis rdf:resource="#low_rr_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_4_54_56</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">15</hasNumericalValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#spo2_instance_2024_4_15_4_54_56">
+  <rdf:type rdf:resource="#SpO2"/>
+  <SpO2is rdf:resource="#normal_spo2_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_4_54_56</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">100</hasNumericalValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#drowsiness_instance_2024_4_15_4_54_56">
+  <rdf:type rdf:resource="#Drowsiness"/>
+  <DrowsinessIs rdf:resource="#level_9_kss_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_4_54_56</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</hasNumericalValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#accessories_instance_2024_4_15_4_54_56">
+  <rdf:type rdf:resource="#Accessories"/>
+  <AccessoriesIncludeWearables rdf:resource="#glasses_instance"/>
+  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Glasses</hasStringValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#age_instance_2024_4_15_4_54_56">
+  <rdf:type rdf:resource="#Age"/>
+  <AgeBelongsToGroup rdf:resource="#young_instance"/>
+  <hasAgeValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">15</hasAgeValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#demographic_instance_2024_4_15_4_54_56">
+  <rdf:type rdf:resource="#Demographic"/>
+  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Afghan</hasStringValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#eye_state_2024_4_15_4_54_56">
+  <rdf:type rdf:resource="#EyeState"/>
+  <EyeStateIs rdf:resource="#closedstate_instance"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#facecharacteristics_instance_2024_4_15_4_54_56">
+  <rdf:type rdf:resource="#FaceCharacteristics"/>
+  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">LongHair</hasStringValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#mouth_state_2024_4_15_4_54_56">
+  <rdf:type rdf:resource="#MouthState"/>
+  <MouthStateIs rdf:resource="#open_instance"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#sex_instance_2024_4_15_4_54_56">
+  <rdf:type rdf:resource="#Sex"/>
+  <SexBelongsToGroup rdf:resource="#male_instance"/>
+  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Man</hasStringValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#temp_instance_2024_4_15_4_54_56">
+  <rdf:type rdf:resource="#WeatherCondition"/>
+  <TemperatureBelongsToGroup rdf:resource="#moderatetemp_instance"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#label_2024_4_15_4_54_56">
+  <rdf:type rdf:resource="#Label"/>
+  <in_c:LabelTargetsActor rdf:resource="#DriverState_2598cd3eacce435e9b7c1b8997a029f3"/>
+  <hasDescription rdf:datatype="http://www.w3.org/2001/XMLSchema#string">{"prompt_details": {"seed": 232181, "steps": 10, "prompt": "Lorem ipsum...", "response": "Lorem ipsum...", "view_point": "front", "object_name": "person", "time_of_day": "morning", "sky_condition": "clear", "weather_condition": "sunny"}, "label": {"actor_id": "DriverState_2598cd3eacce435e9b7c1b8997a029f3", "eye_inst": "closed", "mouth_inst": "open", "age": "young", "face": "LongHair", "sex": "male", "demographic": "Afghan", "accessories": "glasses", "fatigue": "undefinedstate", "attention": "undefined", "unresponsiveness": "unresponsive", "bounding_box": "...", "bounding_polygon": "..."}}</hasDescription>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#DriverState_2598cd3eacce435e9b7c1b8997a029f3">
+  <rdf:type rdf:resource="#ActorState"/>
+  <StateOfActor rdf:resource="#driver"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#hr_instance_2024_4_15_4_54_56"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#hrv_instance_2024_4_15_4_54_56"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#rr_instance_2024_4_15_4_54_56"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#spo2_instance_2024_4_15_4_54_56"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#drowsiness_instance_2024_4_15_4_54_56"/>
+  <ActorStateHasAge rdf:resource="#age_instance_2024_4_15_4_54_56"/>
+  <ActorStateHasSex rdf:resource="#sex_instance_2024_4_15_4_54_56"/>
+  <ActorStateHasCharacteristics rdf:resource="#demographic_instance_2024_4_15_4_54_56"/>
+  <ActorStateHasCharacteristics rdf:resource="#facecharacteristics_instance_2024_4_15_4_54_56"/>
+  <ActorStateHasAccessories rdf:resource="#accessories_instance_2024_4_15_4_54_56"/>
+  <ActorIsAffectedByTemp rdf:resource="#temp_instance_2024_4_15_4_54_56"/>
+  <ActorHasEyeState rdf:resource="#eye_state_2024_4_15_4_54_56"/>
+  <ActorHasMouthState rdf:resource="#mouth_state_2024_4_15_4_54_56"/>
+  <in_c:ActorIsTargetedByLabel rdf:resource="#label_2024_4_15_4_54_56"/>
+  <rdf:type rdf:resource="#ActorState_Drowsiness_Level_9"/>
+  <rdf:type rdf:resource="#ActorState_LVL9"/>
+  <rdf:type rdf:resource="#ActorState_Low_HR"/>
+  <rdf:type rdf:resource="#ActorState_Low_RR"/>
+  <rdf:type rdf:resource="#ActorState_Moderate_HRV"/>
+  <rdf:type rdf:resource="#ActorState_Normal_SpO2"/>
+  <StateHasThresholdProfile rdf:resource="#tp_young_male_moderate"/>
+  <ActorStateHasFatigue rdf:resource="#undefinedstate_instance"/>
+  <ActorStateHasUnresponsiveness rdf:resource="#unresponsive_instance"/>
+  <ActorStateHasAttention rdf:resource="#undefined_instance"/>
+  <validAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_4_54_56</validAt>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#hr_instance_2024_4_15_5_14_19">
+  <rdf:type rdf:resource="#HR"/>
+  <HRis rdf:resource="#very_low_hr_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_5_14_19</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">66</hasNumericalValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#hrv_instance_2024_4_15_5_14_19">
+  <rdf:type rdf:resource="#HRV"/>
+  <HRVis rdf:resource="#high_hrv_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_5_14_19</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">105</hasNumericalValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#rr_instance_2024_4_15_5_14_19">
+  <rdf:type rdf:resource="#RR"/>
+  <RRis rdf:resource="#very_low_rr_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_5_14_19</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">13</hasNumericalValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#spo2_instance_2024_4_15_5_14_19">
+  <rdf:type rdf:resource="#SpO2"/>
+  <SpO2is rdf:resource="#normal_spo2_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_5_14_19</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">99</hasNumericalValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#drowsiness_instance_2024_4_15_5_14_19">
+  <rdf:type rdf:resource="#Drowsiness"/>
+  <DrowsinessIs rdf:resource="#level_9_kss_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_5_14_19</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</hasNumericalValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#accessories_instance_2024_4_15_5_14_19">
+  <rdf:type rdf:resource="#Accessories"/>
+  <AccessoriesIncludeWearables rdf:resource="#glasses_instance"/>
+  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Glasses</hasStringValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#age_instance_2024_4_15_5_14_19">
+  <rdf:type rdf:resource="#Age"/>
+  <AgeBelongsToGroup rdf:resource="#young_instance"/>
+  <hasAgeValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">15</hasAgeValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#demographic_instance_2024_4_15_5_14_19">
+  <rdf:type rdf:resource="#Demographic"/>
+  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Afghan</hasStringValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#eye_state_2024_4_15_5_14_19">
+  <rdf:type rdf:resource="#EyeState"/>
+  <EyeStateIs rdf:resource="#closedstate_instance"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#facecharacteristics_instance_2024_4_15_5_14_19">
+  <rdf:type rdf:resource="#FaceCharacteristics"/>
+  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">LongHair</hasStringValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#mouth_state_2024_4_15_5_14_19">
+  <rdf:type rdf:resource="#MouthState"/>
+  <MouthStateIs rdf:resource="#open_instance"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#sex_instance_2024_4_15_5_14_19">
+  <rdf:type rdf:resource="#Sex"/>
+  <SexBelongsToGroup rdf:resource="#male_instance"/>
+  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Man</hasStringValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#temp_instance_2024_4_15_5_14_19">
+  <rdf:type rdf:resource="#WeatherCondition"/>
+  <TemperatureBelongsToGroup rdf:resource="#moderatetemp_instance"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#label_2024_4_15_5_14_19">
+  <rdf:type rdf:resource="#Label"/>
+  <in_c:LabelTargetsActor rdf:resource="#DriverState_3a2dfd20354e419d9aadef742cd9dbbe"/>
+  <hasDescription rdf:datatype="http://www.w3.org/2001/XMLSchema#string">{"prompt_details": {"seed": 148293, "steps": 51, "prompt": "Lorem ipsum...", "response": "Lorem ipsum...", "view_point": "front", "object_name": "person", "time_of_day": "morning", "sky_condition": "clear", "weather_condition": "sunny"}, "label": {"actor_id": "DriverState_3a2dfd20354e419d9aadef742cd9dbbe", "eye_inst": "closed", "mouth_inst": "open", "age": "young", "face": "LongHair", "sex": "male", "demographic": "Afghan", "accessories": "glasses", "fatigue": "undefinedstate", "attention": "undefined", "unresponsiveness": "unresponsive", "bounding_box": "...", "bounding_polygon": "..."}}</hasDescription>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#DriverState_3a2dfd20354e419d9aadef742cd9dbbe">
+  <rdf:type rdf:resource="#ActorState"/>
+  <StateOfActor rdf:resource="#driver"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#hr_instance_2024_4_15_5_14_19"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#hrv_instance_2024_4_15_5_14_19"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#rr_instance_2024_4_15_5_14_19"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#spo2_instance_2024_4_15_5_14_19"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#drowsiness_instance_2024_4_15_5_14_19"/>
+  <ActorStateHasAge rdf:resource="#age_instance_2024_4_15_5_14_19"/>
+  <ActorStateHasSex rdf:resource="#sex_instance_2024_4_15_5_14_19"/>
+  <ActorStateHasCharacteristics rdf:resource="#demographic_instance_2024_4_15_5_14_19"/>
+  <ActorStateHasCharacteristics rdf:resource="#facecharacteristics_instance_2024_4_15_5_14_19"/>
+  <ActorStateHasAccessories rdf:resource="#accessories_instance_2024_4_15_5_14_19"/>
+  <ActorIsAffectedByTemp rdf:resource="#temp_instance_2024_4_15_5_14_19"/>
+  <ActorHasEyeState rdf:resource="#eye_state_2024_4_15_5_14_19"/>
+  <ActorHasMouthState rdf:resource="#mouth_state_2024_4_15_5_14_19"/>
+  <in_c:ActorIsTargetedByLabel rdf:resource="#label_2024_4_15_5_14_19"/>
+  <rdf:type rdf:resource="#ActorState_Drowsiness_Level_9"/>
+  <rdf:type rdf:resource="#ActorState_LVL9"/>
+  <rdf:type rdf:resource="#ActorState_High_HRV"/>
+  <rdf:type rdf:resource="#ActorState_Normal_SpO2"/>
+  <rdf:type rdf:resource="#ActorState_Very_Low_HR"/>
+  <rdf:type rdf:resource="#ActorState_Very_Low_RR"/>
+  <StateHasThresholdProfile rdf:resource="#tp_young_male_moderate"/>
+  <ActorStateHasFatigue rdf:resource="#undefinedstate_instance"/>
+  <ActorStateHasUnresponsiveness rdf:resource="#unresponsive_instance"/>
+  <ActorStateHasAttention rdf:resource="#undefined_instance"/>
+  <validAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_5_14_19</validAt>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#hr_instance_2024_4_15_5_16_43">
+  <rdf:type rdf:resource="#HR"/>
+  <HRis rdf:resource="#very_low_hr_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_5_16_43</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">63</hasNumericalValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#hrv_instance_2024_4_15_5_16_43">
+  <rdf:type rdf:resource="#HRV"/>
+  <HRVis rdf:resource="#moderate_hrv_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_5_16_43</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">75</hasNumericalValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#rr_instance_2024_4_15_5_16_43">
+  <rdf:type rdf:resource="#RR"/>
+  <RRis rdf:resource="#very_low_rr_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_5_16_43</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">13</hasNumericalValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#spo2_instance_2024_4_15_5_16_43">
+  <rdf:type rdf:resource="#SpO2"/>
+  <SpO2is rdf:resource="#low_spo2_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_5_16_43</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">95</hasNumericalValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#drowsiness_instance_2024_4_15_5_16_43">
+  <rdf:type rdf:resource="#Drowsiness"/>
+  <DrowsinessIs rdf:resource="#level_9_kss_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_5_16_43</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</hasNumericalValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#accessories_instance_2024_4_15_5_16_43">
+  <rdf:type rdf:resource="#Accessories"/>
+  <AccessoriesIncludeWearables rdf:resource="#glasses_instance"/>
+  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Glasses</hasStringValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#age_instance_2024_4_15_5_16_43">
+  <rdf:type rdf:resource="#Age"/>
+  <AgeBelongsToGroup rdf:resource="#young_instance"/>
+  <hasAgeValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">15</hasAgeValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#demographic_instance_2024_4_15_5_16_43">
+  <rdf:type rdf:resource="#Demographic"/>
+  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Afghan</hasStringValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#eye_state_2024_4_15_5_16_43">
+  <rdf:type rdf:resource="#EyeState"/>
+  <EyeStateIs rdf:resource="#closedstate_instance"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#facecharacteristics_instance_2024_4_15_5_16_43">
+  <rdf:type rdf:resource="#FaceCharacteristics"/>
+  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">LongHair</hasStringValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#mouth_state_2024_4_15_5_16_43">
+  <rdf:type rdf:resource="#MouthState"/>
+  <MouthStateIs rdf:resource="#open_instance"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#sex_instance_2024_4_15_5_16_43">
+  <rdf:type rdf:resource="#Sex"/>
+  <SexBelongsToGroup rdf:resource="#male_instance"/>
+  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Man</hasStringValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#temp_instance_2024_4_15_5_16_43">
+  <rdf:type rdf:resource="#WeatherCondition"/>
+  <TemperatureBelongsToGroup rdf:resource="#moderatetemp_instance"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#label_2024_4_15_5_16_43">
+  <rdf:type rdf:resource="#Label"/>
+  <in_c:LabelTargetsActor rdf:resource="#DriverState_e15750ee33824f78a18cc94180225db1"/>
+  <hasDescription rdf:datatype="http://www.w3.org/2001/XMLSchema#string">{"prompt_details": {"seed": 247723, "steps": 24, "prompt": "Lorem ipsum...", "response": "Lorem ipsum...", "view_point": "front", "object_name": "person", "time_of_day": "morning", "sky_condition": "clear", "weather_condition": "sunny"}, "label": {"actor_id": "DriverState_e15750ee33824f78a18cc94180225db1", "eye_inst": "closed", "mouth_inst": "open", "age": "young", "face": "LongHair", "sex": "male", "demographic": "Afghan", "accessories": "glasses", "fatigue": "undefinedstate", "attention": "undefined", "unresponsiveness": "unresponsive", "bounding_box": "...", "bounding_polygon": "..."}}</hasDescription>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#DriverState_e15750ee33824f78a18cc94180225db1">
+  <rdf:type rdf:resource="#ActorState"/>
+  <StateOfActor rdf:resource="#driver"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#hr_instance_2024_4_15_5_16_43"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#hrv_instance_2024_4_15_5_16_43"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#rr_instance_2024_4_15_5_16_43"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#spo2_instance_2024_4_15_5_16_43"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#drowsiness_instance_2024_4_15_5_16_43"/>
+  <ActorStateHasAge rdf:resource="#age_instance_2024_4_15_5_16_43"/>
+  <ActorStateHasSex rdf:resource="#sex_instance_2024_4_15_5_16_43"/>
+  <ActorStateHasCharacteristics rdf:resource="#demographic_instance_2024_4_15_5_16_43"/>
+  <ActorStateHasCharacteristics rdf:resource="#facecharacteristics_instance_2024_4_15_5_16_43"/>
+  <ActorStateHasAccessories rdf:resource="#accessories_instance_2024_4_15_5_16_43"/>
+  <ActorIsAffectedByTemp rdf:resource="#temp_instance_2024_4_15_5_16_43"/>
+  <ActorHasEyeState rdf:resource="#eye_state_2024_4_15_5_16_43"/>
+  <ActorHasMouthState rdf:resource="#mouth_state_2024_4_15_5_16_43"/>
+  <in_c:ActorIsTargetedByLabel rdf:resource="#label_2024_4_15_5_16_43"/>
+  <rdf:type rdf:resource="#ActorState_Drowsiness_Level_9"/>
+  <rdf:type rdf:resource="#ActorState_LVL9"/>
+  <rdf:type rdf:resource="#ActorState_Low_SpO2"/>
+  <rdf:type rdf:resource="#ActorState_Moderate_HRV"/>
+  <rdf:type rdf:resource="#ActorState_Very_Low_HR"/>
+  <rdf:type rdf:resource="#ActorState_Very_Low_RR"/>
+  <StateHasThresholdProfile rdf:resource="#tp_young_male_moderate"/>
+  <ActorStateHasFatigue rdf:resource="#undefinedstate_instance"/>
+  <ActorStateHasUnresponsiveness rdf:resource="#unresponsive_instance"/>
+  <ActorStateHasAttention rdf:resource="#undefined_instance"/>
+  <validAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_5_16_43</validAt>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#hr_instance_2024_4_15_5_47_53">
+  <rdf:type rdf:resource="#HR"/>
+  <HRis rdf:resource="#very_low_hr_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_5_47_53</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">66</hasNumericalValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#hrv_instance_2024_4_15_5_47_53">
+  <rdf:type rdf:resource="#HRV"/>
+  <HRVis rdf:resource="#moderate_hrv_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_5_47_53</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">79</hasNumericalValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#rr_instance_2024_4_15_5_47_53">
+  <rdf:type rdf:resource="#RR"/>
+  <RRis rdf:resource="#very_low_rr_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_5_47_53</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">13</hasNumericalValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#spo2_instance_2024_4_15_5_47_53">
+  <rdf:type rdf:resource="#SpO2"/>
+  <SpO2is rdf:resource="#low_spo2_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_5_47_53</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">97</hasNumericalValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#drowsiness_instance_2024_4_15_5_47_53">
+  <rdf:type rdf:resource="#Drowsiness"/>
+  <DrowsinessIs rdf:resource="#level_7_kss_instance"/>
+  <phyValidAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_5_47_53</phyValidAt>
+  <hasNumericalValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</hasNumericalValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#accessories_instance_2024_4_15_5_47_53">
+  <rdf:type rdf:resource="#Accessories"/>
+  <AccessoriesIncludeWearables rdf:resource="#glasses_instance"/>
+  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Glasses</hasStringValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#age_instance_2024_4_15_5_47_53">
+  <rdf:type rdf:resource="#Age"/>
+  <AgeBelongsToGroup rdf:resource="#young_instance"/>
+  <hasAgeValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">15</hasAgeValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#demographic_instance_2024_4_15_5_47_53">
+  <rdf:type rdf:resource="#Demographic"/>
+  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Afghan</hasStringValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#eye_state_2024_4_15_5_47_53">
+  <rdf:type rdf:resource="#EyeState"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#facecharacteristics_instance_2024_4_15_5_47_53">
+  <rdf:type rdf:resource="#FaceCharacteristics"/>
+  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">LongHair</hasStringValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#mouth_state_2024_4_15_5_47_53">
+  <rdf:type rdf:resource="#MouthState"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#sex_instance_2024_4_15_5_47_53">
+  <rdf:type rdf:resource="#Sex"/>
+  <SexBelongsToGroup rdf:resource="#male_instance"/>
+  <hasStringValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Man</hasStringValue>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#temp_instance_2024_4_15_5_47_53">
+  <rdf:type rdf:resource="#WeatherCondition"/>
+  <TemperatureBelongsToGroup rdf:resource="#moderatetemp_instance"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#label_2024_4_15_5_47_53">
+  <rdf:type rdf:resource="#Label"/>
+  <in_c:LabelTargetsActor rdf:resource="#DriverState_8399d639303842459d86b01ba5440adf"/>
+  <hasDescription rdf:datatype="http://www.w3.org/2001/XMLSchema#string">{"prompt_details": {"seed": 585351, "steps": 19, "prompt": "Lorem ipsum...", "response": "Lorem ipsum...", "view_point": "front", "object_name": "person", "time_of_day": "morning", "sky_condition": "clear", "weather_condition": "sunny"}, "label": {"actor_id": "DriverState_8399d639303842459d86b01ba5440adf", "eye_inst": "open", "mouth_inst": "open", "age": "young", "face": "LongHair", "sex": "male", "demographic": "Afghan", "accessories": "glasses", "fatigue": "undefinedstate", "attention": "undefined", "unresponsiveness": "undefined_atrisk", "bounding_box": "...", "bounding_polygon": "..."}}</hasDescription>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#DriverState_8399d639303842459d86b01ba5440adf">
+  <rdf:type rdf:resource="#ActorState"/>
+  <StateOfActor rdf:resource="#driver"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#hr_instance_2024_4_15_5_47_53"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#hrv_instance_2024_4_15_5_47_53"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#rr_instance_2024_4_15_5_47_53"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#spo2_instance_2024_4_15_5_47_53"/>
+  <ActorStateHasPhysiologicalState rdf:resource="#drowsiness_instance_2024_4_15_5_47_53"/>
+  <ActorStateHasAge rdf:resource="#age_instance_2024_4_15_5_47_53"/>
+  <ActorStateHasSex rdf:resource="#sex_instance_2024_4_15_5_47_53"/>
+  <ActorStateHasCharacteristics rdf:resource="#demographic_instance_2024_4_15_5_47_53"/>
+  <ActorStateHasCharacteristics rdf:resource="#facecharacteristics_instance_2024_4_15_5_47_53"/>
+  <ActorStateHasAccessories rdf:resource="#accessories_instance_2024_4_15_5_47_53"/>
+  <ActorIsAffectedByTemp rdf:resource="#temp_instance_2024_4_15_5_47_53"/>
+  <ActorHasEyeState rdf:resource="#eye_state_2024_4_15_5_47_53"/>
+  <ActorHasMouthState rdf:resource="#mouth_state_2024_4_15_5_47_53"/>
+  <in_c:ActorIsTargetedByLabel rdf:resource="#label_2024_4_15_5_47_53"/>
+  <rdf:type rdf:resource="#ActorState_Drowsiness_Level_7"/>
+  <rdf:type rdf:resource="#ActorState_Low_SpO2"/>
+  <rdf:type rdf:resource="#ActorState_Moderate_HRV"/>
+  <rdf:type rdf:resource="#ActorState_Very_Low_HR"/>
+  <rdf:type rdf:resource="#ActorState_Very_Low_RR"/>
+  <StateHasThresholdProfile rdf:resource="#tp_young_male_moderate"/>
+  <validAt rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2024_4_15_5_47_53</validAt>
 </owl:NamedIndividual>
 
 <rdfs:Datatype rdf:about="http://test.org.org/vehicleOntology#wktLiteral">
@@ -9538,6 +10139,50 @@ It holds the data created after processing the observations captured by the sens
     </rdf:Description>
   </swrl:head>
 </swrl:Imp>
+
+<owl:AllDisjointClasses>
+  <owl:members rdf:parseType="Collection">
+    <rdf:Description rdf:about="#ActorState_Drowsiness_Level_3"/>
+    <rdf:Description rdf:about="#ActorState_Drowsiness_Level_5"/>
+    <rdf:Description rdf:about="#ActorState_Drowsiness_Level_7"/>
+    <rdf:Description rdf:about="#ActorState_Drowsiness_Level_9"/>
+  </owl:members>
+</owl:AllDisjointClasses>
+
+<owl:AllDisjointClasses>
+  <owl:members rdf:parseType="Collection">
+    <rdf:Description rdf:about="#ActorState_Normal_SpO2"/>
+    <rdf:Description rdf:about="#ActorState_Low_SpO2"/>
+    <rdf:Description rdf:about="#ActorState_Critical_SpO2"/>
+  </owl:members>
+</owl:AllDisjointClasses>
+
+<owl:AllDisjointClasses>
+  <owl:members rdf:parseType="Collection">
+    <rdf:Description rdf:about="#ActorState_High_RR"/>
+    <rdf:Description rdf:about="#ActorState_Moderate_RR"/>
+    <rdf:Description rdf:about="#ActorState_Low_RR"/>
+    <rdf:Description rdf:about="#ActorState_Very_Low_RR"/>
+  </owl:members>
+</owl:AllDisjointClasses>
+
+<owl:AllDisjointClasses>
+  <owl:members rdf:parseType="Collection">
+    <rdf:Description rdf:about="#ActorState_High_HRV"/>
+    <rdf:Description rdf:about="#ActorState_Moderate_HRV"/>
+    <rdf:Description rdf:about="#ActorState_Low_HRV"/>
+    <rdf:Description rdf:about="#ActorState_Very_Low_HRV"/>
+  </owl:members>
+</owl:AllDisjointClasses>
+
+<owl:AllDisjointClasses>
+  <owl:members rdf:parseType="Collection">
+    <rdf:Description rdf:about="#ActorState_High_HR"/>
+    <rdf:Description rdf:about="#ActorState_Moderate_HR"/>
+    <rdf:Description rdf:about="#ActorState_Low_HR"/>
+    <rdf:Description rdf:about="#ActorState_Very_Low_HR"/>
+  </owl:members>
+</owl:AllDisjointClasses>
 
 <swrl:Imp>
   <swrl:body>

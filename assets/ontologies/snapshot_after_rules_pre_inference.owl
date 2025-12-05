@@ -5784,7 +5784,7 @@ It holds the data created after processing the observations captured by the sens
 
 <owl:NamedIndividual rdf:about="#driver">
   <rdf:type rdf:resource="#Actor"/>
-  <hasUniqueIdentifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ac96e4ac7ce4476881c24a399fd56114</hasUniqueIdentifier>
+  <hasUniqueIdentifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">9dd2562aa9cc48df851ec117beae179d</hasUniqueIdentifier>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#hot_high_hr_elderly_female">
@@ -8917,6 +8917,50 @@ It holds the data created after processing the observations captured by the sens
     </rdf:Description>
   </swrl:head>
 </swrl:Imp>
+
+<owl:AllDisjointClasses>
+  <owl:members rdf:parseType="Collection">
+    <rdf:Description rdf:about="#ActorState_Drowsiness_Level_3"/>
+    <rdf:Description rdf:about="#ActorState_Drowsiness_Level_5"/>
+    <rdf:Description rdf:about="#ActorState_Drowsiness_Level_7"/>
+    <rdf:Description rdf:about="#ActorState_Drowsiness_Level_9"/>
+  </owl:members>
+</owl:AllDisjointClasses>
+
+<owl:AllDisjointClasses>
+  <owl:members rdf:parseType="Collection">
+    <rdf:Description rdf:about="#ActorState_Normal_SpO2"/>
+    <rdf:Description rdf:about="#ActorState_Low_SpO2"/>
+    <rdf:Description rdf:about="#ActorState_Critical_SpO2"/>
+  </owl:members>
+</owl:AllDisjointClasses>
+
+<owl:AllDisjointClasses>
+  <owl:members rdf:parseType="Collection">
+    <rdf:Description rdf:about="#ActorState_High_RR"/>
+    <rdf:Description rdf:about="#ActorState_Moderate_RR"/>
+    <rdf:Description rdf:about="#ActorState_Low_RR"/>
+    <rdf:Description rdf:about="#ActorState_Very_Low_RR"/>
+  </owl:members>
+</owl:AllDisjointClasses>
+
+<owl:AllDisjointClasses>
+  <owl:members rdf:parseType="Collection">
+    <rdf:Description rdf:about="#ActorState_High_HRV"/>
+    <rdf:Description rdf:about="#ActorState_Moderate_HRV"/>
+    <rdf:Description rdf:about="#ActorState_Low_HRV"/>
+    <rdf:Description rdf:about="#ActorState_Very_Low_HRV"/>
+  </owl:members>
+</owl:AllDisjointClasses>
+
+<owl:AllDisjointClasses>
+  <owl:members rdf:parseType="Collection">
+    <rdf:Description rdf:about="#ActorState_High_HR"/>
+    <rdf:Description rdf:about="#ActorState_Moderate_HR"/>
+    <rdf:Description rdf:about="#ActorState_Low_HR"/>
+    <rdf:Description rdf:about="#ActorState_Very_Low_HR"/>
+  </owl:members>
+</owl:AllDisjointClasses>
 
 <swrl:Imp>
   <swrl:body>

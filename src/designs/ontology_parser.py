@@ -68,7 +68,7 @@ class OntologyParser:
         return obs
     
     
-    def parse_observations(self, dataset_path, reasoning_thr=5, save=False):
+    def parse_observations(self, dataset_path, reasoning_thr=10, save=False):
         
         """
         This method parses the observations from the given dataset and creates instances of the Observation class.
@@ -200,7 +200,7 @@ class OntologyParser:
                             self.ev.crosstab()
                             self.ev.set_batch_size(len(batch_states))
                         
-                        self.save_onto(1, "assets/ontologies/snapshot_after_inference_double_sync.owl", batch_states=batch_states)
+                        self.save_onto(0, "assets/ontologies/snapshot_after_inference.owl", batch_states=batch_states)
 
                         self.rule_parser.remove_prev_values(ts_iso_dates, batch_states)
 

@@ -31,7 +31,12 @@ def single_attribute_pattern_classes(onto):
                 onto.ActorState 
                 & onto.ActorStateHasPhysiologicalState.some( onto.HR  & onto.HRis.value(onto.high_hr_instance))
                 )]
-        
+
+        with onto: 
+                AllDisjoint([ ActorState_High_HR, ActorState_Moderate_HR, 
+                              ActorState_Low_HR, ActorState_Very_Low_HR
+                            ])  
+            
         # HRV DIFFERENT CATEGORIES
         class ActorState_High_HRV(onto.ActorState):
             equivalent_to = [(onto.ActorState
@@ -51,6 +56,10 @@ def single_attribute_pattern_classes(onto):
             equivalent_to = [(onto.ActorState
                                 & onto.ActorStateHasPhysiologicalState.some( onto.HRV & onto.HRVis.value(onto.very_low_hrv_instance))
                               )]  
+        with onto: 
+            AllDisjoint([ ActorState_High_HRV, ActorState_Moderate_HRV, 
+                          ActorState_Low_HRV, ActorState_Very_Low_HRV
+                        ])  
 
         # RR DIFFERENT CATEGORIES
         class ActorState_High_RR(onto.ActorState):
@@ -72,6 +81,10 @@ def single_attribute_pattern_classes(onto):
             equivalent_to = [(onto.ActorState
                                 & onto.ActorStateHasPhysiologicalState.some( onto.RR & onto.RRis.value(onto.very_low_rr_instance))
                               )]   
+        with onto: 
+                    AllDisjoint([ ActorState_High_RR, ActorState_Moderate_RR, 
+                                  ActorState_Low_RR, ActorState_Very_Low_RR
+                                ])  
 
         # SpO2 DIFFERENT CATEGORIES
         class ActorState_Normal_SpO2(onto.ActorState):
@@ -88,6 +101,10 @@ def single_attribute_pattern_classes(onto):
             equivalent_to = [(onto.ActorState
                                 & onto.ActorStateHasPhysiologicalState.some( onto.SpO2 & onto.SpO2is.value(onto.critical_spo2_instance))
                               )]   
+        with onto: 
+                    AllDisjoint([ ActorState_Normal_SpO2, ActorState_Low_SpO2, 
+                                  ActorState_Critical_SpO2
+                                ])  
 
         # Drowsiness DIFFERENT CATEGORIES 
         class ActorState_Drowsiness_Level_3(onto.ActorState):
@@ -109,6 +126,11 @@ def single_attribute_pattern_classes(onto):
             equivalent_to = [(onto.ActorState
                                 & onto.ActorStateHasPhysiologicalState.some( onto.Drowsiness & onto.DrowsinessIs.value(onto.level_9_kss_instance))
             )] 
+
+        with onto: 
+                    AllDisjoint([ ActorState_Drowsiness_Level_3, ActorState_Drowsiness_Level_5, 
+                                  ActorState_Drowsiness_Level_7, ActorState_Drowsiness_Level_9
+                                ])  
 
         # unified signature 1 
         class ActorState_HighHR_LowHRV_HighRR_NormalSpO2_LVL3(onto.ActorState): 
@@ -1669,6 +1691,41 @@ def single_attribute_pattern_classes(onto):
                     onto.ActorStateHasUnresponsiveness.value(onto.undefined_atrisk_instance)
                 ]
             
+
+
+        # with onto: 
+        #     AllDisjoint([
+        #             ActorState_HighHR_LowHRV_HighRR_NormalSpO2_LVL3, 
+        #             ActorState_HighHR_LowHRV_VeryLowRR_NormalSpO2_LVL3,
+        #             ActorState_HighHR_VeryLowHRV_HighRR_LowSpO2_LVL3, 
+        #             ActorState_HighHR_VeryLowHRV_HighRR_NormalSpO2_LVL3, 
+        #             ActorState_HighHR_VeryLowHRV_VeryLowRR_CriticalSpO2_LVL3, 
+        #             ActorState_HighHR_VeryLowHRV_VeryLowRR_LowSpO2_LVL3, 
+        #             ActorState_HighHR_VeryLowHRV_VeryLowRR_NormalSpO2_LVL3, 
+        #             ActorState_LowHR_HighHRV_LowRR_LowSpO2_LVL3, 
+        #             ActorState_LowHR_HighHRV_LowRR_NormalSpO2_LVL3, 
+        #             ActorState_LowHR_HighHRV_ModerateRR_NormalSpO2_LVL3, 
+        #             ActorState_LowHR_LowHRV_HighRR_LowSpO2_LVL3, 
+        #             ActorState_LowHR_LowHRV_HighRR_NormalSpO2_LVL3,
+        #             ActorState_LowHR_LowHRV_LowRR_LowSpO2_LVL3,
+        #             ActorState_LowHR_LowHRV_LowRR_NormalSpO2_LVL3, 
+        #             ActorState_LowHR_LowHRV_VeryLowRR_NormalSpO2_LVL3, 
+        #             ActorState_LowHR_ModerateHRV_LowRR_LowSpO2_LVL3, 
+        #             ActorState_LowHR_ModerateHRV_LowRR_NormalSpO2_LVL3, 
+        #             ActorState_LowHR_ModerateHRV_ModerateRR_LowSpO2_LVL3,
+        #             ActorState_LowHR_ModerateHRV_ModerateRR_NormalSpO2_LVL3,
+        #             ActorState_LowHR_VeryLowHRV_HighRR_NormalSpO2_LVL3, 
+        #             ActorState_LowHR_VeryLowHRV_LowRR_NormalSpO2_LVL3, 
+        #             ActorState_LowHR_VeryLowHRV_VeryLowhRR_NormalSpO2_LVL3, 
+        #             ActorState_ModerateHR_HighHRV_LowRR_LowSpO2_LVL3, 
+        #             ActorState_ModerateHR_HighHRV_LowRR_NormalSpO2_LVL3, 
+        #
+        #              ActorState_ModerateHR_HighHRV_ModerateRR_LowSpO2_LVL3
+        #
+        #
+        #
+        #         ])
+
         # unified signature 82
         # class ActorState_VeryLowHR_HighHRV_LowRR_LowSpO2_LVL7(onto.ActorState): 
         #     equivalent_to = [(
@@ -1763,18 +1820,18 @@ def eye_mouth_state_rules():
     )
 
     Imp().set_as_rule(
-               """
-                ActorState(?act_st),
-                ActorStateHasFatigue(?act_st, drowsinesssuspected_instance),
-                ActorStateHasAttention(?act_st, attentive_instance),
-                ActorStateHasUnresponsiveness(?act_st, imminent_instance),  
-                ActorHasEyeState(?act_st,?eye_inst),
-                ActorHasMouthState(?act_st, ?mouth_st)
-                ->
-                EyeStateIs(?eye_inst, closed_instance), 
-                MouthStateIs(?mouth_st, open_instance)
-               """
-            )
+       """
+        ActorState(?act_st),
+        ActorStateHasFatigue(?act_st, drowsinesssuspected_instance),
+        ActorStateHasAttention(?act_st, attentive_instance),
+        ActorStateHasUnresponsiveness(?act_st, imminent_instance),  
+        ActorHasEyeState(?act_st,?eye_inst),
+        ActorHasMouthState(?act_st, ?mouth_st)
+        ->
+        EyeStateIs(?eye_inst, closed_instance), 
+        MouthStateIs(?mouth_st, open_instance)
+       """
+    )
 
     Imp().set_as_rule(
        """
