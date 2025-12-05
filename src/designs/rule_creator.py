@@ -395,6 +395,7 @@ class RuleCreator:
         actor_state.ActorHasEyeState = actor_vocab['eye_state'] 
         actor_state.ActorHasMouthState = actor_vocab['mouth_state']
         actor_state.ActorIsTargetedByLabel = label_inst 
+        label_inst.LabelTargetsActor = actor_state
 
         logger.debug(f"the Actor State Characteristics Voc {actor_vocab}")
     
@@ -609,10 +610,10 @@ class RuleCreator:
             os.makedirs(filepath, exist_ok=True)
 
             with self.ontology: 
-                label = act_st.ActorIsTargetedByLabel
-                with open(json_file, "w") as f:
+               label = act_st.ActorIsTargetedByLabel
+               with open(json_file, "w") as f:
                     json.dump(actor_data, f, indent=4)
-                label.hasDescription.append(json.dumps(actor_data))
+               label.hasDescription.append(json.dumps(actor_data))
 
             logger.debug(f"Label for Actor {actor.name} created succesfully")
         

@@ -559,25 +559,14 @@
 # ------------------------
 # Q26. Future adaptability often breaks. 
 # ------------------------
-SELECT ?profile
-WHERE {
-  ?profile rdf:type :ThresholdProfile .
-  OPTIONAL { ?profile :profileForAge ?age . }
-  OPTIONAL { ?profile :profileForSex ?sex . }
-  FILTER ( !BOUND(?age) || !BOUND(?sex) )
-}
-#
-
-# ------------------------
-# Q26. Unexpected extensions 
-# ------------------------
-# SELECT ?type
+# SELECT ?profile
 # WHERE {
-#   ?ind rdf:type ?type .
-#   FILTER NOT EXISTS {
-#     FILTER(?type IN (:HR, :HRV, :RR, :SpO2, :Drowsiness))
-#   }
+#   ?profile rdf:type :ThresholdProfile .
+#   OPTIONAL { ?profile :profileForAge ?age . }
+#   OPTIONAL { ?profile :profileForSex ?sex . }
+#   FILTER ( !BOUND(?age) || !BOUND(?sex) )
 # }
+#
 
 # ------------------------
 # Q27. Severe drowsiness (Level 9) must imply Imminent or Unresponsive
@@ -686,9 +675,13 @@ WHERE {
 # ------------------------
 # Q34. High-risk states (Sleep or Unresponsive) must have at least one Label
 # ------------------------
-# SELECT ?state WHERE {
+# SELECT ?state
+# WHERE {
 #   ?state rdf:type :ActorState .
-#   ?label rdf:type :Label .
+#
+#   # Link state to its actor (adjust this property name if needed)
+#
+#   # High-risk condition: Sleep fatigue OR Unresponsive
 #   {
 #     ?state :ActorStateHasFatigue ?fatigueInd .
 #     ?fatigueInd rdf:type :Sleep .
@@ -699,17 +692,25 @@ WHERE {
 #     ?unrespInd rdf:type :Unresponsive .
 #   }
 #
-#   FILTER NOT EXISTS { ?state :ActorIsTargetedByLabel ?label . }
+#   # Check that NO label in the graph targets this state
+#   FILTER NOT EXISTS {
+#     ?label rdf:type :Label ;
+#          :LabelTargetsActor ?state .
+#   }
 # }
-
 
 # ------------------------
 # Q35. Every Label must target at least one ActorState
 # ------------------------
-# SELECT ?state WHERE {
-#   ?state rdf:type :ActorState .
+# SELECT ?label
+# WHERE {
 #   ?label rdf:type :Label .
-#   FILTER NOT EXISTS { ?state :ActorIsTargetedByLabel ?label . }
+#
+#   FILTER NOT EXISTS {
+#     ?label :LabelTargetsActor ?state .
+#     ?state rdf:type :ActorState .
+#   }
 # }
+#  
 
 

@@ -189,7 +189,6 @@ class OntologyParser:
                         with StepContext(name="Trend Analysis", catch=(RuntimeError, )): 
                             if trend_analysis_flag:
                                 analysis(trends(), data)
-                        
 
                         with StepContext(name="Prepare Batched Results", catch=(RuntimeError,), verbose=True): 
                             self.ev.metrics.snapshot_memory()
@@ -201,9 +200,7 @@ class OntologyParser:
                             self.ev.crosstab()
                             self.ev.set_batch_size(len(batch_states))
                         
-                        self.ev.sync_reasoner(len(batch_states))
-                        self.save_onto(0, "assets/ontologies/snapshot_after_inference.owl")
-                        logger.warn("WARNING: keep saving after inference")
+                        self.save_onto(1, "assets/ontologies/snapshot_after_inference_double_sync.owl", batch_states=batch_states)
 
                         self.rule_parser.remove_prev_values(ts_iso_dates, batch_states)
 
@@ -211,20 +208,29 @@ class OntologyParser:
 
                     self.rule_parser.clear_obs(obs)  
 
-
         logger.info("[checked] Memory Allocated")
         logger.info(tracemalloc.get_traced_memory())
         tracemalloc.stop()
         return f"Ontology finished processing dataset observations."
         
 
-    def save_onto(self, index, file_path="assets/ontologies/snapshot_3.owl"): 
-        if index == 0 or index % 10 == 0: 
+    def save_onto(self, index, file_path="assets/ontologies/snapshot_3.owl", batch_states:list=[]): 
+        if index == 0 : 
             parent_directory = os.getcwd() 
             save_path = f"{parent_directory}/{file_path}" 
             self.ontology.save(file=save_path)
             logger.info(f"[checked] Ontology Saved at {index}.")
 
+        elif index == 1: 
+
+            pdb.set_trace()
+            self.ev.sync_reasoner(len(batch_states), infer_data=False, infer_obj=False)
+
+            parent_directory = os.getcwd() 
+            save_path = f"{parent_directory}/{file_path}" 
+            self.ontology.save(file=save_path)
+            logger.info(f"[checked] Ontology Saved at {index}.")
+            logger.warn("WARNING: keep saving after inference")
 
     def print_results(self): 
         logger.info(f"Reason times (s): {self.ev.metrics.reason_times}")

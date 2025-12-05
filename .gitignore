@@ -22,4 +22,7 @@ assets/ontologies/snapshot_3.owl
 assets/ontologies/snapshot_after_inference 
 assets/ontologies/snapshot_after_rules_pre_inference
 test/
+assets/ontologies/snapshot_after_inference_1.owl 
+assets/ontologies/snapshot_after_inference_double_sync.owl 
+
 

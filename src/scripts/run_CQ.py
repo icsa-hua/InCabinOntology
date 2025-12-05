@@ -47,7 +47,7 @@ def save_sparql_results_to_pdf(output_path, results_dict):
 # Load the ontology
 g = Graph() 
 parent_path = os.getcwd() 
-ontology_path = os.path.join(parent_path, "assets/ontologies/snapshot_after_inference.owl")
+ontology_path = os.path.join(parent_path, "assets/ontologies/right_now.owl")
 g.parse(ontology_path)
 
 
