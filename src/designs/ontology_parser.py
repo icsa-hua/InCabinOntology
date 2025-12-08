@@ -68,7 +68,7 @@ class OntologyParser:
         return obs
     
     
-    def parse_observations(self, dataset_path, reasoning_thr=10, save=False):
+    def parse_observations(self, dataset_path, reasoning_thr=16, save=False):
         
         """
         This method parses the observations from the given dataset and creates instances of the Observation class.
