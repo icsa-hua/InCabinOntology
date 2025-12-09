@@ -1,0 +1,203 @@
+{
+  "version": "0.1.0",
+  "checks": {
+    "state_identity": {
+      "missing_actor_states": [],
+      "missing_time_states": [],
+      "duplicate_keys_count": 0,
+      "duplicates": []
+    },
+    "orphans": {
+      "count": 0,
+      "states": []
+    },
+    "time_alignment": {
+      "mismatches": [],
+      "count": 0
+    },
+    "per_state_channels": {
+      "count": 0,
+      "details": []
+    },
+    "uncategorized_physio": {
+      "HR": [],
+      "HRV": [],
+      "RR": [],
+      "SpO2": []
+    },
+    "multi_membership": {
+      "HR": [],
+      "HRV": [],
+      "RR": [],
+      "SpO2": []
+    },
+    "fatigue_cardinality": {
+      "per_state": [
+        [
+          "DriverState_9f33bbece18d4b26b3499ae70a45abc7",
+          0
+        ],
+        [
+          "DriverState_36ae463871ed4fb49016ef74c7b89dbb",
+          0
+        ]
+      ],
+      "is_values": [
+        [
+          "awake_instance",
+          0
+        ],
+        [
+          "undefinedstate_instance",
+          0
+        ],
+        [
+          "undefinedstate_instance",
+          0
+        ],
+        [
+          "undefinedstate_instance",
+          0
+        ],
+        [
+          "drowsinesssuspected_instance",
+          0
+        ],
+        [
+          "undefinedstate_instance",
+          0
+        ],
+        [
+          "drowsinesssuspected_instance",
+          0
+        ],
+        [
+          "undefinedstate_instance",
+          0
+        ],
+        [
+          "undefinedstate_instance",
+          0
+        ],
+        [
+          "drowsinesssuspected_instance",
+          0
+        ],
+        [
+          "undefinedstate_instance",
+          0
+        ],
+        [
+          "undefinedstate_instance",
+          0
+        ],
+        [
+          "drowsinesssuspected_instance",
+          0
+        ],
+        [
+          "undefinedstate_instance",
+          0
+        ]
+      ]
+    },
+    "attention_cardinality": {
+      "per_state": [
+        [
+          "DriverState_9f33bbece18d4b26b3499ae70a45abc7",
+          0
+        ],
+        [
+          "DriverState_36ae463871ed4fb49016ef74c7b89dbb",
+          0
+        ]
+      ],
+      "is_values": [
+        [
+          "undefined_instance",
+          0
+        ],
+        [
+          "undefined_instance",
+          0
+        ],
+        [
+          "undefined_instance",
+          0
+        ],
+        [
+          "undefined_instance",
+          0
+        ],
+        [
+          "inattentive_instance",
+          0
+        ],
+        [
+          "undefined_instance",
+          0
+        ],
+        [
+          "undefined_instance",
+          0
+        ],
+        [
+          "undefined_instance",
+          0
+        ],
+        [
+          "undefined_instance",
+          0
+        ],
+        [
+          "attentive_instance",
+          0
+        ],
+        [
+          "undefined_instance",
+          0
+        ],
+        [
+          "undefined_instance",
+          0
+        ],
+        [
+          "undefined_instance",
+          0
+        ],
+        [
+          "inattentive_instance",
+          0
+        ]
+      ]
+    },
+    "unresp_cardinality": {
+      "per_state": [
+        [
+          "DriverState_9f33bbece18d4b26b3499ae70a45abc7",
+          0
+        ],
+        [
+          "DriverState_36ae463871ed4fb49016ef74c7b89dbb",
+          0
+        ]
+      ],
+      "is_values": []
+    },
+    "accessories": {
+      "group_multiple_temperatures": [],
+      "untyped_accessories": [],
+      "unlinked_temp_for_accessory": []
+    },
+    "reused_physio_instances": []
+  },
+  "notes": [],
+  "counts": {
+    "ActorStates": 16,
+    "Actors": 127,
+    "HR": 20,
+    "HRV": 20,
+    "RR": 20,
+    "SpO2": 19
+  }
+}

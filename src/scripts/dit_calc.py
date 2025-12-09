@@ -5,7 +5,11 @@ import os
 
 from owlready2 import * 
 
+# ONTOLOGY_FILE = "assets/ontologies/in_cabin_ontology.owl"
+# ONTOLOGY_FILE = "assets/ontologies/snapshot_after_rules_pre_inference.owl"
 ONTOLOGY_FILE = "assets/ontologies/snapshot_after_inference.owl"
+
+
 
 try: 
     onto = get_ontology(f"file://{os.path.abspath(ONTOLOGY_FILE)}").load() 

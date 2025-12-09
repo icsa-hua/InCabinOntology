@@ -13,7 +13,7 @@ except Exception as e:
     print("Owlready2 is required. Install with `pip install owlready2`. Error:", e)
     raise
 
-CHECK_VERSION = "1.0.0"
+CHECK_VERSION = "0.1.0"
 
 
 def _suffix_lookup(onto, name: str):
@@ -97,7 +97,7 @@ def run_consistency_checks(
               "denotesTemperature", "TemperatureGroup"
     verbose : bool
         If True, prints a human-readable report.
-        
+            
     Returns
     -------
     dict
@@ -119,7 +119,7 @@ def run_consistency_checks(
     cfg = {
         "ActorState": "ActorState",
         "Actor": "Actor",
-        "stateOfActor": "stateOfActor",
+        "StateOfActor": "StateOfActor",
         "validAt": "validAt",
         "ActorStateHasPhysiologicalState": "ActorStateHasPhysiologicalState",
         "HR": "HR",
@@ -162,7 +162,7 @@ def run_consistency_checks(
 
     ActorState = ent(cfg["ActorState"])
     Actor = ent(cfg["Actor"])
-    stateOfActor = ent(cfg["stateOfActor"])
+    stateOfActor = ent(cfg["StateOfActor"])
     validAt = ent(cfg["validAt"])
     hasPhysio = ent(cfg["ActorStateHasPhysiologicalState"])
 
@@ -459,9 +459,9 @@ def run_consistency_checks(
 # If executed as a script, run on a default path (user can edit this path)
 if __name__ == "__main__":
     assets_dir = get_assets_path() 
-    path = sys.argv[1] if len(sys.argv) > 1 else f"{assets_dir}/ontologies/snapshot_2.owl"
+    path = sys.argv[1] if len(sys.argv) > 1 else f"{assets_dir}/ontologies/snapshot_after_inference.owl"
     res = run_consistency_checks(path, config=None, verbose=True)
-    out = Path(f"{str(assets_dir)}/consistency_report.json")
+    out = Path(f"{str(assets_dir)}/consistency_report_after_inference.json")
     out.write_text(json.dumps(res, indent=2, default=str))
     print(f"Saved JSON report to {out}")
 
