@@ -82,7 +82,8 @@ class OntologyParser:
 
         assets_dir = get_assets_path()
         dataset = pd.read_csv(dataset_path)
-        
+        # small preprocess 
+        dataset = global_preprocessing(dataset)
         filepath = assets_dir + "/labels"
         tracemalloc.start()
         save_path = os.path.join(assets_dir,"ontologies/inference_1_1.owl") if save else None
@@ -107,9 +108,9 @@ class OntologyParser:
                 with StepContext(name="Setting up Rules", catch=(RuntimeError,)):
                     self.rule_parser.set_up_rules()
     
-                with StepContext(name="Analysis GCI trends", catch=(Exception, RuntimeError)): 
-                    gci_trends(self.ontology)
-                    trend_analysis_flag = True
+                # with StepContext(name="Analysis GCI trends", catch=(Exception, RuntimeError)): 
+                #     gci_trends(self.ontology)
+                #     trend_analysis_flag = True
 
             self.rule_parser.synchronize_ontology()
             self.save_onto(0, "assets/ontologies/snapshot_after_rules_pre_inference.owl")        
@@ -172,6 +173,10 @@ class OntologyParser:
                         label_inst=label
                     )
 
+                print("INDEX AT THIS MOMENT (ONLY GOD KNOWS): ", index)
+                if index == 14: 
+                    pdb.set_trace()
+                #
                 with StepContext(name="Batching Ontology Inference", catch=(RuntimeError,)):
                     need_sync =  (len(batch_states)>= reasoning_thr) or (index == len(dataset)-1)
                     
@@ -179,10 +184,6 @@ class OntologyParser:
                         gc.collect() 
 
                         # Run the reasoner to update the ontology with the new values                       # Run the reasoner to update the ontology with the new values     
-                        # self.rule_parser.synchronize_ontology()
-                        print("INDEX AT THIS MOMENT (ONLY GOD KNOWS): ", index)
-                        if index == 24: 
-                            pdb.set_trace()
                         self.ev.sync_reasoner(len(batch_states))
                         
                         # Create the description of the actor and save it in JSON format
@@ -193,7 +194,6 @@ class OntologyParser:
                             if trend_analysis_flag:
                                 analysis(trends(), data)
 
-
                         with StepContext(name="Prepare Batched Results", catch=(RuntimeError,)): 
                             self.ev.metrics.snapshot_memory()
                             self.ev.snapshot_size()
@@ -202,11 +202,11 @@ class OntologyParser:
                             self.ev.run_cq()
                             self.ev.label_distributions()
                             self.ev.crosstab()
-                        
+                        pdb.set_trace() 
                         self.save_onto(0, "assets/ontologies/snapshot_after_inference.owl")
                         self.rule_parser.remove_prev_values(ts_iso_dates, batch_states)
                         batch_states.clear() 
-                    self.rule_parser.clear_obs(obs)  
+                self.rule_parser.clear_obs(obs)  
 
                 if index == 200: 
                     break

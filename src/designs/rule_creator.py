@@ -183,19 +183,20 @@ class RuleCreator:
         * Middle-Aged (18-65)
         * Elderly (>65) 
         """
+        
 
         if self.ontology.Age is not None: 
 
             age_rules = [
-                ("Young", "lessThanOrEqual", 18),
-                ("Middle-Aged", "greaterThanOrEqual", 18, "lessThanOrEqual", 65),
-                ("Elderly", "greaterThan", 65)
+                ("Young", "greaterThanOrEqual", 0, "lessThan", 18),
+                ("Middle-Aged", "greaterThanOrEqual", 18, "lessThan", 65),
+                ("Elderly", "greaterThanOrEqual", 65, "lessThanOrEqual", 110)
             ]
 
             for rule in age_rules:                
                 Imp().set_as_rule(
                     f"""
-                    ActorState(?act_state), validAt(?act_state, ?s),
+                    ActorState(?act_state), 
                     ActorStateHasAge(?act_state, ?age_inst),
                     hasAgeValue(?age_inst, ?age_value),
                     {rule[1]}(?age_value, {rule[2]})
@@ -204,6 +205,17 @@ class RuleCreator:
                         -> AgeBelongsToGroup(?age_inst, {rule[0].lower()}_instance)
                     """
                 )
+                print(                    f"""
+                        ActorState(?act_state), 
+                        ActorStateHasAge(?act_state, ?age_inst),
+                        hasAgeValue(?age_inst, ?age_value),
+                        {rule[1]}(?age_value, {rule[2]})
+                        {f', {rule[3]}(?age_value, {rule[4]})' if len(rule) > 3 else ''},
+
+                            -> AgeBelongsToGroup(?age_inst, {rule[0].lower()}_instance)
+                        """)
+
+        pdb.set_trace()
 
          # Keep the age groups in a list to get the corresponding threshold instance later. 
         self.age_groups = [age.name.lower() for age in self.ontology.Age.subclasses()]        
@@ -605,6 +617,9 @@ class RuleCreator:
                     "bounding_polygon":"...", 
                 }
             } 
+
+            if not os.path.exists(filepath): 
+                os.mkdir(filepath)
 
             json_file = filepath + f"/label_{ind}.json"
             with self.ontology: 

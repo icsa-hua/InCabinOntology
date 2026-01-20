@@ -3951,6 +3951,46 @@ It holds the data created after processing the observations captured by the sens
   <rdfs:subClassOf rdf:resource="#ActorState_Very_Low_RR"/>
 </owl:Class>
 
+<owl:Class rdf:about="#ActorState_ModerateHR_VeryLowHRV_ModerateRR_LowSpO2_LVL3">
+  <rdfs:subClassOf rdf:resource="#ActorState"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#ActorStateHasFatigue"/>
+      <owl:hasValue rdf:resource="#drowsinesssuspected_instance"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#ActorStateHasAttention"/>
+      <owl:hasValue rdf:resource="#undefined_instance"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#ActorStateHasUnresponsiveness"/>
+      <owl:hasValue rdf:resource="#undefined_atrisk_instance"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:intersectionOf rdf:parseType="Collection">
+        <rdf:Description rdf:about="#ActorState"/>
+        <rdf:Description rdf:about="#ActorState_Moderate_HR"/>
+        <rdf:Description rdf:about="#ActorState_Very_Low_HRV"/>
+        <rdf:Description rdf:about="#ActorState_Moderate_RR"/>
+        <rdf:Description rdf:about="#ActorState_Low_SpO2"/>
+        <rdf:Description rdf:about="#ActorState_Drowsiness_Level_3"/>
+      </owl:intersectionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+  <rdfs:subClassOf rdf:resource="#ActorState_Drowsiness_Level_3"/>
+  <rdfs:subClassOf rdf:resource="#ActorState_Low_SpO2"/>
+  <rdfs:subClassOf rdf:resource="#ActorState_Moderate_HR"/>
+  <rdfs:subClassOf rdf:resource="#ActorState_Very_Low_HRV"/>
+  <rdfs:subClassOf rdf:resource="#ActorState_Moderate_RR"/>
+  <rdfs:subClassOf rdf:resource="#ActorState_Very_Low_RR"/>
+</owl:Class>
+
 <owl:Class rdf:about="#ActorState_VeryLowHR_LowHRV_HighRR_LowSpO2_LVL5">
   <rdfs:subClassOf rdf:resource="#ActorState"/>
   <rdfs:subClassOf>
@@ -4180,12 +4220,44 @@ It holds the data created after processing the observations captured by the sens
       </owl:intersectionOf>
     </owl:Class>
   </owl:equivalentClass>
-  <rdfs:subClassOf rdf:resource="#ActorState_Drowsiness_Level_3"/>
-  <rdfs:subClassOf rdf:resource="#ActorState_Moderate_HR"/>
-  <rdfs:subClassOf rdf:resource="#ActorState_Normal_SpO2"/>
-  <rdfs:subClassOf rdf:resource="#ActorState_Very_Low_HRV"/>
-  <rdfs:subClassOf rdf:resource="#ActorState_Moderate_RR"/>
-  <rdfs:subClassOf rdf:resource="#ActorState_Very_Low_RR"/>
+  <owl:equivalentClass rdf:resource="#ActorState_ModerateHR_VeryLowHRV_ModerateRR_NormalSpO2_LVL7"/>
+  <owl:equivalentClass rdf:resource="http://www.w3.org/2002/07/owl#Nothing"/>
+</owl:Class>
+
+<owl:Class rdf:about="#ActorState_ModerateHR_VeryLowHRV_ModerateRR_NormalSpO2_LVL7">
+  <rdfs:subClassOf rdf:resource="#ActorState"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#ActorStateHasFatigue"/>
+      <owl:hasValue rdf:resource="#drowsinesssuspected_instance"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#ActorStateHasAttention"/>
+      <owl:hasValue rdf:resource="#inattentive_instance"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#ActorStateHasUnresponsiveness"/>
+      <owl:hasValue rdf:resource="#undefined_atrisk_instance"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:intersectionOf rdf:parseType="Collection">
+        <rdf:Description rdf:about="#ActorState"/>
+        <rdf:Description rdf:about="#ActorState_Moderate_HR"/>
+        <rdf:Description rdf:about="#ActorState_Very_Low_HRV"/>
+        <rdf:Description rdf:about="#ActorState_Moderate_RR"/>
+        <rdf:Description rdf:about="#ActorState_Normal_SpO2"/>
+        <rdf:Description rdf:about="#ActorState_Drowsiness_Level_3"/>
+      </owl:intersectionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+  <owl:equivalentClass rdf:resource="#ActorState_ModerateHR_VeryLowHRV_ModerateRR_NormalSpO2_LVL3"/>
+  <owl:equivalentClass rdf:resource="http://www.w3.org/2002/07/owl#Nothing"/>
 </owl:Class>
 
 <owl:Class rdf:about="#ActorState_VeryLowHR_VeryLowHRV_VeryLowRR_CriticalSpO2_LVL5">
@@ -5171,27 +5243,6 @@ It holds the data created after processing the observations captured by the sens
   <owl:equivalentClass rdf:resource="#ActorState_Drowsiness_Level_9"/>
 </owl:Class>
 
-<owl:Class rdf:about="#StartingDrowsyFatigueTrend">
-  <rdfs:subClassOf rdf:resource="#ActorState"/>
-  <rdfs:subClassOf>
-    <owl:Restriction>
-      <owl:onProperty rdf:resource="#ActorStateHasFatigue"/>
-      <owl:hasValue rdf:resource="#drowsinesssuspected_instance"/>
-    </owl:Restriction>
-  </rdfs:subClassOf>
-  <owl:equivalentClass>
-    <owl:Class>
-      <owl:intersectionOf rdf:parseType="Collection">
-        <rdf:Description rdf:about="#ActorState"/>
-        <owl:Restriction>
-          <owl:onProperty rdf:resource="#hasFatigueTrend"/>
-          <owl:hasValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fatigue_starting_drowsy</owl:hasValue>
-        </owl:Restriction>
-      </owl:intersectionOf>
-    </owl:Class>
-  </owl:equivalentClass>
-</owl:Class>
-
 <owl:NamedIndividual rdf:about="#cold_high_hr_elderly_female">
   <rdf:type rdf:resource="#HR_THR"/>
   <hasThrValue rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">100</hasThrValue>
@@ -5558,7 +5609,7 @@ It holds the data created after processing the observations captured by the sens
 
 <owl:NamedIndividual rdf:about="#driver">
   <rdf:type rdf:resource="#Actor"/>
-  <hasUniqueIdentifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">920393f51a0c4086917808c37142ecde</hasUniqueIdentifier>
+  <hasUniqueIdentifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">04f87bfac8c6457b9a8e21fb44d56c68</hasUniqueIdentifier>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#hot_high_hr_elderly_female">
@@ -6784,6 +6835,11 @@ It holds the data created after processing the observations captured by the sens
   <appliesSpO2High rdf:resource="#moderate_high_spo2_young_male"/>
 </owl:NamedIndividual>
 
+<rdf:Description rdf:about="http://www.w3.org/2002/07/owl#Nothing">
+  <owl:equivalentClass rdf:resource="#ActorState_ModerateHR_VeryLowHRV_ModerateRR_NormalSpO2_LVL3"/>
+  <owl:equivalentClass rdf:resource="#ActorState_ModerateHR_VeryLowHRV_ModerateRR_NormalSpO2_LVL7"/>
+</rdf:Description>
+
 <rdfs:Datatype rdf:about="http://test.org.org/vehicleOntology#wktLiteral">
   <x_1.1:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">jimge</x_1.1:creator>
   <x_1.1:date rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2023-07-28T10:51:28Z</x_1.1:date>
@@ -6792,11 +6848,11 @@ It holds the data created after processing the observations captured by the sens
 
 <swrl:Variable rdf:about="urn:swrl#act_state"/>
 
-<swrl:Variable rdf:about="urn:swrl#s"/>
-
 <swrl:Variable rdf:about="urn:swrl#age_inst"/>
 
 <swrl:Variable rdf:about="urn:swrl#age_value"/>
+
+<swrl:Variable rdf:about="urn:swrl#s"/>
 
 <swrl:Variable rdf:about="urn:swrl#sex_inst"/>
 
@@ -14517,42 +14573,51 @@ It holds the data created after processing the observations captured by the sens
       <rdf:rest>
         <rdf:Description>
           <rdf:first>
-            <swrl:DatavaluedPropertyAtom>
-              <swrl:propertyPredicate rdf:resource="#validAt"/>
+            <swrl:IndividualPropertyAtom>
+              <swrl:propertyPredicate rdf:resource="#ActorStateHasAge"/>
               <swrl:argument1 rdf:resource="urn:swrl#act_state"/>
-              <swrl:argument2 rdf:resource="urn:swrl#s"/>
-            </swrl:DatavaluedPropertyAtom>
+              <swrl:argument2 rdf:resource="urn:swrl#age_inst"/>
+            </swrl:IndividualPropertyAtom>
           </rdf:first>
           <rdf:rest>
             <rdf:Description>
               <rdf:first>
-                <swrl:IndividualPropertyAtom>
-                  <swrl:propertyPredicate rdf:resource="#ActorStateHasAge"/>
-                  <swrl:argument1 rdf:resource="urn:swrl#act_state"/>
-                  <swrl:argument2 rdf:resource="urn:swrl#age_inst"/>
-                </swrl:IndividualPropertyAtom>
+                <swrl:DatavaluedPropertyAtom>
+                  <swrl:propertyPredicate rdf:resource="#hasAgeValue"/>
+                  <swrl:argument1 rdf:resource="urn:swrl#age_inst"/>
+                  <swrl:argument2 rdf:resource="urn:swrl#age_value"/>
+                </swrl:DatavaluedPropertyAtom>
               </rdf:first>
               <rdf:rest>
                 <rdf:Description>
                   <rdf:first>
-                    <swrl:DatavaluedPropertyAtom>
-                      <swrl:propertyPredicate rdf:resource="#hasAgeValue"/>
-                      <swrl:argument1 rdf:resource="urn:swrl#age_inst"/>
-                      <swrl:argument2 rdf:resource="urn:swrl#age_value"/>
-                    </swrl:DatavaluedPropertyAtom>
+                    <swrl:BuiltinAtom>
+                      <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#greaterThanOrEqual"/>
+                      <swrl:arguments>
+                        <rdf:Description>
+                          <rdf:first rdf:resource="urn:swrl#age_value"/>
+                          <rdf:rest>
+                            <rdf:Description>
+                              <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                              <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">65</rdf:first>
+                            </rdf:Description>
+                          </rdf:rest>
+                        </rdf:Description>
+                      </swrl:arguments>
+                    </swrl:BuiltinAtom>
                   </rdf:first>
                   <rdf:rest>
                     <rdf:Description>
                       <rdf:first>
                         <swrl:BuiltinAtom>
-                          <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#greaterThan"/>
+                          <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#lessThanOrEqual"/>
                           <swrl:arguments>
                             <rdf:Description>
                               <rdf:first rdf:resource="urn:swrl#age_value"/>
                               <rdf:rest>
                                 <rdf:Description>
                                   <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-                                  <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">65</rdf:first>
+                                  <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">110</rdf:first>
                                 </rdf:Description>
                               </rdf:rest>
                             </rdf:Description>
@@ -14596,69 +14661,58 @@ It holds the data created after processing the observations captured by the sens
       <rdf:rest>
         <rdf:Description>
           <rdf:first>
-            <swrl:DatavaluedPropertyAtom>
-              <swrl:propertyPredicate rdf:resource="#validAt"/>
+            <swrl:IndividualPropertyAtom>
+              <swrl:propertyPredicate rdf:resource="#ActorStateHasAge"/>
               <swrl:argument1 rdf:resource="urn:swrl#act_state"/>
-              <swrl:argument2 rdf:resource="urn:swrl#s"/>
-            </swrl:DatavaluedPropertyAtom>
+              <swrl:argument2 rdf:resource="urn:swrl#age_inst"/>
+            </swrl:IndividualPropertyAtom>
           </rdf:first>
           <rdf:rest>
             <rdf:Description>
               <rdf:first>
-                <swrl:IndividualPropertyAtom>
-                  <swrl:propertyPredicate rdf:resource="#ActorStateHasAge"/>
-                  <swrl:argument1 rdf:resource="urn:swrl#act_state"/>
-                  <swrl:argument2 rdf:resource="urn:swrl#age_inst"/>
-                </swrl:IndividualPropertyAtom>
+                <swrl:DatavaluedPropertyAtom>
+                  <swrl:propertyPredicate rdf:resource="#hasAgeValue"/>
+                  <swrl:argument1 rdf:resource="urn:swrl#age_inst"/>
+                  <swrl:argument2 rdf:resource="urn:swrl#age_value"/>
+                </swrl:DatavaluedPropertyAtom>
               </rdf:first>
               <rdf:rest>
                 <rdf:Description>
                   <rdf:first>
-                    <swrl:DatavaluedPropertyAtom>
-                      <swrl:propertyPredicate rdf:resource="#hasAgeValue"/>
-                      <swrl:argument1 rdf:resource="urn:swrl#age_inst"/>
-                      <swrl:argument2 rdf:resource="urn:swrl#age_value"/>
-                    </swrl:DatavaluedPropertyAtom>
+                    <swrl:BuiltinAtom>
+                      <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#greaterThanOrEqual"/>
+                      <swrl:arguments>
+                        <rdf:Description>
+                          <rdf:first rdf:resource="urn:swrl#age_value"/>
+                          <rdf:rest>
+                            <rdf:Description>
+                              <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                              <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">18</rdf:first>
+                            </rdf:Description>
+                          </rdf:rest>
+                        </rdf:Description>
+                      </swrl:arguments>
+                    </swrl:BuiltinAtom>
                   </rdf:first>
                   <rdf:rest>
                     <rdf:Description>
                       <rdf:first>
                         <swrl:BuiltinAtom>
-                          <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#greaterThanOrEqual"/>
+                          <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#lessThan"/>
                           <swrl:arguments>
                             <rdf:Description>
                               <rdf:first rdf:resource="urn:swrl#age_value"/>
                               <rdf:rest>
                                 <rdf:Description>
                                   <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-                                  <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">18</rdf:first>
+                                  <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">65</rdf:first>
                                 </rdf:Description>
                               </rdf:rest>
                             </rdf:Description>
                           </swrl:arguments>
                         </swrl:BuiltinAtom>
                       </rdf:first>
-                      <rdf:rest>
-                        <rdf:Description>
-                          <rdf:first>
-                            <swrl:BuiltinAtom>
-                              <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#lessThanOrEqual"/>
-                              <swrl:arguments>
-                                <rdf:Description>
-                                  <rdf:first rdf:resource="urn:swrl#age_value"/>
-                                  <rdf:rest>
-                                    <rdf:Description>
-                                      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-                                      <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">65</rdf:first>
-                                    </rdf:Description>
-                                  </rdf:rest>
-                                </rdf:Description>
-                              </swrl:arguments>
-                            </swrl:BuiltinAtom>
-                          </rdf:first>
-                          <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-                        </rdf:Description>
-                      </rdf:rest>
+                      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
                     </rdf:Description>
                   </rdf:rest>
                 </rdf:Description>
@@ -14695,35 +14749,44 @@ It holds the data created after processing the observations captured by the sens
       <rdf:rest>
         <rdf:Description>
           <rdf:first>
-            <swrl:DatavaluedPropertyAtom>
-              <swrl:propertyPredicate rdf:resource="#validAt"/>
+            <swrl:IndividualPropertyAtom>
+              <swrl:propertyPredicate rdf:resource="#ActorStateHasAge"/>
               <swrl:argument1 rdf:resource="urn:swrl#act_state"/>
-              <swrl:argument2 rdf:resource="urn:swrl#s"/>
-            </swrl:DatavaluedPropertyAtom>
+              <swrl:argument2 rdf:resource="urn:swrl#age_inst"/>
+            </swrl:IndividualPropertyAtom>
           </rdf:first>
           <rdf:rest>
             <rdf:Description>
               <rdf:first>
-                <swrl:IndividualPropertyAtom>
-                  <swrl:propertyPredicate rdf:resource="#ActorStateHasAge"/>
-                  <swrl:argument1 rdf:resource="urn:swrl#act_state"/>
-                  <swrl:argument2 rdf:resource="urn:swrl#age_inst"/>
-                </swrl:IndividualPropertyAtom>
+                <swrl:DatavaluedPropertyAtom>
+                  <swrl:propertyPredicate rdf:resource="#hasAgeValue"/>
+                  <swrl:argument1 rdf:resource="urn:swrl#age_inst"/>
+                  <swrl:argument2 rdf:resource="urn:swrl#age_value"/>
+                </swrl:DatavaluedPropertyAtom>
               </rdf:first>
               <rdf:rest>
                 <rdf:Description>
                   <rdf:first>
-                    <swrl:DatavaluedPropertyAtom>
-                      <swrl:propertyPredicate rdf:resource="#hasAgeValue"/>
-                      <swrl:argument1 rdf:resource="urn:swrl#age_inst"/>
-                      <swrl:argument2 rdf:resource="urn:swrl#age_value"/>
-                    </swrl:DatavaluedPropertyAtom>
+                    <swrl:BuiltinAtom>
+                      <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#greaterThanOrEqual"/>
+                      <swrl:arguments>
+                        <rdf:Description>
+                          <rdf:first rdf:resource="urn:swrl#age_value"/>
+                          <rdf:rest>
+                            <rdf:Description>
+                              <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                              <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">0</rdf:first>
+                            </rdf:Description>
+                          </rdf:rest>
+                        </rdf:Description>
+                      </swrl:arguments>
+                    </swrl:BuiltinAtom>
                   </rdf:first>
                   <rdf:rest>
                     <rdf:Description>
                       <rdf:first>
                         <swrl:BuiltinAtom>
-                          <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#lessThanOrEqual"/>
+                          <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#lessThan"/>
                           <swrl:arguments>
                             <rdf:Description>
                               <rdf:first rdf:resource="urn:swrl#age_value"/>
